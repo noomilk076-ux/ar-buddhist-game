@@ -288,7 +288,11 @@ function chooseMission(game){
   missionLabel.textContent=labels[game];missionLabel.classList.remove("hidden");
   backMenu.classList.remove("hidden");
   // 0.8 establishes the navigation architecture. Only mission 1 is wired to the live interaction engine.
-  if(game==="altar"){ overlay.classList.remove("hidden"); }
+  if(game==="altar"){
+    overlay.innerHTML=`<div class="panel"><div style="font-size:4rem">🪷</div><h2>พร้อมเริ่มภารกิจหรือยัง?</h2><p>ภารกิจที่ ๑ จัดโต๊ะหมู่บูชา<br>ใช้กล้องและมือของคุณเพื่อจับ ลาก และหมุนสิ่งของ</p><button id="startMission1">เริ่มภารกิจ</button><div id="cameraTip">กดเริ่ม แล้วอนุญาตให้ Safari เข้าถึงกล้อง</div></div>`;
+    overlay.classList.remove("hidden");
+    document.querySelector("#startMission1").onclick=()=>{ currentGame="altar"; start(); };
+  }
   else {
     overlay.innerHTML=`<div class="panel"><div style="font-size:4rem">🪷</div><h2>${labels[game]}</h2><p>ภารกิจนี้อยู่ในโหมดเตรียมระบบ<br>โครงเมนูและการเลือกด้วยมือพร้อมแล้ว</p><button id="demoBack">กลับไปเลือกภารกิจ</button></div>`;
     overlay.classList.remove("hidden");
@@ -302,7 +306,11 @@ document.querySelector("#resetScore").onclick=()=>{stationScore=0;refreshStation
 missionButtons.forEach(b=>{
   b.addEventListener("mouseenter",()=>b.classList.add("hover"));
   b.addEventListener("mouseleave",()=>b.classList.remove("hover"));
-  b.addEventListener("click",()=>chooseMission(b.dataset.game));
+  // iPad/Safari touch-safe selection
+  b.addEventListener("pointerup",e=>{
+    e.preventDefault();
+    chooseMission(b.dataset.game);
+  });
 });
 backMenu.onclick=showMenu;
 
