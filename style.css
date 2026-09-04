@@ -277,3 +277,59 @@ body{background:#09030f}
   .altarTray .altarTablePiece{font-size:14px!important}
   .altarTray .ritual{font-size:40px!important}
 }
+
+/* v19 — Mission 1 layout cleanup: separate title, Buddha and altar slots */
+.altarSeven{
+  top:4%!important;
+  height:70%!important;
+  overflow:visible!important;
+}
+.altarSeven .altarHeader{
+  top:2%!important;
+  font-size:clamp(16px,1.9vw,26px)!important;
+  line-height:1!important;
+}
+.altarSeven .buddhaFigure{
+  top:9%!important;
+  z-index:20!important;
+}
+.altarSeven .buddhaIcon{
+  font-size:clamp(52px,6vw,88px)!important;
+  line-height:.85!important;
+}
+.altarSeven .buddhaFigure b{
+  margin-top:4px!important;
+  font-size:clamp(11px,1vw,15px)!important;
+}
+.altarSeven .tierSlot[data-slot="1"]{
+  left:39%!important;top:27%!important;width:22%!important;height:15%!important;
+}
+.altarSeven .tierSlot[data-slot="2"]{
+  left:12%!important;top:40%!important;width:28%!important;height:15%!important;
+}
+.altarSeven .tierSlot[data-slot="3"]{
+  left:60%!important;top:40%!important;width:28%!important;height:15%!important;
+}
+.altarSeven .tierSlot[data-slot="4"]{
+  left:4%!important;top:57%!important;width:28%!important;height:15%!important;
+}
+.altarSeven .tierSlot[data-slot="5"]{
+  left:36%!important;top:57%!important;width:28%!important;height:15%!important;
+}
+.altarSeven .tierSlot[data-slot="6"]{
+  left:68%!important;top:57%!important;width:28%!important;height:15%!important;
+}
+.altarSeven .tierSlot[data-slot="7"]{
+  left:36%!important;top:74%!important;width:28%!important;height:13%!important;
+}
+.altarSeven .ritualSlot{
+  left:34%!important;top:89%!important;width:32%!important;height:8%!important;
+  font-size:clamp(13px,1.3vw,19px)!important;
+}
+@media(max-width:800px){
+  .altarSeven{top:3%!important;height:70%!important}
+  .altarSeven .buddhaFigure{top:8%!important}
+  .altarSeven .buddhaIcon{font-size:58px!important}
+  .altarSeven .tierSlot{font-size:15px!important}
+  .altarSeven .ritualSlot{font-size:13px!important}
+}
