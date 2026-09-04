@@ -228,3 +228,52 @@ body{background:#09030f}
   .grid button{padding:13px 12px 13px 58px!important}
   .grid button .missionBadge{left:12px!important;top:15px!important;width:36px!important;height:36px!important;font-size:18px!important}
 }
+
+
+/* v18 — center and enlarge Mission 1 equipment tray */
+.altarTray{
+  left:3%!important;
+  right:3%!important;
+  min-height:145px!important;
+  height:20%!important;
+  padding:30px 18px 12px!important;
+  gap:12px!important;
+  justify-content:center!important;
+  align-items:center!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+}
+.altarTray .trayLabel{
+  left:50%!important;
+  top:-30px!important;
+  transform:translateX(-50%)!important;
+  font-size:clamp(15px,1.5vw,22px)!important;
+  white-space:nowrap!important;
+}
+.altarTray .altarTablePiece{
+  min-width:92px!important;
+  width:92px!important;
+  height:78px!important;
+  flex:0 0 92px!important;
+  border-radius:18px!important;
+  font-size:clamp(16px,1.5vw,21px)!important;
+  line-height:1!important;
+}
+.altarTray .ritual{
+  min-width:92px!important;
+  width:92px!important;
+  height:78px!important;
+  flex:0 0 92px!important;
+  border-radius:18px!important;
+  font-size:48px!important;
+}
+@media(max-width:1200px){
+  .altarTray{justify-content:flex-start!important}
+}
+@media(max-width:800px){
+  .altarTray{left:2%!important;right:2%!important;min-height:120px!important;height:18%!important;padding:25px 10px 8px!important;gap:8px!important;justify-content:flex-start!important}
+  .altarTray .trayLabel{top:-24px!important;font-size:14px!important}
+  .altarTray .altarTablePiece,.altarTray .ritual{min-width:78px!important;width:78px!important;height:68px!important;flex-basis:78px!important}
+  .altarTray .altarTablePiece{font-size:14px!important}
+  .altarTray .ritual{font-size:40px!important}
+}
