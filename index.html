@@ -3,53 +3,66 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#120821">
-<title>ภารกิจชาวพุทธน้อย พุทธวิถี เทพสุนทรินทร์</title>
+<meta name="theme-color" content="#10051f">
+<title>ภารกิจชาวพุทธน้อย เทพสุนทรินทร์</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="menu" class="screen">
-<main class="menuCard">
-<div class="schoolMark">🪷</div>
-<div class="eyebrow">AR GAME STATION</div>
-<h1>ภารกิจชาวพุทธน้อย<br><span>พุทธวิถี เทพสุนทรินทร์</span></h1>
-<p class="tagline">เรียนรู้ • ลงมือทำ • สร้างความดี</p>
-<div class="stationStats"><span>⭐ คะแนนสะสม <b id="menuScore">0</b></span><span id="menuRank">🌱 ผู้เริ่มต้นทำความดี</span></div>
-<div class="menuHint">☝️ ชี้เพื่อเล็ง • 🤏 จีบนิ้วเพื่อเลือก/ลาก • <b>เลือกเล่นภารกิจไหนก็ได้</b> • <b>ไม่จับเวลา</b></div>
-<div class="grid">
-<button data-game="altar"><strong>๑</strong><b>จัดโต๊ะหมู่บูชา</b><small>ประกอบโต๊ะหมู่ ๙ และจัดเครื่องบูชาให้ครบ</small></button>
-<button data-game="sort"><strong>๒</strong><b>นักคัดแยกขยะ</b><small>แยกขยะลงถังให้ถูกประเภท</small></button>
-<button data-game="quiz"><strong>๓</strong><b>ธรรมะท้าประลอง</b><small>อริยสัจ ๔ • ไตรสิกขา • ศีล ๕</small></button>
-<button data-game="fill"><strong>๔</strong><b>เติมคำธรรมะ</b><small>คุณธรรมพื้นฐานของนักเรียน</small></button>
-<button data-game="moral"><strong>๕</strong><b>พุทธศาสนิกชนตัวน้อย</b><small>เลือกการกระทำที่ดีในชีวิตประจำวัน</small></button>
-<button data-game="tree"><strong>๖</strong><b>ต้นไม้แห่งความดี</b><small>เลือกความดี ๕ ข้อให้ต้นไม้เติบโต</small></button>
+  <main class="menuCard">
+    <div class="schoolMark">🪷</div>
+    <div class="eyebrow">AR GAME STATION</div>
+    <h1>ภารกิจชาวพุทธน้อย<br><span>เทพสุนทรินทร์</span></h1>
+    <p class="tagline">เรียนรู้ • ลงมือทำ • สร้างความดี</p>
+    <div class="stationStats"><span>⭐ คะแนนรวม <b id="menuScore">0</b></span><span id="menuRank">🌱 ผู้เริ่มต้นทำความดี</span></div>
+    <div class="menuHint">🫶 กล้องจะเปิดหลังเลือกภารกิจ • เล่นภารกิจไหนก่อนก็ได้ • <b>ไม่จับเวลา</b></div>
+    <div class="grid">
+      <button data-game="altar"><strong>๑</strong><b>จัดโต๊ะหมู่บูชา</b><small>ใช้มือหยิบ ลาก ปล่อย จัดโต๊ะหมู่และเครื่องบูชา</small></button>
+      <button data-game="sort"><strong>๒</strong><b>นักคัดแยกขยะ</b><small>ใช้มือซ้าย–ขวาปัดขยะลงถังให้ถูกประเภท</small></button>
+      <button data-game="quiz"><strong>๓</strong><b>ธรรมะท้าประลอง</b><small>เอียงศีรษะซ้าย–ขวาเพื่อเลือกคำตอบ</small></button>
+      <button data-game="fill"><strong>๔</strong><b>เติมคำธรรมะ</b><small>ขยับตัวให้ตรงช่องและค้างไว้ ๓ วินาที</small></button>
+      <button data-game="moral"><strong>๕</strong><b>พุทธศาสนิกชนตัวน้อย</b><small>เล็งนิ้วชี้แบบปืนเพื่อยิงคำตอบ</small></button>
+      <button data-game="tree"><strong>๖</strong><b>ต้นไม้แห่งความดี</b><small>ใช้ ๒ มือจับต้นกล้าพร้อมกันแล้วปลูกให้ครบ ๓ ต้น</small></button>
+    </div>
+    <div class="menuFooter">🌸 ภารกิจเล็ก ๆ สร้างคุณธรรมและพุทธวิถีในชีวิตประจำวัน</div>
+  </main>
 </div>
-<div class="menuFooter">🌸 ภารกิจเล็ก ๆ สร้างนิสัยดี ๆ ในชีวิตประจำวัน</div>
-</main></div>
 
-<div id="permission" class="screen hidden"><section class="permissionCard">
-<div class="schoolMark small">🪷</div><div class="eyebrow">เตรียมพร้อมสำหรับภารกิจ</div>
-<h2 id="permissionTitle">กำลังเตรียมภารกิจ</h2>
-<p>เมื่อกดเริ่ม ระบบจะเปิดกล้องหน้า<br>แล้วใช้ปลายนิ้วชี้เป็นเคอร์เซอร์</p>
-<button id="start">📷 เปิดกล้องและเริ่มภารกิจ</button>
-<p id="status">อนุญาตการใช้กล้องเมื่อระบบถาม</p>
-<button id="cancelStart" class="ghostBtn">กลับไปเลือกภารกิจ</button>
-</section></div>
+<div id="permission" class="screen hidden">
+  <section class="permissionCard">
+    <div class="schoolMark small">🪷</div><div class="eyebrow">เตรียมพร้อมสำหรับภารกิจ</div>
+    <h2 id="permissionTitle">กำลังเตรียมภารกิจ</h2>
+    <p>เมื่อกดเริ่ม ระบบจะเปิดกล้องหน้า<br>และตรวจจับมือ • ศีรษะ • ไหล่ • ลำตัวตามภารกิจ</p>
+    <button id="start">📷 เปิดกล้องและเริ่มภารกิจ</button>
+    <p id="status">อนุญาตการใช้กล้องเมื่อระบบถาม</p>
+    <button id="cancelStart" class="ghostBtn">กลับไปเลือกภารกิจ</button>
+  </section>
+</div>
 
 <div id="game" class="hidden">
-<video id="camera" autoplay muted playsinline></video><div class="veil"></div>
-<header class="hud"><span id="gameName">ภารกิจ</span><span>⭐ <b id="score">0</b></span></header>
-<div id="title" class="title"></div><div id="area"></div><div id="hint"></div>
-<div id="pointer"><span></span></div><div id="feedback"></div><button id="home">⌂ สถานี</button>
+  <video id="camera" autoplay muted playsinline></video>
+  <div class="veil"></div>
+  <div class="cameraGlow"></div>
+  <header class="hud"><span id="gameName">ภารกิจ</span><span>⭐ <b id="score">0</b></span></header>
+  <div id="title" class="title"></div>
+  <div id="area"></div>
+  <div id="hint"></div>
+  <div id="trackingStatus">● กำลังตรวจจับการเคลื่อนไหว</div>
+  <div id="pointer"><span></span></div>
+  <div id="feedback"></div>
+  <button id="home">⌂ สถานี</button>
 </div>
 
-<div id="result" class="screen hidden"><section class="resultCard">
-<div class="resultSpark">✨</div><div class="eyebrow">MISSION COMPLETE</div>
-<h2 id="resultTitle">เก่งมาก!</h2>
-<div class="resultScore"><b id="resultRound">+0</b><small>คะแนนภารกิจนี้</small></div>
-<div class="resultTotal">คะแนนสะสม <b id="resultTotal">0</b></div>
-<div id="resultRank" class="resultRank">🌱 ผู้เริ่มต้นทำความดี</div>
-<div class="resultActions"><button id="again">↻ เล่นภารกิจนี้อีกครั้ง</button><button id="resultHome" class="ghostBtn">⌂ เลือกภารกิจอื่น</button></div>
-</section></div>
+<div id="result" class="screen hidden">
+  <section class="resultCard">
+    <div class="resultSpark">✨</div><div class="eyebrow">MISSION COMPLETE</div>
+    <h2 id="resultTitle">เก่งมาก!</h2>
+    <div class="resultScore"><b id="resultRound">+0</b><small>คะแนนภารกิจนี้</small></div>
+    <div class="resultTotal">คะแนนรวม <b id="resultTotal">0</b></div>
+    <div id="resultRank" class="resultRank">🌱 ผู้เริ่มต้นทำความดี</div>
+    <div class="resultActions"><button id="again">↻ เล่นภารกิจนี้อีกครั้ง</button><button id="resultHome" class="ghostBtn">⌂ เลือกภารกิจอื่น</button></div>
+  </section>
+</div>
 <script type="module" src="script.js"></script>
-</body></html>
+</body>
+</html>
