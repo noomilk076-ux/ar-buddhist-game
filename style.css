@@ -58,3 +58,15 @@
 .flowerCanopy{position:absolute;inset:1% 2% 5%;z-index:3;pointer-events:none}.pinkFlower{position:absolute;font-size:28px;filter:drop-shadow(0 4px 8px #0008);animation:flowerPop .6s both}.pinkFlower.bloom{font-size:34px;animation:bloom .9s both}.fallFlowers{position:fixed;inset:0;overflow:hidden;z-index:120;pointer-events:none}.fallFlower{position:absolute;top:-12%;font-size:30px;animation:fallFlower linear forwards}
 @media(max-width:800px){.treeStage{width:90vw;height:56%;top:2%}.treeDropTarget{width:52vw}.treeBefore{font-size:250px}.seedTray{top:60%;height:36%}.seedling{width:27vw;height:105px}.treeDropText{font-size:12px}.treeCounter{top:4%;right:3%;font-size:13px}}
 @media(max-width:520px){.treeStage{width:96vw;height:53%;top:2%}.treeDropTarget{width:62vw}.treeBefore{font-size:205px}.seedTray{top:59%;height:38%}.seedling{width:29vw;height:91px;border-radius:17px;padding:5px}.seedling span{font-size:38px!important}.seedling b{font-size:12px}.seedling small{font-size:9px}.seedling em{font-size:7px}.treeDropText{bottom:0;font-size:10px;padding:7px 10px}.pinkFlower{font-size:22px}.pinkFlower.bloom{font-size:27px}}
+
+
+/* v10 mission 5: thumbs up / thumbs down moral choices */
+.moralThumbCard{width:min(980px,92vw);margin:4vh auto 0}
+.thumbChoices{grid-template-columns:1fr 1fr;gap:24px;margin-top:28px}
+.thumbAnswer{min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:3px solid #e7b8ff66;transition:.18s}
+.thumbIcon{font-size:clamp(58px,7vw,92px);line-height:1;filter:drop-shadow(0 7px 12px #0006)}
+.thumbAnswer b{font-size:clamp(20px,2.5vw,30px)}
+.thumbAnswer.target{transform:scale(1.04);border-color:#ffd66b;box-shadow:0 0 45px #ffd66b88,inset 0 0 25px #ffd66b22}
+.thumbGuide{margin:22px auto 0;padding:12px 20px;width:max-content;max-width:92%;border-radius:999px;background:#12051ccc;border:1px solid #ffffff22;color:#ddd;font-weight:800;transition:.2s}
+.thumbGuide.active{color:#ffd66b;border-color:#ffd66b88;box-shadow:0 0 25px #ffd66b44}
+@media(max-width:650px){.moralThumbCard{margin-top:2vh;padding:18px}.thumbChoices{gap:10px;margin-top:18px}.thumbAnswer{min-height:145px;border-radius:20px}.thumbIcon{font-size:58px}.thumbAnswer b{font-size:17px}.thumbGuide{font-size:11px;padding:9px 12px}}

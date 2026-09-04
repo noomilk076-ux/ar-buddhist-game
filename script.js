@@ -151,16 +151,40 @@ function fillGesture(){
  }
 }
 const ms=[
- ["หลังทำกิจกรรม ห้องเรียนมีขยะเต็มพื้น ควรทำอย่างไร?","ช่วยกันเก็บและทิ้งให้ถูกถัง","เดินผ่านแล้วไม่สนใจ"],
- ["พบของที่ไม่ใช่ของตนเอง ควรทำอย่างไร?","นำส่งครูหรือหาเจ้าของ","เก็บไว้เป็นของตนเอง"],
- ["เมื่อครูมอบหมายงานกลุ่ม เราควรทำอย่างไร?","รับผิดชอบหน้าที่ของตน","ปล่อยให้เพื่อนทำทั้งหมด"],
- ["เพื่อนทำผิดแล้วมาขอโทษ เราควรทำอย่างไร?","ให้อภัยและแนะนำด้วยเมตตา","ล้อเลียนซ้ำ"],
- ["เมื่อเข้าร่วมกิจกรรมทางพระพุทธศาสนา นักเรียนควรปฏิบัติอย่างไร?","สำรวมกาย วาจา และตั้งใจร่วมกิจกรรม","เล่นและรบกวนผู้อื่น"]
+ ["หลังทำกิจกรรม ห้องเรียนมีขยะเต็มพื้น ควรช่วยกันเก็บและทิ้งให้ถูกถังหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
+ ["พบของที่ไม่ใช่ของตนเอง ควรนำส่งครูหรือหาเจ้าของหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
+ ["เมื่อครูมอบหมายงานกลุ่ม ควรปล่อยให้เพื่อนทำทั้งหมดหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",0],
+ ["เพื่อนทำผิดแล้วมาขอโทษ เราควรให้อภัยและแนะนำด้วยเมตตาหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
+ ["เมื่อเข้าร่วมกิจกรรมทางพระพุทธศาสนา ควรสำรวมกาย วาจา และตั้งใจร่วมกิจกรรมหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1]
 ];
-function moral(){moral.q=0;moral.last=null;moral.timer=null;$("#title").innerHTML="<h2>พุทธศาสนิกชนตัวน้อย</h2><p>ทำท่าปืนด้วยมือ แล้วเล็งนิ้วชี้ไปที่เป้าคำตอบ</p>";$("#hint").textContent="☝️ ทำท่าปืน: เหยียดนิ้วชี้ + งอนิ้วอื่น • เล็งเป้า • ค้างเพื่อยิง";drawMoral()}
-function drawMoral(){const m=ms[moral.q];$("#area").innerHTML=`<div class="card moralCard"><div class="question">${m[0]}</div><div class="choices gunChoices"><div class="choice targetAnswer" data-ok="1"><span class="targetDot">A</span><b>${m[1]}</b></div><div class="choice targetAnswer" data-ok="0"><span class="targetDot">B</span><b>${m[2]}</b></div></div><div class="aimGuide">🎯 เล็งนิ้วชี้ไปที่เป้าคำตอบ แล้วค้างประมาณ ๐.๘ วินาที</div><p class="progress">สถานการณ์ ${moral.q+1}/${ms.length}</p></div>`}
-function gunPose(a){if(!a)return false;const index=a[8],indexPip=a[6],middle=a[12],middlePip=a[10],ring=a[16],ringPip=a[14],pinky=a[20],pinkyPip=a[18],thumb=a[4],thumbIp=a[3];const indexExtended=index.y<indexPip.y-0.025;const curledMiddle=middle.y>middlePip.y-0.01;const curledRing=ring.y>ringPip.y-0.01;const curledPinky=pinky.y>pinkyPip.y-0.01;const thumbVisible=Math.hypot(thumb.x-thumbIp.x,thumb.y-thumbIp.y)>0.025;return indexExtended&&curledMiddle&&curledRing&&curledPinky&&thumbVisible}
-function moralGesture(){const h=info(0);if(!h||!gunPose(h.a)){$$("#area .choice").forEach(e=>e.classList.remove("target"));moral.last=null;clearTimeout(moral.timer);return}const c=hit("#area .choice",h.p.x,h.p.y);$("#area .aimGuide")?.classList.toggle("active",!!c);$$("#area .choice").forEach(e=>e.classList.toggle("target",e===c));if(c&&moral.last!==c){moral.last=c;clearTimeout(moral.timer);moral.timer=setTimeout(()=>{if(c.dataset.ok==='1'){add(10);toast("🎯 ยิงถูกต้อง +10");moral.q++;moral.last=null;if(moral.q>=ms.length)finish("ยอดเยี่ยม! คุณคือพุทธศาสนิกชนตัวน้อยที่มีคุณธรรม 🌸");else drawMoral()}else{toast("💡 เป้านี้ยังไม่ใช่ ลองเล็งคำตอบที่ถูกต้อง");moral.last=null}},800)}}
+function moral(){moral.q=0;moral.lastChoice=null;moral.armed=true;$("#title").innerHTML="<h2>พุทธศาสนิกชนตัวน้อย</h2><p>ใช้ท่ามือ 👍 หรือ 👎 เลือกว่าการกระทำนั้นควรทำหรือไม่</p>";$("#hint").textContent="👍 ชูนิ้วโป้ง = ควรทำ  •  👎 คว่ำนิ้วโป้ง = ไม่ควรทำ  •  เลือกแล้วปล่อยมือเพื่อเริ่มข้อถัดไป";drawMoral()}
+function drawMoral(){const m=ms[moral.q];$("#area").innerHTML=`<div class="card moralCard moralThumbCard"><div class="question">${m[0]}</div><div class="choices thumbChoices"><div class="choice thumbAnswer" data-ok="1"><span class="thumbIcon">👍</span><b>${m[1]}</b></div><div class="choice thumbAnswer" data-ok="0"><span class="thumbIcon">👎</span><b>${m[2]}</b></div></div><div class="thumbGuide">🖐️ <b>ยกมือให้กล้องเห็นชัด</b> → ใช้นิ้วโป้งเลือกคำตอบ</div><p class="progress">สถานการณ์ ${moral.q+1}/${ms.length}</p></div>`}
+function thumbPose(a){
+ if(!a)return 0;
+ const thumb=a[4],thumbIp=a[3],thumbMcp=a[2],index=a[8],middle=a[12],ring=a[16],pinky=a[20];
+ const curled=[index,middle,ring,pinky].filter((p,i)=>{const pip=[a[6],a[10],a[14],a[18]][i];return Math.hypot(p.x-a[0].x,p.y-a[0].y)<Math.hypot(pip.x-a[0].x,pip.y-a[0].y)*1.08}).length;
+ if(curled<3)return 0;
+ const up=thumb.y<Math.min(thumbIp.y,thumbMcp.y)-0.045;
+ const down=thumb.y>Math.max(thumbIp.y,thumbMcp.y)+0.045;
+ return up?1:(down?-1:0);
+}
+function moralGesture(){
+ const h=info(0);
+ if(!h){moral.lastChoice=null;return}
+ const choice=thumbPose(h.a);
+ const up=$("#area .thumbAnswer[data-ok='1']"),down=$("#area .thumbAnswer[data-ok='0']");
+ up?.classList.toggle("target",choice===1);down?.classList.toggle("target",choice===-1);
+ $("#area .thumbGuide")?.classList.toggle("active",choice!==0);
+ if(choice===0){moral.armed=true;moral.lastChoice=null;return}
+ if(!moral.armed||choice===moral.lastChoice)return;
+ moral.lastChoice=choice;moral.armed=false;
+ const selected=choice===1?up:down;
+ if(!selected)return;
+ if(Number(selected.dataset.ok)===choice){add(10);toast("🌟 เยี่ยมมาก! ตอบถูก +10");moral.q++;
+   if(moral.q>=ms.length){finish("ยอดเยี่ยม! คุณคือพุทธศาสนิกชนตัวน้อยที่มีคุณธรรม 🌸");}
+   else setTimeout(()=>drawMoral(),450);
+ }else{toast("💡 ลองคิดอีกครั้งว่า สิ่งนี้ควรทำหรือไม่");}
+}
 
 function tree(){
  tree.planted=0;tree.drag=null;tree.used=new Set();tree.lastDropAt=0;
