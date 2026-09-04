@@ -192,3 +192,39 @@ body{background:#09030f}
   .altarSeven .ritualSlot{font-size:14px}
   .buddhaIcon{font-size:62px}
 }
+/* v16 HARD OVERRIDE — Mission 1 โต๊ะหมู่ 7 */
+.altarSeven{position:absolute!important;left:50%!important;top:0!important;transform:translateX(-50%)!important;width:min(820px,70vw)!important;height:72%!important;box-sizing:border-box!important;overflow:visible!important;z-index:12!important;border:2px solid #ffd66b99!important;border-radius:28px!important;background:linear-gradient(180deg,rgba(52,20,36,.92),rgba(10,5,16,.88))!important}
+.altarSeven .altarHeader{position:absolute;left:50%;top:2%;transform:translateX(-50%);font-size:clamp(18px,2.2vw,30px);font-weight:1000;color:#ffd66b;white-space:nowrap;z-index:15}
+.altarSeven .altarSlots{position:absolute;inset:0;z-index:10}
+.altarSeven .tierSlot{position:absolute!important;display:grid!important;place-items:center!important;box-sizing:border-box!important;margin:0!important;padding:0 8px!important;border:3px dashed #ffd66bcc!important;border-radius:16px!important;background:rgba(255,214,107,.08)!important;color:#fff4c7!important;font-size:clamp(17px,2vw,27px)!important;font-weight:1000!important;line-height:1!important;white-space:nowrap!important;overflow:hidden!important;text-shadow:0 2px 5px #000!important}
+.altarSeven .tierSlot.filled{border-style:solid!important;background:rgba(70,180,110,.28)!important;color:#bfffd1!important}
+.altarSeven .tierSlot[data-slot="1"]{left:39%!important;top:10%!important;width:22%!important;height:16%!important}
+.altarSeven .tierSlot[data-slot="2"]{left:12%!important;top:29%!important;width:28%!important;height:16%!important}
+.altarSeven .tierSlot[data-slot="3"]{left:60%!important;top:29%!important;width:28%!important;height:16%!important}
+.altarSeven .tierSlot[data-slot="4"]{left:4%!important;top:49%!important;width:28%!important;height:16%!important}
+.altarSeven .tierSlot[data-slot="5"]{left:36%!important;top:49%!important;width:28%!important;height:16%!important}
+.altarSeven .tierSlot[data-slot="6"]{left:68%!important;top:49%!important;width:28%!important;height:16%!important}
+.altarSeven .tierSlot[data-slot="7"]{left:36%!important;top:69%!important;width:28%!important;height:16%!important}
+.altarSeven .ritualSlot{left:35%!important;top:88%!important;width:30%!important;height:10%!important;font-size:clamp(14px,1.5vw,21px)!important;color:#ffe6a0!important}
+.altarSeven .buddhaFigure{position:absolute!important;left:50%!important;top:-9%!important;transform:translateX(-50%)!important;z-index:20!important;text-align:center!important;pointer-events:none!important}
+.altarSeven .buddhaIcon{font-size:clamp(68px,8vw,120px)!important;line-height:.85!important;filter:drop-shadow(0 8px 10px #0008)!important}
+.altarSeven .buddhaFigure b{display:block!important;font-size:clamp(12px,1.2vw,17px)!important;white-space:nowrap!important;background:#160821ee!important;padding:4px 12px!important;border-radius:999px!important;border:1px solid #ffd66b66!important;color:#ffd66b!important}
+.altarSeven + .altarTray{position:absolute!important;left:2%!important;right:2%!important;bottom:0!important;min-height:112px!important;height:18%!important;box-sizing:border-box!important;display:flex!important;align-items:center!important;gap:10px!important;padding:20px 12px 10px!important;overflow-x:auto!important;overflow-y:hidden!important;z-index:30!important}
+.altarTray .trayLabel{top:-25px!important}.altarTray .altarTablePiece{min-width:78px!important;height:62px!important;flex:0 0 auto!important;font-size:16px!important;white-space:nowrap!important}.altarTray .ritual{min-width:70px!important;height:62px!important;flex:0 0 auto!important}
+@media(max-width:800px){.altarSeven{width:92vw!important;height:68%!important}.altarSeven .tierSlot{font-size:15px!important;padding:0 4px!important}.altarSeven .buddhaIcon{font-size:64px!important}.altarSeven .ritualSlot{font-size:13px!important}.altarTray .altarTablePiece{min-width:68px!important;font-size:14px!important}}
+
+
+/* v17 MENU FIX — ป้องกันเลขภารกิจทับชื่อภารกิจ */
+.grid button{position:relative!important;overflow:hidden!important;padding:18px 20px 18px 82px!important;text-align:left!important}
+.grid button .missionBadge{position:absolute!important;left:20px!important;top:20px!important;float:none!important;margin:0!important;width:48px!important;height:48px!important;display:grid!important;place-items:center!important;z-index:5!important}
+.grid button b{display:block!important;margin:3px 0 6px!important;line-height:1.25!important;position:relative!important;z-index:1!important}
+.grid button small{display:block!important;line-height:1.45!important;position:relative!important;z-index:1!important}
+.grid button .missionPts{position:relative!important;z-index:1!important}
+@media(max-width:650px){
+  .grid button{padding:16px 14px 14px 68px!important;min-height:135px!important}
+  .grid button .missionBadge{left:14px!important;top:17px!important;width:42px!important;height:42px!important;font-size:21px!important}
+}
+@media(max-width:520px){
+  .grid button{padding:13px 12px 13px 58px!important}
+  .grid button .missionBadge{left:12px!important;top:15px!important;width:36px!important;height:36px!important;font-size:18px!important}
+}
