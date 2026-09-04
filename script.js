@@ -163,69 +163,33 @@ function gunPose(a){if(!a)return false;const index=a[8],indexPip=a[6],middle=a[1
 function moralGesture(){const h=info(0);if(!h||!gunPose(h.a)){$$("#area .choice").forEach(e=>e.classList.remove("target"));moral.last=null;clearTimeout(moral.timer);return}const c=hit("#area .choice",h.p.x,h.p.y);$("#area .aimGuide")?.classList.toggle("active",!!c);$$("#area .choice").forEach(e=>e.classList.toggle("target",e===c));if(c&&moral.last!==c){moral.last=c;clearTimeout(moral.timer);moral.timer=setTimeout(()=>{if(c.dataset.ok==='1'){add(10);toast("🎯 ยิงถูกต้อง +10");moral.q++;moral.last=null;if(moral.q>=ms.length)finish("ยอดเยี่ยม! คุณคือพุทธศาสนิกชนตัวน้อยที่มีคุณธรรม 🌸");else drawMoral()}else{toast("💡 เป้านี้ยังไม่ใช่ ลองเล็งคำตอบที่ถูกต้อง");moral.last=null}},800)}}
 
 function tree(){
- tree.planted=0;tree.path=[];tree.drawing=false;tree.used=new Set();tree.lastCircleAt=0;
- $("#title").innerHTML="<h2>ต้นไม้แห่งความดี</h2><p>ใช้นิ้วชี้วาดวงกลมล้อมต้นกล้าคุณธรรม ๓ ต้น</p>";
- $("#hint").textContent="☝️ เหยียดนิ้วชี้ • วาดวงกลมให้ล้อมต้นกล้า • ทำให้ครบ ๓ ต้น";
- $("#area").innerHTML='<canvas id="circleCanvas"></canvas><div class="treeStage"><div class="treeBefore">🌳</div><div class="flowerCanopy"></div><div class="fallFlowers"></div></div><div class="treeCounter">เลือกแล้ว <b id="treeCount">0</b> / 3</div><div class="seedTray"></div><div class="drawCircleGuide">⭕ วาดวงกลมรอบต้นกล้า</div>';
- const c=$("#circleCanvas");c.width=innerWidth;c.height=innerHeight;
- const tray=$("#area .seedTray");
+ tree.planted=0;tree.drag=null;tree.used=new Set();tree.lastDropAt=0;
  const seeds=[["ซื่อสัตย์","ความจริง"],["กตัญญู","รู้คุณ"],["มีน้ำใจ","ช่วยเหลือ"],["มีวินัย","ทำตามกติกา"],["เมตตา","ปรารถนาดี"],["รับผิดชอบ","ทำหน้าที่"]];
- seeds.forEach((s,i)=>{const d=document.createElement("div");d.className="seedling";d.dataset.virtue=s[0];d.innerHTML=`<span>🌱</span><small>${s[0]}</small>`;d.style.left=(4+(i%3)*31)+"%";d.style.top=(38+Math.floor(i/3)*28)+"%";tray.appendChild(d)});
- window.addEventListener('resize',resizeCircleCanvas,{once:false});
+ $("#title").innerHTML="<h2>ต้นไม้แห่งความดี</h2><p>ใช้นิ้วชี้จีบต้นกล้า • ลาก • ปล่อยบนต้นไม้ให้ครบ ๓ ต้น</p>";
+ $("#hint").textContent="☝️ นิ้วชี้แตะต้นกล้า → 🤏 จีบเพื่อจับ → ลากไปบนต้นไม้ → ✋ ปล่อย";
+ $("#area").innerHTML='<div class="treeStage"><div class="treeDropTarget"><div class="treeBefore">🌳</div><div class="treeDropText">🌳 วางต้นกล้าที่นี่</div></div><div class="flowerCanopy"></div><div class="fallFlowers"></div></div><div class="treeCounter">ปลูกแล้ว <b id="treeCount">0</b> / 3</div><div class="seedTray"></div>';
+ const tray=$("#area .seedTray");
+ seeds.forEach((s,i)=>{const d=document.createElement("div");d.className="seedling";d.dataset.virtue=s[0];d.innerHTML=`<span>🌱</span><b>${s[0]}</b><small>${s[1]}</small><em>🤏 จีบเพื่อจับ</em>`;d.style.left=(6+(i%3)*31)+"%";d.style.top=(4+Math.floor(i/3)*50)+"%";tray.appendChild(d)});
 }
-function resizeCircleCanvas(){const c=$("#circleCanvas");if(c){c.width=innerWidth;c.height=innerHeight}}
-function indexPose(a){
- if(!a)return false;
- const tip=a[8],pip=a[6];
- const long=[12,16,20].every((tipId,i)=>fingerDistance(a,tipId,0)<fingerDistance(a,[10,14,18][i],0)*1.12);
- return tip.y<pip.y-.025 && long;
-}
-function drawCircleTrail(){
- const c=$("#circleCanvas");if(!c)return;const ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);if(tree.path.length<2)return;
- ctx.beginPath();ctx.lineWidth=7;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='rgba(255,214,107,.95)';
- tree.path.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();
-}
-function clearCircleTrail(){const c=$("#circleCanvas");if(c)c.getContext('2d').clearRect(0,0,c.width,c.height)}
 function treeGesture(){
- const h=info(0);if(!h){clearCircleTrail();return}
- if(!indexPose(h.a)){tree.drawing=false;tree.path=[];clearCircleTrail();return}
- const p=h.p;
- if(!tree.drawing){tree.drawing=true;tree.path=[]}
- tree.path.push({x:p.x,y:p.y});
- if(tree.path.length>120)tree.path.shift();
- drawCircleTrail();
- const pts=tree.path;if(pts.length<28)return;
- const first=pts[0],last=pts[pts.length-1];
- const minX=Math.min(...pts.map(v=>v.x)),maxX=Math.max(...pts.map(v=>v.x)),minY=Math.min(...pts.map(v=>v.y)),maxY=Math.max(...pts.map(v=>v.y));
- const w=maxX-minX,hgt=maxY-minY;
- const close=Math.hypot(last.x-first.x,last.y-first.y);
- if(w<70||hgt<60||w/hgt<.45||w/hgt>2.2||close>Math.max(70,Math.min(w,hgt)*.32))return;
- const cx=(minX+maxX)/2,cy=(minY+maxY)/2;
- const seed=$$("#area .seedling").find(e=>{
-   if(tree.used.has(e.dataset.virtue))return false;
-   const r=e.getBoundingClientRect();const sx=r.left+r.width/2,sy=r.top+r.height/2;
-   const rx=Math.max(r.width*.9,75),ry=Math.max(r.height*.9,65);
-   return Math.abs(cx-sx)<rx && Math.abs(cy-sy)<ry && w>r.width*.65 && hgt>r.height*.55;
- });
- if(seed && performance.now()-tree.lastCircleAt>500){
-   tree.lastCircleAt=performance.now();tree.used.add(seed.dataset.virtue);seed.classList.add("plantedSeed");completeTree(seed);tree.path=[];tree.drawing=false;clearCircleTrail();
+ const h=info(0);if(!h){tree.drag=null;return} const p=h.p;
+ if(tree.drag){
+   if(h.pin){move(tree.drag,p.x,p.y);tree.drag.classList.add("dragging");$("#area .treeDropTarget")?.classList.toggle("target",!!hit("#area .treeDropTarget",p.x,p.y));}
+   else{const e=tree.drag,target=hit("#area .treeDropTarget",p.x,p.y);if(target&&performance.now()-tree.lastDropAt>450){tree.lastDropAt=performance.now();e.remove();tree.used.add(e.dataset.virtue);completeTree(e.dataset.virtue)}else{reset(e);toast("🌱 ลองลากต้นกล้าไปวางบนต้นไม้")}$("#area .treeDropTarget")?.classList.remove("target");tree.drag=null;}
+   pinchStates[0]=h.pin;return;
  }
+ if(h.pin&&!pinchStates[0]){const seed=hit("#area .seedling:not(.plantedSeed)",p.x,p.y);if(seed){tree.drag=seed;seed.classList.add("dragging");move(seed,p.x,p.y);toast("🤏 จับต้นกล้าแล้ว • ลากไปบนต้นไม้")}}
+ pinchStates[0]=h.pin;
 }
-function completeTree(seed){
- if(tree.planted>=3)return;
- tree.planted++;$("#treeCount").textContent=tree.planted;add(15);seed.classList.add("selected");
- const label=document.createElement("div");label.className="plantedLabel";label.textContent="✓ "+seed.dataset.virtue;seed.appendChild(label);
- toast(`เลือกต้นกล้า ${tree.planted}/3 • +15`);
+function completeTree(virtue){
+ if(tree.planted>=3)return;tree.planted++;$("#treeCount").textContent=tree.planted;add(15);toast(`🌱 ปลูก ${virtue} สำเร็จ ${tree.planted}/3 • +15`);
  if(tree.planted>=3){
-   $("#area .treeBefore").classList.add("grown");
-   const canopy=$("#area .flowerCanopy"); 
-   const flowers=["🌸","🌼","🌺","🌷"];
-   for(let i=0;i<55;i++){const f=document.createElement("span");f.className="pinkFlower bloom";f.textContent=flowers[i%flowers.length];f.style.left=(10+Math.random()*80)+"%";f.style.top=(0+Math.random()*70)+"%";f.style.animationDelay=(Math.random()*.8)+"s";canopy.appendChild(f)}
-   for(let i=0;i<45;i++){const f=document.createElement("span");f.className="fallFlower";f.textContent=flowers[i%flowers.length];f.style.left=(2+Math.random()*96)+"%";f.style.animationDelay=(Math.random()*1.2)+"s";f.style.animationDuration=(2+Math.random()*2.4)+"s";$("#area .fallFlowers").appendChild(f)}
-   setTimeout(()=>finish("ภารกิจสำเร็จ! ต้นไม้แห่งความดีผลิบานเต็มต้น 🌸🤍🌺"),3200);
+   const target=$("#area .treeDropTarget");target?.classList.add("grown");const canopy=$("#area .flowerCanopy");const flowers=["🌸","🤍","🌹","🌼"];
+   for(let i=0;i<70;i++){const f=document.createElement("span");f.className="pinkFlower bloom";f.textContent=flowers[i%flowers.length];f.style.left=(7+Math.random()*86)+"%";f.style.top=(2+Math.random()*72)+"%";f.style.animationDelay=(Math.random()*.9)+"s";canopy.appendChild(f)}
+   for(let i=0;i<65;i++){const f=document.createElement("span");f.className="fallFlower";f.textContent=i%2?"🌸":"🤍";f.style.left=(1+Math.random()*98)+"%";f.style.animationDelay=(Math.random()*1.1)+"s";f.style.animationDuration=(2.2+Math.random()*2.5)+"s";$("#area .fallFlowers").appendChild(f)}
+   $("#area .treeDropText").textContent="🌸 ต้นไม้แห่งความดีผลิบาน! 🤍";setTimeout(()=>finish("ภารกิจสำเร็จ! ต้นไม้แห่งความดีออกดอกสีขาวและแดงเต็มต้น 🌸🤍🌹"),3800);
  }
 }
-
 $$('[data-game]').forEach(b=>b.addEventListener('click',()=>setup(b.dataset.game)));
 $("#start").addEventListener('click',startGame);
 $("#cancelStart").addEventListener('click',()=>{$("#permission").classList.add('hidden');$("#menu").classList.remove('hidden')});
