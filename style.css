@@ -154,3 +154,41 @@ body{background:#09030f}
 @keyframes fxBad{0%{opacity:0;transform:translate(-50%,-50%) scale(.8)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}100%{opacity:0;transform:translate(-50%,-55%) scale(1)}}
 .fxShake{animation:fxShake .32s ease-in-out}
 @keyframes fxShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+/* v14 — Mission 1 redesigned for Thai โต๊ะหมู่ 7 */
+.altarSeven{
+  width:min(720px,62vw);
+  height:68%;
+  top:1%;
+  background:linear-gradient(180deg,#2a1020aa,#09050caa),radial-gradient(circle at 50% 28%,#ffd66b18,transparent 38%);
+}
+.altarSeven .tierSlot{
+  width:24% !important;
+  height:14% !important;
+  border:2px dashed #ffd66bcc;
+  background:linear-gradient(180deg,#ffd66b12,#00000012);
+  color:#fff1b3;
+  font-size:clamp(17px,2vw,27px);
+  text-shadow:0 2px 5px #000;
+  box-sizing:border-box;
+  white-space:nowrap;
+}
+.altarSeven .tierSlot[data-slot="1"]{width:20% !important;left:40% !important;top:7% !important}
+.altarSeven .tierSlot[data-slot="2"]{left:16% !important;top:25% !important}
+.altarSeven .tierSlot[data-slot="3"]{left:60% !important;top:25% !important}
+.altarSeven .tierSlot[data-slot="4"]{left:7% !important;top:43% !important}
+.altarSeven .tierSlot[data-slot="5"]{left:38% !important;top:43% !important}
+.altarSeven .tierSlot[data-slot="6"]{left:69% !important;top:43% !important}
+.altarSeven .tierSlot[data-slot="7"]{left:38% !important;top:61% !important}
+.altarSeven .ritualSlot{left:31% !important;top:80% !important;width:38% !important;height:13% !important;font-size:clamp(15px,1.8vw,23px);color:#ffe6a0}
+.buddhaFigure{position:absolute;left:50%;top:-3%;transform:translateX(-50%);z-index:8;text-align:center;color:#ffd66b;text-shadow:0 2px 8px #000;pointer-events:none}
+.buddhaIcon{font-size:clamp(62px,7vw,105px);line-height:.9;filter:drop-shadow(0 8px 10px #0008)}
+.buddhaFigure b{display:block;font-size:clamp(13px,1.3vw,18px);white-space:nowrap;background:#160821cc;padding:4px 10px;border-radius:999px;border:1px solid #ffd66b55}
+.altarSeven + .tray{min-height:105px}
+.altarSeven + .tray .trayLabel{font-size:clamp(13px,1.4vw,18px)}
+@media(max-width:800px){
+  .altarSeven{width:88vw;height:68%;top:1%}
+  .altarSeven .tierSlot{font-size:16px}
+  .altarSeven .ritualSlot{font-size:14px}
+  .buddhaIcon{font-size:62px}
+}

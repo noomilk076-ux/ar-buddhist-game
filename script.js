@@ -70,12 +70,16 @@ function finish(msg){
 function stopCamera(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}cancelAnimationFrame(raf);$("#camera").srcObject=null;hands=[];poseLm=null;faceLm=null}
 
 function altar(){
- $("#title").innerHTML="<h2>จัดโต๊ะหมู่บูชา</h2><p>จัดโต๊ะหมู่ ๙ และเครื่องบูชาที่กระจัดกระจายให้ถูกต้อง</p>";$("#hint").textContent="🤏 ใช้นิ้วมือจับ • ลาก • ปล่อยโต๊ะและเครื่องบูชา";
- $("#area").innerHTML='<div class="altarBoard"></div><div class="tray"><div class="trayLabel">อุปกรณ์โต๊ะหมู่ ๙</div></div>';
+ $("#title").innerHTML="<h2>จัดโต๊ะหมู่บูชา</h2><p>จัดโต๊ะหมู่ ๗ และเครื่องบูชาที่กระจัดกระจายให้ถูกต้อง</p>";$("#hint").textContent="🤏 ใช้นิ้วมือจับ • ลาก • ปล่อยโต๊ะและเครื่องบูชา";
+ $("#area").innerHTML='<div class="altarBoard altarSeven"><div class="buddhaFigure"><div class="buddhaIcon">🧘</div><b>พระพุทธรูป</b></div></div><div class="tray"><div class="trayLabel">อุปกรณ์โต๊ะหมู่ ๗</div></div>';
  const b=$(".altarBoard"),tr=$(".tray");
- for(let n=1;n<=9;n++){const s=document.createElement("div");s.className="tierSlot";s.dataset.slot=n;s.textContent="โต๊ะ "+n;s.style.width=(19+(n%3)*3)+"%";s.style.height="14%";s.style.left=(40-(n%3)*9)+"%";s.style.top=(5+Math.floor((n-1)/3)*19)+"%";b.appendChild(s);const p=document.createElement("div");p.className="piece";p.dataset.drag=1;p.dataset.slot=n;p.textContent="โต๊ะ "+n;tr.appendChild(p)}
- [["🪷","พระพุทธรูป"],["🪔","ธูป"],["🕯️","เทียน"],["🌸","พานพุ่ม ๑"],["🌸","พานพุ่ม ๒"]].forEach(([em,label])=>{const p=document.createElement("div");p.className="ritual";p.dataset.drag=1;p.dataset.ritual=label;p.textContent=em;p.title=label;tr.appendChild(p)});
- const r=document.createElement("div");r.className="tierSlot";r.dataset.slot="ritual";r.textContent="🪷 วางเครื่องบูชา";r.style.width="34%";r.style.height="17%";r.style.left="33%";r.style.top="65%";b.appendChild(r)
+ const positions=[
+   [1,40,7,20,14],[2,16,25,24,14],[3,60,25,24,14],
+   [4,7,43,24,14],[5,38,43,24,14],[6,69,43,24,14],[7,38,61,24,14]
+ ];
+ positions.forEach(([n,left,top,width,height])=>{const s=document.createElement("div");s.className="tierSlot";s.dataset.slot=n;s.textContent="โต๊ะ "+n;s.style.width=width+"%";s.style.height=height+"%";s.style.left=left+"%";s.style.top=top+"%";b.appendChild(s);const p=document.createElement("div");p.className="piece";p.dataset.drag=1;p.dataset.slot=n;p.textContent="โต๊ะ "+n;tr.appendChild(p)});
+ [["🪔","ธูป"],["🕯️","เทียน"],["🌸","พานพุ่ม ๑"],["🌸","พานพุ่ม ๒"]].forEach(([em,label])=>{const p=document.createElement("div");p.className="ritual";p.dataset.drag=1;p.dataset.ritual=label;p.textContent=em;p.title=label;tr.appendChild(p)});
+ const r=document.createElement("div");r.className="tierSlot ritualSlot";r.dataset.slot="ritual";r.textContent="🪷 วางเครื่องบูชา";b.appendChild(r)
 }
 function altarGesture(){const h=info(0);if(!h)return;pointer(h.p.x,h.p.y,h.pin);if(h.pin&&!pinchStates[0]){dragged[0]=hit("#area [data-drag]",h.p.x,h.p.y);dragged[0]?.classList.add("dragging")}if(h.pin&&dragged[0])move(dragged[0],h.p.x,h.p.y);if(!h.pin&&pinchStates[0]&&dragged[0]){const e=dragged[0],slot=hit("#area .tierSlot",h.p.x,h.p.y);if(e.dataset.ritual){if(slot?.dataset.slot==="ritual"){e.remove();slot.textContent="✓ เครื่องบูชา";add(5);toast("วางเครื่องบูชาถูกต้อง +5")}else reset(e)}else if(slot?.dataset.slot===e.dataset.slot){e.remove();slot.textContent="✓ โต๊ะ "+slot.dataset.slot;slot.classList.add("filled");add(5);toast("วางโต๊ะถูกต้อง +5")}else reset(e);dragged[0]=null}pinchStates[0]=h.pin}
 
