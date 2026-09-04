@@ -11,13 +11,39 @@ const rank=n=>n>=600?"🏆 ทูตวิถีพุทธ":n>=400?"🌟 น�
 function ui(){$("#menuScore").textContent=total;$("#menuRank").textContent=rank(total)}
 function add(n){round+=n;total+=n;$("#score").textContent=round;ui()}
 function toast(s){const e=$("#feedback");e.textContent=s;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),1200)}
-async function initModels(){if(hand&&pose&&face)return;const v=await FilesetResolver.forVisionTasks(WASM);[hand,pose,face]=await Promise.all([
- HandLandmarker.createFromOptions(v,{baseOptions:{modelAssetPath:HAND_MODEL,delegate:"GPU"},runningMode:"VIDEO",numHands:2,minHandDetectionConfidence:.55,minHandPresenceConfidence:.55,minTrackingConfidence:.55}),
- PoseLandmarker.createFromOptions(v,{baseOptions:{modelAssetPath:POSE_MODEL,delegate:"GPU"},runningMode:"VIDEO",numPoses:1,minPoseDetectionConfidence:.55,minPosePresenceConfidence:.55,minTrackingConfidence:.55}),
- FaceLandmarker.createFromOptions(v,{baseOptions:{modelAssetPath:FACE_MODEL,delegate:"GPU"},runningMode:"VIDEO",numFaces:1,minFaceDetectionConfidence:.55,minFacePresenceConfidence:.55,minTrackingConfidence:.55})
- ])}
-async function startCamera(){try{if(!navigator.mediaDevices?.getUserMedia)throw Error("camera unavailable");$("#status").textContent="กำลังเตรียมระบบตรวจจับมือ • ศีรษะ • ไหล่ • ลำตัว…";await initModels();stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:{ideal:1280},height:{ideal:720}},audio:false});$("#camera").srcObject=stream;await $("#camera").play();$("#status").textContent="กล้องพร้อมแล้ว ✓";loop()}catch(e){console.warn(e);$("#status").textContent="เปิดกล้องไม่ได้ — แตะ/ลากหน้าจอเพื่อทดสอบเกม";loop()}}
-function loop(){cancelAnimationFrame(raf);const tick=()=>{const v=$("#camera");if(gameKind&&v.readyState>=2&&hand&&pose&&face){const t=performance.now();try{hands=hand.detectForVideo(v,t).landmarks||[];poseLm=pose.detectForVideo(v,t).landmarks?.[0]||null;faceLm=face.detectForVideo(v,t).faceLandmarks?.[0]||null;trackingUI();gestureFrame(t)}catch(e){console.warn(e)}}raf=requestAnimationFrame(tick)};tick()}
+async function initModels(){
+  if(hand&&pose&&face)return;
+  const v=await FilesetResolver.forVisionTasks(WASM);
+  if(!hand){try{hand=await HandLandmarker.createFromOptions(v,{baseOptions:{modelAssetPath:HAND_MODEL,delegate:"GPU"},runningMode:"VIDEO",numHands:2,minHandDetectionConfidence:.55,minHandPresenceConfidence:.55,minTrackingConfidence:.55})}catch(e){console.warn("Hand model failed",e)}}
+  if(!pose){try{pose=await PoseLandmarker.createFromOptions(v,{baseOptions:{modelAssetPath:POSE_MODEL,delegate:"GPU"},runningMode:"VIDEO",numPoses:1,minPoseDetectionConfidence:.55,minPosePresenceConfidence:.55,minTrackingConfidence:.55})}catch(e){console.warn("Pose model failed",e)}}
+  if(!face){try{face=await FaceLandmarker.createFromOptions(v,{baseOptions:{modelAssetPath:FACE_MODEL,delegate:"GPU"},runningMode:"VIDEO",numFaces:1,minFaceDetectionConfidence:.55,minFacePresenceConfidence:.55,minTrackingConfidence:.55})}catch(e){console.warn("Face model failed",e)}}
+  if(!hand&&!pose&&!face)throw Error("No AI model loaded");
+}
+async function startCamera(){
+  try{
+    if(!navigator.mediaDevices?.getUserMedia) throw Error("camera unavailable");
+    const v=$("#camera");
+    $("#status").textContent="กำลังเปิดกล้อง… กรุณาอนุญาตการใช้กล้อง";
+    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"user"},width:{ideal:1280},height:{ideal:720}},audio:false});
+    v.srcObject=stream;
+    await v.play();
+    $("#status").textContent="กล้องพร้อมแล้ว ✓ กำลังเตรียมระบบตรวจจับ";
+    loop();
+    initModels().then(()=>{
+      $("#status").textContent="กล้องพร้อมแล้ว ✓ ตรวจจับมือ • ศีรษะ • ไหล่ • ลำตัว";
+    }).catch(e=>{
+      console.warn("AI model init failed",e);
+      $("#status").textContent="กล้องพร้อม ✓ แต่ระบบตรวจจับ AI ยังไม่พร้อม";
+      $("#trackingStatus").textContent="● กล้องพร้อม • AI กำลังโหลด/ไม่พร้อม";
+      $("#trackingStatus").classList.add("warn");
+    });
+  }catch(e){
+    console.warn(e);
+    $("#status").textContent="เปิดกล้องไม่ได้ • ตรวจสอบการอนุญาตกล้องของ Safari แล้วลองอีกครั้ง";
+    loop();
+  }
+}
+function loop(){cancelAnimationFrame(raf);const tick=()=>{const v=$("#camera");if(gameKind&&v.readyState>=2){const t=performance.now();try{hands=hand?(hand.detectForVideo(v,t).landmarks||[]):[];poseLm=pose?(pose.detectForVideo(v,t).landmarks?.[0]||null):null;faceLm=face?(face.detectForVideo(v,t).faceLandmarks?.[0]||null):null;trackingUI();gestureFrame(t)}catch(e){console.warn(e)}}raf=requestAnimationFrame(tick)};tick()}
 function trackingUI(){const s=$("#trackingStatus"),ok=hands.length||poseLm||faceLm;s.textContent=ok?"● กำลังตรวจจับการเคลื่อนไหว":"● กรุณาอยู่หน้ากล้อง";s.classList.toggle("warn",!ok);if(hands[0]){const p=screenPoint(hands[0][8]);pointer(p.x,p.y,pinchStates[0])}else $("#pointer").style.display="none"}
 function screenPoint(l){return{x:(1-l.x)*innerWidth,y:l.y*innerHeight}}
 function pointer(x,y,down=false){const p=$("#pointer");p.style.display="block";p.style.left=x-19+"px";p.style.top=y-19+"px";p.classList.toggle("pointerDown",down)}
@@ -62,15 +88,15 @@ function quizGesture(){if(!faceLm)return;const le=faceLm[33],re=faceLm[263];if(!
 function quizAnswer(side){const correct=["left","right","left","right","left"][quiz.q];if(side===correct){add(10);toast("ตอบถูกต้อง +10");quiz.q++;quiz.side=null;if(quiz.q>=qs.length)finish("เก่งมาก! ผ่านธรรมะท้าประลองครบ ๕ ข้อ 🎉");else drawQuiz()}else{toast("ยังไม่ใช่ ลองเอียงอีกด้าน 💡");quiz.side=null}}
 
 const fs=[
- ["นักเรียนที่ดีควร ______ ตรงต่อเวลา","มีวินัย","ละเลย","โกหก","ประมาท"],
- ["เมื่อเห็นเพื่อนเดือดร้อน เราควร ______","มีน้ำใจ","เพิกเฉย","ล้อเลียน","เอาเปรียบ"],
- ["การพูดความจริงแสดงถึงคุณธรรมด้าน ______","ซื่อสัตย์","ประมาท","เห็นแก่ตัว","โกหก"],
- ["เมื่อได้รับมอบหมายงาน เราควร ______ ทำให้สำเร็จ","รับผิดชอบ","หนีงาน","ผัดวัน","ละเลย"],
- ["การช่วยเหลือผู้อื่นด้วยความตั้งใจดี แสดงถึง ______","เมตตา","ริษยา","โลภ","โกรธ"]
+ ["ชาวพุทธที่ดีควร ______ ทำความดีและละเว้นความชั่ว",["ตั้งใจ","ละเลย","หลีกหนี"]],
+ ["นักเรียนที่ดีควรมี ______ และทำหน้าที่ของตนให้สำเร็จ",["ความรับผิดชอบ","ความประมาท","ความเห็นแก่ตัว"]],
+ ["เมื่อเพื่อนเดือดร้อน เราควร ______ และช่วยเหลือเพื่อน",["มีน้ำใจ","เพิกเฉย","ล้อเลียน"]],
+ ["การพูดความจริงและไม่โกหกแสดงถึงคุณธรรมด้าน ______",["ความซื่อสัตย์","ความเกียจคร้าน","ความประมาท"]],
+ ["นักเรียนควร ______ กฎระเบียบของโรงเรียนและสังคม",["มีวินัย","ละเมิด","เพิกเฉย"]]
 ];
-function fill(){fill.q=0;fill.hold=null;$("#title").innerHTML="<h2>เติมคำธรรมะ</h2><p>เลือกคำให้ถูกต้อง แล้วขยับตัวให้ตรงช่องค้างไว้ ๓ วินาที</p>";$("#hint").textContent="🧍 ขยับลำตัว/ไหล่ซ้าย–ขวาให้ตรงกับช่องคำตอบ • ค้าง ๓ วินาที";drawFill()}
-function drawFill(){$("#area").innerHTML=`<div class="card"><div class="question">${fs[fill.q][0].replace("______","<span style='color:#ffd66b'>________</span>")}</div><div class="fillGrid">${fs[fill.q].slice(1).map((w,i)=>`<div class="fillCell" data-index="${i}" data-word="${w}">${w}</div>`).join("")}</div><p class="progress">ข้อ ${fill.q+1}/${fs.length}</p></div>`}
-function fillGesture(t){if(!poseLm)return;const ls=poseLm[11],rs=poseLm[12];if(!ls||!rs)return;const x=1-(ls.x+rs.x)/2;const y=(ls.y+rs.y)/2;const col=x<.5?0:1;const row=y<.52?0:1;const idx=row*2+col;const cells=$$("#area .fillCell");cells.forEach((c,i)=>c.classList.toggle("active",i===idx));const cell=cells[idx];if(!cell){fill.hold=null;return}if(!fill.hold||fill.hold.idx!==idx)fill.hold={idx,start:t};const elapsed=t-fill.hold.start;cell.style.setProperty("--hold",Math.min(100,elapsed/30)+"%");if(elapsed>=3000){const correct=cell.dataset.word===fs[fill.q][1];fill.hold=null;if(correct){add(10);toast("เติมคำถูกต้อง +10");fill.q++;if(fill.q>=fs.length)finish("ยอดเยี่ยม! เติมคำธรรมะครบ ๕ ข้อแล้ว 🎉");else drawFill()}else toast("คำนี้ยังไม่ใช่ ลองขยับตัวไปช่องอื่น 💡")}}
+function fill(){fill.q=0;fill.hold=null;$("#title").innerHTML="<h2>เติมคำธรรมะ</h2><p>เลือกคำให้ถูกต้อง แล้วขยับตัวให้ตรงกับช่องนั้น</p>";$("#hint").textContent="🧍 ขยับตัวไปทางซ้าย • กลาง • ขวา ให้ตรงช่องคำตอบ • ค้าง ๓ วินาที";drawFill()}
+function drawFill(){const [q,words]=fs[fill.q];$("#area").innerHTML=`<div class="card fillCard"><div class="question">${q.replace("______","<span class='blank'>________</span>")}</div><div class="fillGrid threeCols">${words.map((w,i)=>`<div class="fillCell" data-index="${i}" data-word="${w}"><span>${w}</span><small>ช่อง ${i+1}</small></div>`).join("")}</div><div class="holdGuide"><span>ขยับตัวให้ตรงกับช่อง</span><b>ค้าง ๓ วินาที</b></div><p class="progress">ข้อ ${fill.q+1}/${fs.length}</p></div>`}
+function fillGesture(t){if(!poseLm)return;const ls=poseLm[11],rs=poseLm[12];if(!ls||!rs)return;const x=1-(ls.x+rs.x)/2;const cells=$("#area").querySelectorAll(".fillCell");const idx=x<.34?0:x>.66?2:1;cells.forEach((c,i)=>c.classList.toggle("active",i===idx));const cell=cells[idx];if(!cell){fill.hold=null;return}if(!fill.hold||fill.hold.idx!==idx){fill.hold={idx,start:t};cells.forEach(c=>c.style.setProperty("--hold","0%"))}const elapsed=t-fill.hold.start;cell.style.setProperty("--hold",Math.min(100,elapsed/30)+"%");if(elapsed>=3000){const correct=cell.dataset.word===fs[fill.q][1][0];fill.hold=null;if(correct){add(10);toast("เติมคำถูกต้อง +10");fill.q++;if(fill.q>=fs.length)finish("ยอดเยี่ยม! ผ่านภารกิจเติมคำธรรมะครบ ๕ ข้อแล้ว 🌸");else drawFill()}else toast("คำนี้ยังไม่ใช่ ลองเลือกช่องอื่น 💡")}}
 
 const ms=[
  ["หลังทำกิจกรรม ห้องเรียนมีขยะเต็มพื้น ควรทำอย่างไร?","ช่วยกันเก็บและทิ้งให้ถูกถัง","เดินผ่านแล้วไม่สนใจ"],
@@ -79,14 +105,14 @@ const ms=[
  ["เพื่อนทำผิดแล้วมาขอโทษ เราควรทำอย่างไร?","ให้อภัยและแนะนำด้วยเมตตา","ล้อเลียนซ้ำ"],
  ["เมื่อเข้าร่วมกิจกรรมทางพระพุทธศาสนา นักเรียนควรปฏิบัติอย่างไร?","สำรวมกาย วาจา และตั้งใจร่วมกิจกรรม","เล่นและรบกวนผู้อื่น"]
 ];
-function moral(){moral.q=0;moral.last=null;$("#title").innerHTML="<h2>พุทธศาสนิกชนตัวน้อย</h2><p>ทำท่าเล็งนิ้วชี้แบบปืนเพื่อยิงเป้าคำตอบ</p>";$("#hint").textContent="☝️ เหยียดนิ้วชี้เล็งไปที่คำตอบ • ค้างเล็งเพื่อยิง";drawMoral()}
-function drawMoral(){$("#area").innerHTML=`<div class="card"><div class="question">${ms[moral.q][0]}</div><div class="choices"><div class="choice" data-ok="1">A · ${ms[moral.q][1]}</div><div class="choice" data-ok="0">B · ${ms[moral.q][2]}</div></div><p class="progress">สถานการณ์ ${moral.q+1}/${ms.length}</p></div>`}
-function indexPointing(a){const w=a[0];return Math.hypot(a[8].x-w.x,a[8].y-w.y)>Math.hypot(a[6].x-w.x,a[6].y-w.y)*1.12&&Math.hypot(a[12].x-w.x,a[12].y-w.y)<Math.hypot(a[10].x-w.x,a[10].y-w.y)*1.2}
-function moralGesture(){const h=info(0);if(!h||!indexPointing(h.a))return;const c=hit("#area .choice",h.p.x,h.p.y);$$('#area .choice').forEach(e=>e.classList.toggle('target',e===c));if(c&&moral.last!==c){moral.last=c;clearTimeout(moral.timer);moral.timer=setTimeout(()=>{if(c.dataset.ok==='1'){add(10);toast("ตอบถูกต้อง +10");moral.q++;moral.last=null;if(moral.q>=ms.length)finish("ยอดเยี่ยม! เป็นพุทธศาสนิกชนตัวน้อยที่น่าชื่นชม 🌸");else drawMoral()}else{toast("ลองเล็งคำตอบที่สะท้อนคุณธรรม 💡");moral.last=null}},650)}}
+function moral(){moral.q=0;moral.last=null;moral.timer=null;$("#title").innerHTML="<h2>พุทธศาสนิกชนตัวน้อย</h2><p>ทำท่าปืนด้วยมือ แล้วเล็งนิ้วชี้ไปที่เป้าคำตอบ</p>";$("#hint").textContent="☝️ ทำท่าปืน: เหยียดนิ้วชี้ + งอนิ้วอื่น • เล็งเป้า • ค้างเพื่อยิง";drawMoral()}
+function drawMoral(){const m=ms[moral.q];$("#area").innerHTML=`<div class="card moralCard"><div class="question">${m[0]}</div><div class="choices gunChoices"><div class="choice targetAnswer" data-ok="1"><span class="targetDot">A</span><b>${m[1]}</b></div><div class="choice targetAnswer" data-ok="0"><span class="targetDot">B</span><b>${m[2]}</b></div></div><div class="aimGuide">🎯 เล็งนิ้วชี้ไปที่เป้าคำตอบ แล้วค้างประมาณ ๐.๘ วินาที</div><p class="progress">สถานการณ์ ${moral.q+1}/${ms.length}</p></div>`}
+function gunPose(a){if(!a)return false;const index=a[8],indexPip=a[6],middle=a[12],middlePip=a[10],ring=a[16],ringPip=a[14],pinky=a[20],pinkyPip=a[18],thumb=a[4],thumbIp=a[3];const indexExtended=index.y<indexPip.y-0.025;const curledMiddle=middle.y>middlePip.y-0.01;const curledRing=ring.y>ringPip.y-0.01;const curledPinky=pinky.y>pinkyPip.y-0.01;const thumbVisible=Math.hypot(thumb.x-thumbIp.x,thumb.y-thumbIp.y)>0.025;return indexExtended&&curledMiddle&&curledRing&&curledPinky&&thumbVisible}
+function moralGesture(){const h=info(0);if(!h||!gunPose(h.a)){$$("#area .choice").forEach(e=>e.classList.remove("target"));moral.last=null;clearTimeout(moral.timer);return}const c=hit("#area .choice",h.p.x,h.p.y);$("#area .aimGuide")?.classList.toggle("active",!!c);$$("#area .choice").forEach(e=>e.classList.toggle("target",e===c));if(c&&moral.last!==c){moral.last=c;clearTimeout(moral.timer);moral.timer=setTimeout(()=>{if(c.dataset.ok==='1'){add(10);toast("🎯 ยิงถูกต้อง +10");moral.q++;moral.last=null;if(moral.q>=ms.length)finish("ยอดเยี่ยม! คุณคือพุทธศาสนิกชนตัวน้อยที่มีคุณธรรม 🌸");else drawMoral()}else{toast("💡 เป้านี้ยังไม่ใช่ ลองเล็งคำตอบที่ถูกต้อง");moral.last=null}},800)}}
 
-function tree(){tree.grab=null;$("#title").innerHTML="<h2>ต้นไม้แห่งความดี</h2><p>เลือกต้นกล้าคุณธรรม ๓ ต้น แล้วใช้ ๒ มือจับพร้อมกันลากไปปลูกในดิน</p>";$("#hint").textContent="👐 จีบมือซ้ายและขวาพร้อมกัน • จับต้นกล้า • ลากไปยังดิน";const seeds=[["🌱","ซื่อสัตย์"],["🌿","กตัญญู"],["🌱","มีน้ำใจ"],["🌿","มีวินัย"],["🌱","เมตตา"],["🌿","รับผิดชอบ"]];$("#area").innerHTML='<div class="tree">🌳</div><div class="leaves"></div><div class="soil"></div><div class="treeCounter">ปลูกแล้ว <b id="treeCount">0</b> / 3</div><div class="seedTray"></div>';const tray=$("#area .seedTray");seeds.forEach((s,i)=>{const d=document.createElement("div");d.className="seedling";d.dataset.virtue=s[1];d.innerHTML=`<span>${s[0]}</span><small>${s[1]}</small>`;d.style.left=(5+(i%3)*31)+"%";d.style.top=(43+Math.floor(i/3)*19)+"%";tray.appendChild(d)})}
-tree.grab=null;
-function treeGesture(){if(hands.length<2){if(tree.grab){reset(tree.grab);tree.grab=null}return}const a=info(0),b=info(1);if(!a?.pin||!b?.pin){if(tree.grab){reset(tree.grab);tree.grab=null}return}const cx=(a.p.x+b.p.x)/2,cy=(a.p.y+b.p.y)/2;pointer(cx,cy,true);if(!tree.grab){tree.grab=hit("#area .seedling",cx,cy);tree.grab?.classList.add("dragging")}if(tree.grab){move(tree.grab,cx,cy);const soil=hit("#area .soil",cx,cy);if(soil&&Math.hypot(a.p.x-b.p.x,a.p.y-b.p.y)<innerWidth*.4){const seed=tree.grab;seed.remove();const planted=3-$$('#area .seedling').length;$('#treeCount').textContent=planted;const leaf=document.createElement('div');leaf.className='leaf';leaf.textContent='🍃 '+seed.dataset.virtue;leaf.style.left=(25+Math.random()*50)+'%';leaf.style.top=(14+Math.random()*55)+'%';$('#area .leaves').appendChild(leaf);add(15);toast('ปลูก '+seed.dataset.virtue+' +15');tree.grab=null;if(planted>=3)finish('ต้นไม้แห่งความดีเติบโตงดงามแล้ว 🌳✨')}}}
+function tree(){tree.grab=null;tree.planted=0;$("#title").innerHTML="<h2>ต้นไม้แห่งความดี</h2><p>เลือกต้นกล้าคุณธรรม ๓ ต้น ใช้ ๒ มือจับพร้อมกันแล้วลากไปปลูก</p>";$("#hint").textContent="👐 จีบมือซ้าย + ขวาพร้อมกัน • จับต้นกล้าต้นเดียวกัน • ลากลงดิน";const seeds=[["🌱","ซื่อสัตย์"],["🌱","กตัญญู"],["🌱","มีน้ำใจ"],["🌱","มีวินัย"],["🌱","เมตตา"],["🌱","รับผิดชอบ"]];$("#area").innerHTML='<div class="treeStage"><div class="treeBefore">🌳</div><div class="flowerCanopy"></div><div class="fallFlowers"></div></div><div class="soil"></div><div class="treeCounter">ปลูกแล้ว <b id="treeCount">0</b> / 3</div><div class="seedTray"></div>';const tray=$("#area .seedTray");seeds.forEach((s,i)=>{const d=document.createElement("div");d.className="seedling";d.dataset.virtue=s[1];d.innerHTML=`<span>${s[0]}</span><small>${s[1]}</small>`;d.style.left=(4+(i%3)*31)+"%";d.style.top=(42+Math.floor(i/3)*25)+"%";tray.appendChild(d)})}
+function completeTree(){if(tree.planted>=3)return;tree.planted++;$("#treeCount").textContent=tree.planted;add(15);const f=document.createElement('span');f.className='pinkFlower';f.textContent='🌸';f.style.left=(22+Math.random()*56)+'%';f.style.top=(8+Math.random()*55)+'%';$("#area .flowerCanopy").appendChild(f);toast(`ปลูกต้นกล้าแล้ว +15 • ${tree.planted}/3`);if(tree.planted>=3){$("#area .treeBefore").classList.add('grown');const canopy=$("#area .flowerCanopy");for(let i=0;i<28;i++){const f=document.createElement('span');f.className='pinkFlower bloom';f.textContent='🌸';f.style.left=(18+Math.random()*64)+'%';f.style.top=(4+Math.random()*62)+'%';f.style.animationDelay=(Math.random()*.6)+'s';canopy.appendChild(f)}for(let i=0;i<22;i++){const f=document.createElement('span');f.className='fallFlower';f.textContent='🌸';f.style.left=(5+Math.random()*90)+'%';f.style.animationDelay=(Math.random()*1.8)+'s';f.style.animationDuration=(2.2+Math.random()*1.6)+'s';$("#area .fallFlowers").appendChild(f)}setTimeout(()=>finish("ภารกิจสำเร็จ! ต้นไม้แห่งความดีผลิบานเต็มต้น 🌸🌸🌸"),2200)}}
+function treeGesture(){if(hands.length<2){if(tree.grab){reset(tree.grab);tree.grab=null}return}const a=info(0),b=info(1);if(!a?.pin||!b?.pin){if(tree.grab){reset(tree.grab);tree.grab=null}return}const cx=(a.p.x+b.p.x)/2,cy=(a.p.y+b.p.y)/2;pointer(cx,cy,true);if(!tree.grab){tree.grab=hit("#area .seedling",cx,cy);tree.grab?.classList.add("dragging")}if(tree.grab){move(tree.grab,cx,cy);const soil=hit("#area .soil",cx,cy);if(soil){tree.grab.remove();completeTree();tree.grab=null}}}
 
 $$('[data-game]').forEach(b=>b.addEventListener('click',()=>setup(b.dataset.game)));
 $("#start").addEventListener('click',startGame);
@@ -95,7 +121,7 @@ $("#home").addEventListener('click',()=>{stopCamera();gameKind=null;$("#game").c
 $("#resultHome").addEventListener('click',()=>{$("#result").classList.add('hidden');gameKind=null;$("#menu").classList.remove('hidden');ui()});
 $("#again").addEventListener('click',()=>{stopCamera();$("#result").classList.add('hidden');$("#permission").classList.remove('hidden')});
 // Mouse/touch fallback for desktop testing when camera is unavailable.
-let fallbackEl=null;document.addEventListener('pointerdown',e=>{if(!gameKind)return;const x=e.clientX,y=e.clientY;fallbackEl=hit("#area [data-drag],#area .seedling",x,y);if(fallbackEl)move(fallbackEl,x,y)});document.addEventListener('pointermove',e=>{if(fallbackEl)move(fallbackEl,e.clientX,e.clientY)});document.addEventListener('pointerup',e=>{if(!fallbackEl)return;const x=e.clientX,y=e.clientY;if(gameKind==='altar')altarGestureFallback(fallbackEl,x,y);else if(gameKind==='sort')sortFallback(fallbackEl,x,y);else if(gameKind==='tree'){const soil=hit('#area .soil',x,y);if(soil){fallbackEl.remove();const planted=3-$$('#area .seedling').length;$('#treeCount').textContent=planted;add(15);toast('ปลูกต้นกล้า +15');if(planted>=3)finish('ต้นไม้แห่งความดีเติบโตงดงามแล้ว 🌳✨')}}reset(fallbackEl);fallbackEl=null});
+let fallbackEl=null;document.addEventListener('pointerdown',e=>{if(!gameKind)return;const x=e.clientX,y=e.clientY;fallbackEl=hit("#area [data-drag],#area .seedling",x,y);if(fallbackEl)move(fallbackEl,x,y)});document.addEventListener('pointermove',e=>{if(fallbackEl)move(fallbackEl,e.clientX,e.clientY)});document.addEventListener('pointerup',e=>{if(!fallbackEl)return;const x=e.clientX,y=e.clientY;if(gameKind==='altar')altarGestureFallback(fallbackEl,x,y);else if(gameKind==='sort')sortFallback(fallbackEl,x,y);else if(gameKind==='tree'){const soil=hit('#area .soil',x,y);if(soil){fallbackEl.remove();completeTree()}}reset(fallbackEl);fallbackEl=null});
 function altarGestureFallback(e,x,y){const slot=hit('#area .tierSlot',x,y);if(e.dataset.ritual&&slot?.dataset.slot==='ritual'){e.remove();add(5);toast('วางเครื่องบูชาถูกต้อง +5')}else if(slot?.dataset.slot===e.dataset.slot){e.remove();add(5);toast('วางโต๊ะถูกต้อง +5')}checkFallbackComplete()}
 function sortFallback(e,x,y){const bin=hit('#area .swipeBin',x,y);const type=bin&&['green','blue','yellow','red'].find(c=>bin.classList.contains('bin-'+c));if(type===e.dataset.type){e.remove();add(10);toast('แยกถูกต้อง +10');if(!$('#area .waste'))finish('แยกขยะครบทุกประเภทแล้ว 🎉')}}
 function checkFallbackComplete(){if(!$('#area [data-drag]'))finish('จัดโต๊ะหมู่บูชาครบถ้วนแล้ว 🪷')}
