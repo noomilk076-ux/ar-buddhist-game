@@ -86,3 +86,58 @@
 .resultCard{position:relative;overflow:hidden}
 .resultCard:after{content:"";position:absolute;inset:auto -20% -55%;height:180px;background:radial-gradient(ellipse,#ffd66b20,transparent 65%);pointer-events:none}
 @media(max-width:650px){.grid button{padding:20px 14px 14px 68px;min-height:135px}.grid button .missionBadge{left:14px;top:17px;width:42px;height:42px;font-size:21px}.grid button .missionPts{font-size:10px}.menuProgress{flex-direction:column;align-items:stretch;gap:8px;font-size:12px}.progressBar{min-width:0}}
+
+/* v12 — TV / exhibition booth polish */
+:root{--gold:#ffd66b;--pink:#ff9ac8;--glass:#160922cc}
+body{background:#09030f}
+.screen{padding:clamp(14px,2.2vw,34px)}
+.menuCard{width:min(1280px,96vw);padding:clamp(24px,3vw,42px);border-radius:34px}
+.menuCard h1{font-size:clamp(38px,5.1vw,72px)}
+.menuHint{font-size:clamp(14px,1.25vw,18px);padding:12px 18px}
+.grid{gap:16px}
+.grid button{min-height:clamp(130px,13vh,165px);padding:18px 20px;border-radius:23px;position:relative;overflow:hidden}
+.grid button b{font-size:clamp(19px,1.55vw,25px)}
+.grid button small{font-size:clamp(13px,1.05vw,16px)}
+.grid button .missionPts{font-style:normal;display:inline-block;margin-top:10px;padding:5px 10px;border-radius:999px;background:#09030f88;color:#ffd6ef;font-size:12px;font-weight:900}
+.grid button.done{border-color:#ffd66baa;background:linear-gradient(145deg,#4b275cdd,#21102fe8);box-shadow:0 0 28px #ffd66b18,inset 0 1px #fff2}
+.missionBadge{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#ffd66b;color:#24102e;font-weight:1000;font-size:17px;float:left;margin:0 10px 4px 0}
+.missionDone{position:absolute;right:14px;top:12px;display:none;width:30px;height:30px;border-radius:50%;place-items:center;background:#9fffc0;color:#08200f;font-weight:1000;box-shadow:0 0 18px #9fffc077}
+.grid button.done .missionDone{display:grid}
+.menuProgress{margin-top:20px;padding:13px 16px;border:1px solid #ffd66b44;border-radius:18px;background:#09030f77;font-weight:900;color:#f5dffb}
+.progressBar{height:10px;margin-top:9px;border-radius:999px;background:#ffffff12;overflow:hidden;border:1px solid #ffffff14}
+.progressBar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffd66b,#ff9ac8);border-radius:999px;box-shadow:0 0 16px #ffb8df88;transition:width .45s ease}
+.menuFooter{font-size:clamp(13px,1.05vw,16px)}
+
+/* Camera game: keep the middle open for the player's body and gestures */
+#camera{filter:saturate(1.16) contrast(1.06) brightness(.68)}
+.hud{top:clamp(12px,2vw,26px);left:clamp(12px,2vw,26px);right:clamp(12px,2vw,26px);font-size:clamp(17px,1.7vw,25px)}
+.hud span{padding:11px 18px;background:#13061fcf;border-color:#ffd66b66;box-shadow:0 8px 25px #0005}
+.title{top:clamp(70px,9vh,105px);width:min(1100px,92vw)}
+.title h2{font-size:clamp(30px,3.6vw,54px)}
+.title p{font-size:clamp(15px,1.55vw,21px)}
+#hint{bottom:clamp(18px,3vh,34px);width:min(1120px,82vw);font-size:clamp(14px,1.35vw,20px);padding:13px 20px;background:#10051ddd;border-color:#ffd66b66}
+#trackingStatus{right:clamp(12px,2vw,26px);bottom:clamp(18px,3vh,34px);font-size:clamp(11px,1vw,14px);padding:10px 14px}
+#pointer{width:44px;height:44px}
+#pointer span{width:11px;height:11px}
+#feedback{font-size:clamp(20px,2.2vw,32px)}
+#home{font-size:clamp(13px,1.15vw,17px);padding:10px 16px;border-radius:999px;box-shadow:0 8px 24px #0006}
+
+/* Make game cards readable from several metres away */
+.card{max-width:min(1050px,88vw)!important}
+.card .question{font-size:clamp(24px,2.5vw,38px)!important}
+.choice{font-size:clamp(20px,2vw,30px)!important}
+.progress{font-size:clamp(14px,1.2vw,18px)!important}
+
+/* Results screen for the exhibition display */
+.resultCard{width:min(760px,92vw);padding:clamp(28px,4vw,46px);border-radius:34px}
+.resultCard h2{font-size:clamp(32px,4vw,52px)}
+.resultScore b{font-size:clamp(64px,7vw,92px);text-shadow:0 0 25px #ffd66b44}
+.resultTotal{font-size:clamp(20px,2vw,28px)}
+.resultProgress{font-size:clamp(16px,1.5vw,21px);margin-top:10px;color:#f7dfff}
+.resultRank{font-size:clamp(15px,1.35vw,20px)}
+.resultActions button{font-size:clamp(14px,1.25vw,18px);padding:15px 24px}
+
+/* Avoid accidental horizontal overflow on unusual TV aspect ratios */
+#area{max-width:100vw;max-height:100vh}
+@media (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.menuCard{padding:22px}.grid button{min-height:122px}.title{top:68px}}
+@media (max-width:620px){.screen{padding:10px}.menuCard{padding:18px 14px;border-radius:24px}.grid{gap:9px}.grid button{min-height:112px;padding:13px}.grid button b{font-size:17px}.grid button small{font-size:12px}.missionBadge{width:29px;height:29px;font-size:14px}.stationStats span{font-size:12px;padding:7px 11px}.menuHint{font-size:12px}.menuFooter{font-size:12px}.hud{font-size:14px}.hud span{padding:8px 11px}.title h2{font-size:27px}.title p{font-size:13px}#hint{width:94vw;font-size:12px;padding:9px 11px}#trackingStatus{bottom:70px;right:10px}}
