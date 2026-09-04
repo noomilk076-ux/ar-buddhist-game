@@ -237,3 +237,25 @@ function altarGestureFallback(e,x,y){const slot=hit('#area .tierSlot',x,y);if(e.
 function sortFallback(e,x,y){const bin=hit('#area .swipeBin',x,y);const type=bin&&['green','blue','yellow','red'].find(c=>bin.classList.contains('bin-'+c));if(type===e.dataset.type){e.remove();add(10);toast('แยกถูกต้อง +10');if(!$('#area .waste'))finish('แยกขยะครบทุกประเภทแล้ว 🎉')}}
 function checkFallbackComplete(){if(!$('#area [data-drag]'))finish('จัดโต๊ะหมู่บูชาครบถ้วนแล้ว 🪷')}
 ui();
+
+
+// v13 visual feedback layer: observes score/progress changes without changing gameplay logic.
+(function(){
+ const layer=document.getElementById('fxLayer'); if(!layer) return;
+ let lastScoreText='';
+ function burst(text, good=true){
+   layer.innerHTML='';
+   const m=document.createElement('div'); m.className=good?'fxMsg':'fxBad'; m.textContent=text; layer.appendChild(m);
+   if(good){ for(let i=0;i<14;i++){ const s=document.createElement('div'); s.className='fxStar'; s.textContent=['✦','⭐','✧','✨'][i%4]; s.style.left=(50+(Math.random()*24-12))+'%'; s.style.top=(42+(Math.random()*16-8))+'%'; s.style.setProperty('--dx',(Math.random()*260-130)+'px'); s.style.setProperty('--dy',(Math.random()*220-140)+'px'); layer.appendChild(s); } }
+   setTimeout(()=>{ if(layer) layer.innerHTML=''; },1100);
+ }
+ window.v13Good=function(points){ burst('เก่งมาก! 🌟',true); const s=document.createElement('div'); s.className='fxScore'; s.textContent='+'+points; s.style.left='50%'; s.style.top='52%'; layer.appendChild(s); setTimeout(()=>s.remove(),1000); };
+ window.v13Bad=function(){ burst('ลองใหม่อีกครั้งนะ ✨',false); };
+ // Keep effects passive: watch for common result/progress updates.
+ const obs=new MutationObserver(()=>{
+   const txt=document.body.innerText||'';
+   const m=txt.match(/คะแนนรวม[^\d]*(\d+)/);
+   if(m && m[1]!==lastScoreText){ lastScoreText=m[1]; }
+ });
+ obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+})();
