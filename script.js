@@ -71,7 +71,7 @@ function stopCamera(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=
 
 function altar(){
  $("#title").innerHTML="<h2>จัดโต๊ะหมู่บูชา</h2><p>จัดโต๊ะหมู่ ๗ และเครื่องบูชาที่กระจัดกระจายให้ถูกต้อง</p>";$("#hint").textContent="🤏 ใช้นิ้วมือจับ • ลาก • ปล่อยโต๊ะและเครื่องบูชา";
- $("#area").innerHTML='<div class="altarBoard altarSeven"><div class="buddhaFigure"><div class="buddhaIcon">🧘</div><b>พระพุทธรูป</b></div></div><div class="tray"><div class="trayLabel">อุปกรณ์โต๊ะหมู่ ๗</div></div>';
+ $("#area").innerHTML='<div class="altarBoard altarSeven"><div class="buddhaFigure"><div class="buddhaIcon">🪷</div><b>พระพุทธรูป</b></div></div><div class="tray"><div class="trayLabel">เครื่องสำหรับจัดโต๊ะหมู่ ๗</div></div>';
  const b=$(".altarBoard"),tr=$(".tray");
  const positions=[
    [1,40,7,20,14],[2,16,25,24,14],[3,60,25,24,14],
