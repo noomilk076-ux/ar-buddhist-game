@@ -94,9 +94,39 @@ const fs=[
  ["การพูดความจริงและไม่โกหกแสดงถึงคุณธรรมด้าน ______",["ความซื่อสัตย์","ความเกียจคร้าน","ความประมาท"]],
  ["นักเรียนควร ______ กฎระเบียบของโรงเรียนและสังคม",["มีวินัย","ละเมิด","เพิกเฉย"]]
 ];
-function fill(){fill.q=0;fill.hold=null;$("#title").innerHTML="<h2>เติมคำธรรมะ</h2><p>เลือกคำให้ถูกต้อง แล้วขยับตัวให้ตรงกับช่องนั้น</p>";$("#hint").textContent="🧍 ขยับตัวไปทางซ้าย • กลาง • ขวา ให้ตรงช่องคำตอบ • ค้าง ๓ วินาที";drawFill()}
-function drawFill(){const [q,words]=fs[fill.q];$("#area").innerHTML=`<div class="card fillCard"><div class="question">${q.replace("______","<span class='blank'>________</span>")}</div><div class="fillGrid threeCols">${words.map((w,i)=>`<div class="fillCell" data-index="${i}" data-word="${w}"><span>${w}</span><small>ช่อง ${i+1}</small></div>`).join("")}</div><div class="holdGuide"><span>ขยับตัวให้ตรงกับช่อง</span><b>ค้าง ๓ วินาที</b></div><p class="progress">ข้อ ${fill.q+1}/${fs.length}</p></div>`}
-function fillGesture(t){if(!poseLm)return;const ls=poseLm[11],rs=poseLm[12];if(!ls||!rs)return;const x=1-(ls.x+rs.x)/2;const cells=$("#area").querySelectorAll(".fillCell");const idx=x<.34?0:x>.66?2:1;cells.forEach((c,i)=>c.classList.toggle("active",i===idx));const cell=cells[idx];if(!cell){fill.hold=null;return}if(!fill.hold||fill.hold.idx!==idx){fill.hold={idx,start:t};cells.forEach(c=>c.style.setProperty("--hold","0%"))}const elapsed=t-fill.hold.start;cell.style.setProperty("--hold",Math.min(100,elapsed/30)+"%");if(elapsed>=3000){const correct=cell.dataset.word===fs[fill.q][1][0];fill.hold=null;if(correct){add(10);toast("เติมคำถูกต้อง +10");fill.q++;if(fill.q>=fs.length)finish("ยอดเยี่ยม! ผ่านภารกิจเติมคำธรรมะครบ ๕ ข้อแล้ว 🌸");else drawFill()}else toast("คำนี้ยังไม่ใช่ ลองเลือกช่องอื่น 💡")}}
+function fill(){fill.q=0;fill.drag=null;$("#title").innerHTML="<h2>เติมคำธรรมะ</h2><p>ใช้ ๕ นิ้วจับคำ • ลาก • ปล่อยลงช่องเติมคำ</p>";$("#hint").textContent="🖐️ กำมือเพื่อจับคำตอบ • ลากไปที่ช่องเติมคำ • คลายมือเพื่อวาง";drawFill()}
+function drawFill(){
+ const [q,words]=fs[fill.q];
+ $("#area").innerHTML=`<div class="card fillCard"><div class="question">${q.replace("______","<span class='blank'>________</span>")}</div>
+ <div class="dropBlank" data-drop="blank">ลากคำที่ถูกต้องมาวางที่นี่</div>
+ <div class="fillGrid threeCols">${words.map((w,i)=>`<div class="fillCell wordDrag" data-drag="1" data-word="${w}" data-index="${i}"><span>${w}</span></div>`).join("")}</div>
+ <div class="holdGuide"><span>🖐️ ใช้ ๕ นิ้วจับ</span><b>จับ • ลาก • ปล่อย</b></div><p class="progress">ข้อ ${fill.q+1}/${fs.length}</p></div>`;
+}
+function grabPose(a){
+ if(!a)return false;
+ const wrist=a[0],tips=[a[4],a[8],a[12],a[16],a[20]],pips=[a[3],a[6],a[10],a[14],a[18]];
+ const curled=[0,1,2,3,4].filter((_,i)=>Math.hypot(tips[i].x-wrist.x,tips[i].y-wrist.y)<.34).length;
+ const fingersCurled=[0,1,2,3].filter(i=>Math.hypot(tips[i+1].x-pips[i+1].x,tips[i+1].y-pips[i+1].y)>.035).length;
+ return curled>=4 && fingersCurled>=3;
+}
+function fillGesture(){
+ const h=info(0); if(!h)return;
+ const grabbing=grabPose(h.a), p=h.p;
+ if(grabbing && !fill.drag){
+   fill.drag=hit("#area .wordDrag",p.x,p.y);
+   if(fill.drag){fill.drag.classList.add("dragging");move(fill.drag,p.x,p.y);toast("จับคำแล้ว 🖐️")}
+ }
+ if(grabbing && fill.drag) move(fill.drag,p.x,p.y);
+ if(!grabbing && fill.drag){
+   const e=fill.drag,drop=hit("#area .dropBlank",p.x,p.y);
+   if(drop){
+     const correct=e.dataset.word===fs[fill.q][1][0];
+     if(correct){e.remove();add(10);drop.innerHTML=`<b>✓ ${e.dataset.word}</b>`;drop.classList.add("correct");toast("เติมคำถูกต้อง +10");fill.q++;fill.drag=null;
+       if(fill.q>=fs.length)setTimeout(()=>finish("ยอดเยี่ยม! เติมคำธรรมะครบ ๕ ข้อแล้ว 🌸"),500);else setTimeout(drawFill,650);
+     }else{reset(e);fill.drag=null;toast("คำนี้ยังไม่ใช่ ลองใหม่ 💡")}
+   }else{reset(e);fill.drag=null}
+ }
+}
 
 const ms=[
  ["หลังทำกิจกรรม ห้องเรียนมีขยะเต็มพื้น ควรทำอย่างไร?","ช่วยกันเก็บและทิ้งให้ถูกถัง","เดินผ่านแล้วไม่สนใจ"],
@@ -110,9 +140,48 @@ function drawMoral(){const m=ms[moral.q];$("#area").innerHTML=`<div class="card 
 function gunPose(a){if(!a)return false;const index=a[8],indexPip=a[6],middle=a[12],middlePip=a[10],ring=a[16],ringPip=a[14],pinky=a[20],pinkyPip=a[18],thumb=a[4],thumbIp=a[3];const indexExtended=index.y<indexPip.y-0.025;const curledMiddle=middle.y>middlePip.y-0.01;const curledRing=ring.y>ringPip.y-0.01;const curledPinky=pinky.y>pinkyPip.y-0.01;const thumbVisible=Math.hypot(thumb.x-thumbIp.x,thumb.y-thumbIp.y)>0.025;return indexExtended&&curledMiddle&&curledRing&&curledPinky&&thumbVisible}
 function moralGesture(){const h=info(0);if(!h||!gunPose(h.a)){$$("#area .choice").forEach(e=>e.classList.remove("target"));moral.last=null;clearTimeout(moral.timer);return}const c=hit("#area .choice",h.p.x,h.p.y);$("#area .aimGuide")?.classList.toggle("active",!!c);$$("#area .choice").forEach(e=>e.classList.toggle("target",e===c));if(c&&moral.last!==c){moral.last=c;clearTimeout(moral.timer);moral.timer=setTimeout(()=>{if(c.dataset.ok==='1'){add(10);toast("🎯 ยิงถูกต้อง +10");moral.q++;moral.last=null;if(moral.q>=ms.length)finish("ยอดเยี่ยม! คุณคือพุทธศาสนิกชนตัวน้อยที่มีคุณธรรม 🌸");else drawMoral()}else{toast("💡 เป้านี้ยังไม่ใช่ ลองเล็งคำตอบที่ถูกต้อง");moral.last=null}},800)}}
 
-function tree(){tree.grab=null;tree.planted=0;$("#title").innerHTML="<h2>ต้นไม้แห่งความดี</h2><p>เลือกต้นกล้าคุณธรรม ๓ ต้น ใช้ ๒ มือจับพร้อมกันแล้วลากไปปลูก</p>";$("#hint").textContent="👐 จีบมือซ้าย + ขวาพร้อมกัน • จับต้นกล้าต้นเดียวกัน • ลากลงดิน";const seeds=[["🌱","ซื่อสัตย์"],["🌱","กตัญญู"],["🌱","มีน้ำใจ"],["🌱","มีวินัย"],["🌱","เมตตา"],["🌱","รับผิดชอบ"]];$("#area").innerHTML='<div class="treeStage"><div class="treeBefore">🌳</div><div class="flowerCanopy"></div><div class="fallFlowers"></div></div><div class="soil"></div><div class="treeCounter">ปลูกแล้ว <b id="treeCount">0</b> / 3</div><div class="seedTray"></div>';const tray=$("#area .seedTray");seeds.forEach((s,i)=>{const d=document.createElement("div");d.className="seedling";d.dataset.virtue=s[1];d.innerHTML=`<span>${s[0]}</span><small>${s[1]}</small>`;d.style.left=(4+(i%3)*31)+"%";d.style.top=(42+Math.floor(i/3)*25)+"%";tray.appendChild(d)})}
-function completeTree(){if(tree.planted>=3)return;tree.planted++;$("#treeCount").textContent=tree.planted;add(15);const f=document.createElement('span');f.className='pinkFlower';f.textContent='🌸';f.style.left=(22+Math.random()*56)+'%';f.style.top=(8+Math.random()*55)+'%';$("#area .flowerCanopy").appendChild(f);toast(`ปลูกต้นกล้าแล้ว +15 • ${tree.planted}/3`);if(tree.planted>=3){$("#area .treeBefore").classList.add('grown');const canopy=$("#area .flowerCanopy");for(let i=0;i<28;i++){const f=document.createElement('span');f.className='pinkFlower bloom';f.textContent='🌸';f.style.left=(18+Math.random()*64)+'%';f.style.top=(4+Math.random()*62)+'%';f.style.animationDelay=(Math.random()*.6)+'s';canopy.appendChild(f)}for(let i=0;i<22;i++){const f=document.createElement('span');f.className='fallFlower';f.textContent='🌸';f.style.left=(5+Math.random()*90)+'%';f.style.animationDelay=(Math.random()*1.8)+'s';f.style.animationDuration=(2.2+Math.random()*1.6)+'s';$("#area .fallFlowers").appendChild(f)}setTimeout(()=>finish("ภารกิจสำเร็จ! ต้นไม้แห่งความดีผลิบานเต็มต้น 🌸🌸🌸"),2200)}}
-function treeGesture(){if(hands.length<2){if(tree.grab){reset(tree.grab);tree.grab=null}return}const a=info(0),b=info(1);if(!a?.pin||!b?.pin){if(tree.grab){reset(tree.grab);tree.grab=null}return}const cx=(a.p.x+b.p.x)/2,cy=(a.p.y+b.p.y)/2;pointer(cx,cy,true);if(!tree.grab){tree.grab=hit("#area .seedling",cx,cy);tree.grab?.classList.add("dragging")}if(tree.grab){move(tree.grab,cx,cy);const soil=hit("#area .soil",cx,cy);if(soil){tree.grab.remove();completeTree();tree.grab=null}}}
+function tree(){
+ tree.planted=0;tree.path=[];tree.drawing=false;tree.used=new Set();
+ $("#title").innerHTML="<h2>ต้นไม้แห่งความดี</h2><p>ใช้นิ้วชี้วาดวงกลมล้อมต้นกล้าคุณธรรม ๓ ต้น</p>";
+ $("#hint").textContent="☝️ เหยียดนิ้วชี้ • วาดวงกลมรอบต้นกล้าที่เลือก • เลือกให้ครบ ๓ ต้น";
+ const seeds=[["ซื่อสัตย์","ความจริง"],["กตัญญู","รู้คุณ"],["มีน้ำใจ","ช่วยเหลือ"],["มีวินัย","ทำตามกติกา"],["เมตตา","ปรารถนาดี"],["รับผิดชอบ","ทำหน้าที่"]];
+ $("#area").innerHTML='<div class="treeStage"><div class="treeBefore">🌳</div><div class="flowerCanopy"></div><div class="fallFlowers"></div></div><div class="soil"></div><div class="treeCounter">เลือกแล้ว <b id="treeCount">0</b> / 3</div><div class="seedTray"></div><div class="drawCircleGuide">วาดวงกลมรอบต้นกล้า</div>';
+ const tray=$("#area .seedTray");
+ seeds.forEach((s,i)=>{const d=document.createElement("div");d.className="seedling";d.dataset.virtue=s[0];d.innerHTML=`<span>🌱</span><small>${s[0]}</small>`;d.style.left=(4+(i%3)*31)+"%";d.style.top=(38+Math.floor(i/3)*28)+"%";tray.appendChild(d)});
+}
+function indexPose(a){if(!a)return false;const tips=a[8],pip=a[6],m=a[12],r=a[16],p=a[20];return tips.y<pip.y-.035 && m.y> a[10].y-.005 && r.y>a[14].y-.005 && p.y>a[18].y-.005}
+function treeGesture(){
+ const h=info(0); if(!h)return;
+ if(!indexPose(h.a)){tree.drawing=false;tree.path=[];return}
+ const p=h.p;
+ if(!tree.drawing){tree.drawing=true;tree.path=[]}
+ tree.path.push({x:p.x,y:p.y,t:performance.now()});
+ if(tree.path.length>90)tree.path.shift();
+ const pts=tree.path;if(pts.length<22)return;
+ const first=pts[0],last=pts[pts.length-1];
+ const minX=Math.min(...pts.map(v=>v.x)),maxX=Math.max(...pts.map(v=>v.x)),minY=Math.min(...pts.map(v=>v.y)),maxY=Math.max(...pts.map(v=>v.y));
+ const w=maxX-minX,hgt=maxY-minY,close=Math.hypot(last.x-first.x,last.y-first.y);
+ if(w<80||hgt<60||close>Math.max(65,Math.min(w,hgt)*.42))return;
+ const cx=(minX+maxX)/2,cy=(minY+maxY)/2;
+ const seed=$$("#area .seedling").find(e=>{if(tree.used.has(e.dataset.virtue))return false;const r=e.getBoundingClientRect();return cx>r.left-r.width*.45&&cx<r.right+r.width*.45&&cy>r.top-r.height*.45&&cy<r.bottom+r.height*.45});
+ if(seed){
+   tree.used.add(seed.dataset.virtue);seed.classList.add("plantedSeed");completeTree(seed);tree.path=[];tree.drawing=false;
+ }
+}
+function completeTree(seed){
+ if(tree.planted>=3)return;
+ tree.planted++;$("#treeCount").textContent=tree.planted;add(15);seed.classList.add("selected");
+ const label=document.createElement("div");label.className="plantedLabel";label.textContent="✓ "+seed.dataset.virtue;seed.appendChild(label);
+ toast(`เลือกต้นกล้า ${tree.planted}/3 • +15`);
+ if(tree.planted>=3){
+   $("#area .treeBefore").classList.add("grown");
+   const canopy=$("#area .flowerCanopy"); 
+   const flowers=["🌸","🌼","🌺","🌷"];
+   for(let i=0;i<55;i++){const f=document.createElement("span");f.className="pinkFlower bloom";f.textContent=flowers[i%flowers.length];f.style.left=(10+Math.random()*80)+"%";f.style.top=(0+Math.random()*70)+"%";f.style.animationDelay=(Math.random()*.8)+"s";canopy.appendChild(f)}
+   for(let i=0;i<45;i++){const f=document.createElement("span");f.className="fallFlower";f.textContent=flowers[i%flowers.length];f.style.left=(2+Math.random()*96)+"%";f.style.animationDelay=(Math.random()*1.2)+"s";f.style.animationDuration=(2+Math.random()*2.4)+"s";$("#area .fallFlowers").appendChild(f)}
+   setTimeout(()=>finish("ภารกิจสำเร็จ! ต้นไม้แห่งความดีผลิบานเต็มต้น 🌸🤍🌺"),3200);
+ }
+}
 
 $$('[data-game]').forEach(b=>b.addEventListener('click',()=>setup(b.dataset.game)));
 $("#start").addEventListener('click',startGame);

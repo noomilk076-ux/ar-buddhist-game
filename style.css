@@ -32,3 +32,16 @@
 @keyframes fallFlower{0%{top:-12%;opacity:0;transform:translateY(0) rotate(0) scale(.7)}10%{opacity:1}100%{top:110%;opacity:0;transform:translateY(0) rotate(320deg) scale(1.05)}}
 @media(max-width:800px){.fillGrid.threeCols{gap:10px;margin-top:3vh}.fillCell{min-height:125px;font-size:18px;padding:12px}.fillCell small{font-size:10px}.treeStage{width:80vw}.treeBefore{font-size:250px}.targetAnswer{min-height:115px;font-size:16px}.targetAnswer .targetDot{width:40px;height:40px;font-size:18px}}
 @media(max-width:520px){.fillGrid.threeCols{grid-template-columns:repeat(3,1fr);width:96vw;gap:6px}.fillCell{min-height:105px;font-size:15px;padding:8px;border-radius:18px}.fillCell small{font-size:9px}.holdGuide{font-size:12px;gap:7px}.treeStage{width:94vw}.treeBefore{font-size:205px}.pinkFlower{font-size:23px}.pinkFlower.bloom{font-size:27px}.targetAnswer{min-height:100px;padding:10px;font-size:14px}.targetAnswer .targetDot{width:34px;height:34px;font-size:15px}.aimGuide{font-size:11px}}
+
+/* v7 gesture refinements */
+.dropBlank{width:min(820px,90vw);min-height:110px;margin:20px auto 10px;border:3px dashed #ffd66b99;border-radius:26px;background:#ffd66b12;display:grid;place-items:center;color:#ffe9bd;font-size:clamp(1.3rem,2.5vw,2rem);font-weight:1000;transition:.2s}
+.dropBlank.correct{background:#74e09b25;border-color:#8ff0b4;color:#d9ffe6;box-shadow:0 0 35px #8ff0b455}
+.fillGrid.threeCols{grid-template-columns:repeat(3,1fr);width:min(900px,92vw);margin:16px auto}
+.fillCell.wordDrag{min-height:120px;font-size:clamp(1.25rem,2.5vw,1.8rem);cursor:grab}
+.fillCell.dragging{position:fixed!important;z-index:95;transform:scale(1.08);box-shadow:0 0 35px #ffd66b88;border-color:#ffd66b}
+.seedling{transition:.25s}
+.seedling.plantedSeed{opacity:.35;transform:scale(.75);border-color:#ffd66b}
+.plantedLabel{font-size:1rem;color:#ffd66b;font-weight:1000}
+.drawCircleGuide{position:absolute;left:50%;top:33%;transform:translateX(-50%);padding:.7rem 1.2rem;border-radius:999px;background:#160a25cc;border:2px solid #ffd66b55;color:#ffe9bd;font-size:clamp(1rem,2vw,1.3rem);font-weight:1000;pointer-events:none}
+@media(max-width:800px){.fillGrid.threeCols{grid-template-columns:repeat(3,1fr);gap:9px}.fillCell.wordDrag{min-height:105px;padding:10px}}
+@media(max-width:520px){.fillGrid.threeCols{width:94vw}.fillCell.wordDrag{font-size:1rem;min-height:92px}.dropBlank{min-height:88px;font-size:1.1rem}.drawCircleGuide{top:29%;font-size:.95rem}}
