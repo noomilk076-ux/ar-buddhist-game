@@ -94,40 +94,62 @@ const fs=[
  ["การพูดความจริงและไม่โกหกแสดงถึงคุณธรรมด้าน ______",["ความซื่อสัตย์","ความเกียจคร้าน","ความประมาท"]],
  ["นักเรียนควร ______ กฎระเบียบของโรงเรียนและสังคม",["มีวินัย","ละเมิด","เพิกเฉย"]]
 ];
-function fill(){fill.q=0;fill.drag=null;$("#title").innerHTML="<h2>เติมคำธรรมะ</h2><p>ใช้ ๕ นิ้วจับคำ • ลาก • ปล่อยลงช่องเติมคำ</p>";$("#hint").textContent="🖐️ กำมือเพื่อจับคำตอบ • ลากไปที่ช่องเติมคำ • คลายมือเพื่อวาง";drawFill()}
+function fill(){
+  fill.q=0;fill.drag=null;fill.grabbed=false;
+  $("#title").innerHTML="<h2>เติมคำธรรมะ</h2><p>ใช้มือทั้ง ๕ นิ้วกำจับคำ • ลาก • ปล่อยลงช่องเติมคำ</p>";
+  $("#hint").textContent="🖐️ กางมือเหนือคำ → กำมือทั้ง ๕ นิ้วเพื่อจับ → ลาก → กางมือเพื่อปล่อย";
+  drawFill();
+}
 function drawFill(){
  const [q,words]=fs[fill.q];
- $("#area").innerHTML=`<div class="card fillCard"><div class="question">${q.replace("______","<span class='blank'>________</span>")}</div>
- <div class="dropBlank" data-drop="blank">ลากคำที่ถูกต้องมาวางที่นี่</div>
- <div class="fillGrid threeCols">${words.map((w,i)=>`<div class="fillCell wordDrag" data-drag="1" data-word="${w}" data-index="${i}"><span>${w}</span></div>`).join("")}</div>
- <div class="holdGuide"><span>🖐️ ใช้ ๕ นิ้วจับ</span><b>จับ • ลาก • ปล่อย</b></div><p class="progress">ข้อ ${fill.q+1}/${fs.length}</p></div>`;
+ $("#area").innerHTML=`<div class="card fillCard"><div class="modeBadge">🖐️ ๕-FINGER GRAB MODE</div><div class="question">${q.replace("______","<span class='blank'>________</span>")}</div>
+ <div class="dropBlank" data-drop="blank">⬇️ ปล่อยคำที่เลือกลงในช่องนี้</div>
+ <div class="fillGrid threeCols">${words.map((w,i)=>`<div class="fillCell wordDrag" data-drag="1" data-word="${w}" data-index="${i}"><span>${w}</span><small>กางมือ → กำ ๕ นิ้ว</small></div>`).join("")}</div>
+ <div class="holdGuide"><span>🖐️ <b>กำครบ ๕ นิ้ว</b> เพื่อจับ</span><b>ลากด้วยปลายนิ้วชี้ • กางมือเพื่อปล่อย</b></div><p class="progress">ข้อ ${fill.q+1}/${fs.length}</p></div>`;
 }
+function fingerDistance(a,i,j){return Math.hypot(a[i].x-a[j].x,a[i].y-a[j].y)}
 function grabPose(a){
  if(!a)return false;
- const wrist=a[0],tips=[a[4],a[8],a[12],a[16],a[20]],pips=[a[3],a[6],a[10],a[14],a[18]];
- const curled=[0,1,2,3,4].filter((_,i)=>Math.hypot(tips[i].x-wrist.x,tips[i].y-wrist.y)<.34).length;
- const fingersCurled=[0,1,2,3].filter(i=>Math.hypot(tips[i+1].x-pips[i+1].x,tips[i+1].y-pips[i+1].y)>.035).length;
- return curled>=4 && fingersCurled>=3;
+ const wrist=a[0];
+ // Four long fingers: fingertip must be closer to wrist than its PIP joint.
+ const curled=[
+   fingerDistance(a,8,0)<fingerDistance(a,6,0)*1.08,
+   fingerDistance(a,12,0)<fingerDistance(a,10,0)*1.08,
+   fingerDistance(a,16,0)<fingerDistance(a,14,0)*1.08,
+   fingerDistance(a,20,0)<fingerDistance(a,18,0)*1.08
+ ];
+ const curledLong=curled.filter(Boolean).length;
+ // Thumb is considered curled when the thumb tip is close to the index MCP/palm area.
+ const thumbCurled=fingerDistance(a,4,5)<.11 || fingerDistance(a,4,2)<.14;
+ return curledLong>=3 && thumbCurled;
+}
+function openHandPose(a){
+ if(!a)return false;
+ const extended=[8,12,16,20].filter((tip,i)=>fingerDistance(a,tip,0)>fingerDistance(a,[6,10,14,18][i],0)*1.12).length;
+ return extended>=3;
 }
 function fillGesture(){
  const h=info(0); if(!h)return;
- const grabbing=grabPose(h.a), p=h.p;
+ const p=h.p, grabbing=grabPose(h.a), open=openHandPose(h.a);
+ if(!fill.drag && !grabbing){
+   const hover=hit("#area .wordDrag",p.x,p.y);
+   $$("#area .wordDrag").forEach(e=>e.classList.toggle("active",e===hover));
+ }
  if(grabbing && !fill.drag){
    fill.drag=hit("#area .wordDrag",p.x,p.y);
-   if(fill.drag){fill.drag.classList.add("dragging");move(fill.drag,p.x,p.y);toast("จับคำแล้ว 🖐️")}
+   if(fill.drag){fill.drag.classList.add("dragging");move(fill.drag,p.x,p.y);fill.grabbed=true;toast("🖐️ กำ ๕ นิ้วแล้ว — ลากคำได้เลย")}
  }
  if(grabbing && fill.drag) move(fill.drag,p.x,p.y);
- if(!grabbing && fill.drag){
+ if(fill.drag && open && fill.grabbed){
    const e=fill.drag,drop=hit("#area .dropBlank",p.x,p.y);
    if(drop){
      const correct=e.dataset.word===fs[fill.q][1][0];
-     if(correct){e.remove();add(10);drop.innerHTML=`<b>✓ ${e.dataset.word}</b>`;drop.classList.add("correct");toast("เติมคำถูกต้อง +10");fill.q++;fill.drag=null;
+     if(correct){e.remove();add(10);drop.innerHTML=`<b>✓ ${e.dataset.word}</b>`;drop.classList.add("correct");toast("เติมคำถูกต้อง +10");fill.drag=null;fill.grabbed=false;fill.q++;
        if(fill.q>=fs.length)setTimeout(()=>finish("ยอดเยี่ยม! เติมคำธรรมะครบ ๕ ข้อแล้ว 🌸"),500);else setTimeout(drawFill,650);
-     }else{reset(e);fill.drag=null;toast("คำนี้ยังไม่ใช่ ลองใหม่ 💡")}
-   }else{reset(e);fill.drag=null}
+     }else{reset(e);fill.drag=null;fill.grabbed=false;toast("คำนี้ยังไม่ใช่ ลองใหม่ 💡")}
+   }else{reset(e);fill.drag=null;fill.grabbed=false}
  }
 }
-
 const ms=[
  ["หลังทำกิจกรรม ห้องเรียนมีขยะเต็มพื้น ควรทำอย่างไร?","ช่วยกันเก็บและทิ้งให้ถูกถัง","เดินผ่านแล้วไม่สนใจ"],
  ["พบของที่ไม่ใช่ของตนเอง ควรทำอย่างไร?","นำส่งครูหรือหาเจ้าของ","เก็บไว้เป็นของตนเอง"],
@@ -141,31 +163,52 @@ function gunPose(a){if(!a)return false;const index=a[8],indexPip=a[6],middle=a[1
 function moralGesture(){const h=info(0);if(!h||!gunPose(h.a)){$$("#area .choice").forEach(e=>e.classList.remove("target"));moral.last=null;clearTimeout(moral.timer);return}const c=hit("#area .choice",h.p.x,h.p.y);$("#area .aimGuide")?.classList.toggle("active",!!c);$$("#area .choice").forEach(e=>e.classList.toggle("target",e===c));if(c&&moral.last!==c){moral.last=c;clearTimeout(moral.timer);moral.timer=setTimeout(()=>{if(c.dataset.ok==='1'){add(10);toast("🎯 ยิงถูกต้อง +10");moral.q++;moral.last=null;if(moral.q>=ms.length)finish("ยอดเยี่ยม! คุณคือพุทธศาสนิกชนตัวน้อยที่มีคุณธรรม 🌸");else drawMoral()}else{toast("💡 เป้านี้ยังไม่ใช่ ลองเล็งคำตอบที่ถูกต้อง");moral.last=null}},800)}}
 
 function tree(){
- tree.planted=0;tree.path=[];tree.drawing=false;tree.used=new Set();
+ tree.planted=0;tree.path=[];tree.drawing=false;tree.used=new Set();tree.lastCircleAt=0;
  $("#title").innerHTML="<h2>ต้นไม้แห่งความดี</h2><p>ใช้นิ้วชี้วาดวงกลมล้อมต้นกล้าคุณธรรม ๓ ต้น</p>";
- $("#hint").textContent="☝️ เหยียดนิ้วชี้ • วาดวงกลมรอบต้นกล้าที่เลือก • เลือกให้ครบ ๓ ต้น";
- const seeds=[["ซื่อสัตย์","ความจริง"],["กตัญญู","รู้คุณ"],["มีน้ำใจ","ช่วยเหลือ"],["มีวินัย","ทำตามกติกา"],["เมตตา","ปรารถนาดี"],["รับผิดชอบ","ทำหน้าที่"]];
- $("#area").innerHTML='<div class="treeStage"><div class="treeBefore">🌳</div><div class="flowerCanopy"></div><div class="fallFlowers"></div></div><div class="soil"></div><div class="treeCounter">เลือกแล้ว <b id="treeCount">0</b> / 3</div><div class="seedTray"></div><div class="drawCircleGuide">วาดวงกลมรอบต้นกล้า</div>';
+ $("#hint").textContent="☝️ เหยียดนิ้วชี้ • วาดวงกลมให้ล้อมต้นกล้า • ทำให้ครบ ๓ ต้น";
+ $("#area").innerHTML='<canvas id="circleCanvas"></canvas><div class="treeStage"><div class="treeBefore">🌳</div><div class="flowerCanopy"></div><div class="fallFlowers"></div></div><div class="treeCounter">เลือกแล้ว <b id="treeCount">0</b> / 3</div><div class="seedTray"></div><div class="drawCircleGuide">⭕ วาดวงกลมรอบต้นกล้า</div>';
+ const c=$("#circleCanvas");c.width=innerWidth;c.height=innerHeight;
  const tray=$("#area .seedTray");
+ const seeds=[["ซื่อสัตย์","ความจริง"],["กตัญญู","รู้คุณ"],["มีน้ำใจ","ช่วยเหลือ"],["มีวินัย","ทำตามกติกา"],["เมตตา","ปรารถนาดี"],["รับผิดชอบ","ทำหน้าที่"]];
  seeds.forEach((s,i)=>{const d=document.createElement("div");d.className="seedling";d.dataset.virtue=s[0];d.innerHTML=`<span>🌱</span><small>${s[0]}</small>`;d.style.left=(4+(i%3)*31)+"%";d.style.top=(38+Math.floor(i/3)*28)+"%";tray.appendChild(d)});
+ window.addEventListener('resize',resizeCircleCanvas,{once:false});
 }
-function indexPose(a){if(!a)return false;const tips=a[8],pip=a[6],m=a[12],r=a[16],p=a[20];return tips.y<pip.y-.035 && m.y> a[10].y-.005 && r.y>a[14].y-.005 && p.y>a[18].y-.005}
+function resizeCircleCanvas(){const c=$("#circleCanvas");if(c){c.width=innerWidth;c.height=innerHeight}}
+function indexPose(a){
+ if(!a)return false;
+ const tip=a[8],pip=a[6];
+ const long=[12,16,20].every((tipId,i)=>fingerDistance(a,tipId,0)<fingerDistance(a,[10,14,18][i],0)*1.12);
+ return tip.y<pip.y-.025 && long;
+}
+function drawCircleTrail(){
+ const c=$("#circleCanvas");if(!c)return;const ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);if(tree.path.length<2)return;
+ ctx.beginPath();ctx.lineWidth=7;ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle='rgba(255,214,107,.95)';
+ tree.path.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();
+}
+function clearCircleTrail(){const c=$("#circleCanvas");if(c)c.getContext('2d').clearRect(0,0,c.width,c.height)}
 function treeGesture(){
- const h=info(0); if(!h)return;
- if(!indexPose(h.a)){tree.drawing=false;tree.path=[];return}
+ const h=info(0);if(!h){clearCircleTrail();return}
+ if(!indexPose(h.a)){tree.drawing=false;tree.path=[];clearCircleTrail();return}
  const p=h.p;
  if(!tree.drawing){tree.drawing=true;tree.path=[]}
- tree.path.push({x:p.x,y:p.y,t:performance.now()});
- if(tree.path.length>90)tree.path.shift();
- const pts=tree.path;if(pts.length<22)return;
+ tree.path.push({x:p.x,y:p.y});
+ if(tree.path.length>120)tree.path.shift();
+ drawCircleTrail();
+ const pts=tree.path;if(pts.length<28)return;
  const first=pts[0],last=pts[pts.length-1];
  const minX=Math.min(...pts.map(v=>v.x)),maxX=Math.max(...pts.map(v=>v.x)),minY=Math.min(...pts.map(v=>v.y)),maxY=Math.max(...pts.map(v=>v.y));
- const w=maxX-minX,hgt=maxY-minY,close=Math.hypot(last.x-first.x,last.y-first.y);
- if(w<80||hgt<60||close>Math.max(65,Math.min(w,hgt)*.42))return;
+ const w=maxX-minX,hgt=maxY-minY;
+ const close=Math.hypot(last.x-first.x,last.y-first.y);
+ if(w<70||hgt<60||w/hgt<.45||w/hgt>2.2||close>Math.max(70,Math.min(w,hgt)*.32))return;
  const cx=(minX+maxX)/2,cy=(minY+maxY)/2;
- const seed=$$("#area .seedling").find(e=>{if(tree.used.has(e.dataset.virtue))return false;const r=e.getBoundingClientRect();return cx>r.left-r.width*.45&&cx<r.right+r.width*.45&&cy>r.top-r.height*.45&&cy<r.bottom+r.height*.45});
- if(seed){
-   tree.used.add(seed.dataset.virtue);seed.classList.add("plantedSeed");completeTree(seed);tree.path=[];tree.drawing=false;
+ const seed=$$("#area .seedling").find(e=>{
+   if(tree.used.has(e.dataset.virtue))return false;
+   const r=e.getBoundingClientRect();const sx=r.left+r.width/2,sy=r.top+r.height/2;
+   const rx=Math.max(r.width*.9,75),ry=Math.max(r.height*.9,65);
+   return Math.abs(cx-sx)<rx && Math.abs(cy-sy)<ry && w>r.width*.65 && hgt>r.height*.55;
+ });
+ if(seed && performance.now()-tree.lastCircleAt>500){
+   tree.lastCircleAt=performance.now();tree.used.add(seed.dataset.virtue);seed.classList.add("plantedSeed");completeTree(seed);tree.path=[];tree.drawing=false;clearCircleTrail();
  }
 }
 function completeTree(seed){
