@@ -70,3 +70,19 @@
 .thumbGuide{margin:22px auto 0;padding:12px 20px;width:max-content;max-width:92%;border-radius:999px;background:#12051ccc;border:1px solid #ffffff22;color:#ddd;font-weight:800;transition:.2s}
 .thumbGuide.active{color:#ffd66b;border-color:#ffd66b88;box-shadow:0 0 25px #ffd66b44}
 @media(max-width:650px){.moralThumbCard{margin-top:2vh;padding:18px}.thumbChoices{gap:10px;margin-top:18px}.thumbAnswer{min-height:145px;border-radius:20px}.thumbIcon{font-size:58px}.thumbAnswer b{font-size:17px}.thumbGuide{font-size:11px;padding:9px 12px}}
+
+/* v11 station polish: mission progress, completed badges, final station result */
+.menuCard{position:relative;overflow:hidden}
+.grid button{position:relative;text-align:left;padding:24px 22px 18px 82px;min-height:150px}
+.grid button .missionBadge{position:absolute;left:20px;top:20px;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#ffd66b,#fff0a8);color:#3b1b54;font-size:25px;font-weight:1000;box-shadow:0 7px 20px #0005}
+.grid button .missionDone{position:absolute;right:14px;top:14px;width:34px;height:34px;border-radius:50%;display:none;place-items:center;background:#68e39a;color:#082c19;font-size:20px;font-weight:1000;box-shadow:0 0 22px #68e39a88}
+.grid button.completed{border-color:#73e5a0aa;background:linear-gradient(145deg,#24133a,#183829)}
+.grid button.completed .missionBadge{background:linear-gradient(145deg,#74e7a3,#d8ffe7)}
+.grid button .missionPts{display:block;margin-top:10px;font-style:normal;font-size:12px;font-weight:900;color:#ffd66b;letter-spacing:.2px}
+.menuProgress{width:min(720px,92%);margin:20px auto 0;padding:12px 18px;border:1px solid #ffd66b44;border-radius:18px;background:#12051f88;display:flex;align-items:center;gap:16px;font-weight:900;color:#ffe9bd}
+.progressBar{height:10px;flex:1;min-width:140px;border-radius:99px;background:#ffffff15;overflow:hidden;border:1px solid #ffffff15}
+.progressBar i{display:block;width:0;height:100%;border-radius:99px;background:linear-gradient(90deg,#ffd66b,#ff8ed8);transition:width .5s ease}
+.resultProgress{margin:14px auto 0;color:#ffdca0;font-weight:900;font-size:14px}
+.resultCard{position:relative;overflow:hidden}
+.resultCard:after{content:"";position:absolute;inset:auto -20% -55%;height:180px;background:radial-gradient(ellipse,#ffd66b20,transparent 65%);pointer-events:none}
+@media(max-width:650px){.grid button{padding:20px 14px 14px 68px;min-height:135px}.grid button .missionBadge{left:14px;top:17px;width:42px;height:42px;font-size:21px}.grid button .missionPts{font-size:10px}.menuProgress{flex-direction:column;align-items:stretch;gap:8px;font-size:12px}.progressBar{min-width:0}}

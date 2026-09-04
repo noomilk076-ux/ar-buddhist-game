@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#10051f">
 <title>ภารกิจชาวพุทธน้อย เทพสุนทรินทร์</title>
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
 <div id="menu" class="screen">
@@ -17,14 +17,14 @@
     <div class="stationStats"><span>⭐ คะแนนรวม <b id="menuScore">0</b></span><span id="menuRank">🌱 ผู้เริ่มต้นทำความดี</span></div>
     <div class="menuHint">🫶 กล้องจะเปิดหลังเลือกภารกิจ • เล่นภารกิจไหนก่อนก็ได้ • <b>ไม่จับเวลา</b></div>
     <div class="grid">
-      <button data-game="altar"><strong>๑</strong><b>จัดโต๊ะหมู่บูชา</b><small>ใช้มือหยิบ ลาก ปล่อย จัดโต๊ะหมู่และเครื่องบูชา</small></button>
-      <button data-game="sort"><strong>๒</strong><b>นักคัดแยกขยะ</b><small>ใช้มือซ้าย–ขวาปัดขยะลงถังให้ถูกประเภท</small></button>
-      <button data-game="quiz"><strong>๓</strong><b>ธรรมะท้าประลอง</b><small>เอียงศีรษะซ้าย–ขวาเพื่อเลือกคำตอบ</small></button>
-      <button data-game="fill"><strong>๔</strong><b>เติมคำธรรมะ</b><small>ใช้มือทั้ง ๕ นิ้วกำจับคำ • ลาก • ปล่อยลงช่องที่ถูกต้อง</small></button>
-      <button data-game="moral"><strong>๕</strong><b>พุทธศาสนิกชนตัวน้อย</b><small>เล็งนิ้วชี้แบบปืนเพื่อยิงคำตอบ</small></button>
-      <button data-game="tree"><strong>๖</strong><b>ต้นไม้แห่งความดี</b><small>ใช้นิ้วชี้จีบ ลาก ปล่อยต้นกล้าลงบนต้นไม้ ๓ ต้น</small></button>
+      <button data-game="altar"><span class="missionBadge">๑</span><span class="missionDone">✓</span><b>จัดโต๊ะหมู่บูชา</b><small>ใช้มือหยิบ ลาก ปล่อย จัดโต๊ะหมู่และเครื่องบูชา</small><em class="missionPts">ยังไม่เล่น</em></button>
+      <button data-game="sort"><span class="missionBadge">๒</span><span class="missionDone">✓</span><b>นักคัดแยกขยะ</b><small>ใช้มือซ้าย–ขวาปัดขยะลงถังให้ถูกประเภท</small><em class="missionPts">ยังไม่เล่น</em></button>
+      <button data-game="quiz"><span class="missionBadge">๓</span><span class="missionDone">✓</span><b>ธรรมะท้าประลอง</b><small>เอียงศีรษะซ้าย–ขวาเพื่อเลือกคำตอบ</small><em class="missionPts">ยังไม่เล่น</em></button>
+      <button data-game="fill"><span class="missionBadge">๔</span><span class="missionDone">✓</span><b>เติมคำธรรมะ</b><small>ใช้มือทั้ง ๕ นิ้วกำจับคำ • ลาก • ปล่อยลงช่องที่ถูกต้อง</small><em class="missionPts">ยังไม่เล่น</em></button>
+      <button data-game="moral"><span class="missionBadge">๕</span><span class="missionDone">✓</span><b>พุทธศาสนิกชนตัวน้อย</b><small>ใช้ 👍 / 👎 เลือกการกระทำที่ควรหรือไม่ควรทำ</small><em class="missionPts">ยังไม่เล่น</em></button>
+      <button data-game="tree"><span class="missionBadge">๖</span><span class="missionDone">✓</span><b>ต้นไม้แห่งความดี</b><small>ใช้นิ้วชี้จีบ ลาก ปล่อยต้นกล้าลงบนต้นไม้ ๓ ต้น</small><em class="missionPts">ยังไม่เล่น</em></button>
     </div>
-    <div class="menuFooter">🌸 ภารกิจเล็ก ๆ สร้างคุณธรรมและพุทธวิถีในชีวิตประจำวัน</div>
+    <div class="menuProgress"><span>🏅 สำเร็จแล้ว <b id="completedCount">0</b>/6 ภารกิจ</span><div class="progressBar"><i id="completedBar"></i></div></div><div class="menuFooter">🌸 ภารกิจเล็ก ๆ สร้างคุณธรรมและพุทธวิถีในชีวิตประจำวัน</div>
   </main>
 </div>
 
@@ -58,11 +58,11 @@
     <div class="resultSpark">✨</div><div class="eyebrow">MISSION COMPLETE</div>
     <h2 id="resultTitle">เก่งมาก!</h2>
     <div class="resultScore"><b id="resultRound">+0</b><small>คะแนนภารกิจนี้</small></div>
-    <div class="resultTotal">คะแนนรวม <b id="resultTotal">0</b></div>
+    <div class="resultTotal">คะแนนรวมสถานี <b id="resultTotal">0</b></div><div id="resultProgress" class="resultProgress">สำเร็จแล้ว 0/6 ภารกิจ</div>
     <div id="resultRank" class="resultRank">🌱 ผู้เริ่มต้นทำความดี</div>
     <div class="resultActions"><button id="again">↻ เล่นภารกิจนี้อีกครั้ง</button><button id="resultHome" class="ghostBtn">⌂ เลือกภารกิจอื่น</button></div>
   </section>
 </div>
-<script type="module" src="script.js?v=10"></script>
+<script type="module" src="script.js?v=11"></script>
 </body>
 </html>
