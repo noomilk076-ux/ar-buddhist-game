@@ -11,9 +11,15 @@ let hands=[],poseLm=null,faceLm=null,pinchStates=[false,false],dragged=[null,nul
 const names={altar:"ภารกิจ ๑ · จัดโต๊ะหมู่บูชา",sort:"ภารกิจ ๒ · นักคัดแยกขยะ",quiz:"ภารกิจ ๓ · ธรรมะท้าประลอง",fill:"ภารกิจ ๔ · เติมคำธรรมะ",moral:"ภารกิจ ๕ · พุทธศาสนิกชนตัวน้อย",tree:"ภารกิจ ๖ · ต้นไม้แห่งความดี"};
 const rank=n=>n>=300?"🏆 ทูตวิถีพุทธ":n>=200?"🌟 นักสืบทอดวิถีพุทธ":n>=100?"✨ นักสร้างความดี":"🌱 ผู้เริ่มต้นทำความดี";
 function ui(){
-  $("#menuScore").textContent=total;$("#menuRank").textContent=rank(total);
-  $("#completedCount").textContent=completed.size;$("#completedBar").style.width=(completed.size/6*100)+"%";
-  $$('[data-game]').forEach(b=>{const k=b.dataset.game,done=completed.has(k);b.classList.toggle('completed',done);const d=b.querySelector('.missionDone'),pts=b.querySelector('.missionPts');if(d)d.style.display=done?'grid':'none';if(pts)pts.textContent=done?`✓ สำเร็จ • ${missionScores[k]||0} คะแนน`:'ยังไม่เล่น'});
+  const ms=$("#menuScore"),mr=$("#menuRank"),cc=$("#completedCount"),cb=$("#completedBar");
+  if(ms)ms.textContent=total;if(mr)mr.textContent=rank(total);
+  if(cc)cc.textContent=completed.size;if(cb)cb.style.width=(completed.size/6*100)+"%";
+  $$('[data-game]').forEach(b=>{
+    const k=b.dataset.game,done=completed.has(k);b.classList.toggle('completed',done);
+    const d=b.querySelector('.missionDone'),pts=b.querySelector('.missionPts');
+    if(d)d.style.display=done?'grid':'none';
+    if(pts)pts.textContent=done?`✓ สำเร็จ • ${missionScores[k]||0} คะแนน`:'ยังไม่เล่น';
+  });
 }
 function add(n){round+=n;total+=n;$("#score").textContent=round;ui()}
 function toast(s){const e=$("#feedback");e.textContent=s;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),1200)}
@@ -59,7 +65,7 @@ function move(e,x,y){e.style.position="fixed";e.style.left=x-e.offsetWidth/2+"px
 function reset(e){if(!e)return;e.style.position="";e.style.left="";e.style.top="";e.style.zIndex="";e.classList.remove("dragging")}
 function gestureFrame(t){if(gameKind==="altar")altarGesture();else if(gameKind==="sort")sortGesture();else if(gameKind==="quiz")quizGesture(t);else if(gameKind==="fill")fillGesture(t);else if(gameKind==="moral")moralGesture(t);else if(gameKind==="tree")treeGesture()}
 
-function setup(kind){stopCamera();gameKind=kind;const game=document.querySelector("#game");game.classList.remove("mission1Scene","mission2Scene","mission3Scene","mission4Scene","mission5Scene","mission6Scene");const sceneNo={altar:1,sort:2,quiz:3,fill:4,moral:5,tree:6}[kind];if(sceneNo)game.classList.add(`mission${sceneNo}Scene`);round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];$("#permissionTitle").textContent=names[kind];$("#menu").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
+function setup(kind){stopCamera();gameKind=kind;const game=document.querySelector("#game");game.classList.remove("mission1Scene","mission2Scene","mission3Scene","mission4Scene","mission5Scene","mission6Scene");const sceneNo={altar:1,sort:2,quiz:3,fill:4,moral:5,tree:6}[kind];if(sceneNo)game.classList.add(`mission${sceneNo}Scene`);round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];$("#permissionTitle").textContent=names[kind];$("#menu").classList.add("hidden");$("#howto").classList.add("hidden");$("#missionSelect").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
 function startGame(){$("#permission").classList.add("hidden");$("#game").classList.remove("hidden");({altar,sort,quiz,fill,moral,tree}[gameKind])();startCamera()}
 function showGrandFinale(done){
   const layer=$("#grandFinale");
@@ -245,12 +251,21 @@ function completeTree(virtue){
    $("#area .treeDropText").textContent="🌸 ต้นไม้แห่งความดีผลิบาน! 🤍";setTimeout(()=>finish("ภารกิจสำเร็จ! ต้นไม้แห่งความดีออกดอกสีขาวและแดงเต็มต้น 🌸🤍🌹"),3800);
  }
 }
+function showMenu(){stopCamera();gameKind=null;$("#permission").classList.add('hidden');$("#howto").classList.add('hidden');$("#missionSelect").classList.add('hidden');$("#result").classList.add('hidden');$("#game").classList.add('hidden');$("#menu").classList.remove('hidden');ui()}
+function showHowto(){$("#menu").classList.add('hidden');$("#missionSelect").classList.add('hidden');$("#howto").classList.remove('hidden')}
+function showMissions(){$("#menu").classList.add('hidden');$("#howto").classList.add('hidden');$("#missionSelect").classList.remove('hidden');ui()}
 $$('[data-game]').forEach(b=>b.addEventListener('click',()=>setup(b.dataset.game)));
+$("#openHowto").addEventListener('click',showHowto);
+$("#howtoNext").addEventListener('click',showMissions);
+$("#howtoHome").addEventListener('click',showMenu);
+$("#missionHowto").addEventListener('click',showHowto);
+$("#missionHome").addEventListener('click',showMenu);
 $("#start").addEventListener('click',startGame);
-$("#cancelStart").addEventListener('click',()=>{$("#permission").classList.add('hidden');$("#menu").classList.remove('hidden')});
-$("#home").addEventListener('click',()=>{stopCamera();gameKind=null;$("#game").classList.add('hidden');$("#menu").classList.remove('hidden');ui()});
-$("#resultHome").addEventListener('click',()=>{$("#result").classList.add('hidden');gameKind=null;$("#menu").classList.remove('hidden');ui()});
+$("#cancelStart").addEventListener('click',showMissions);
+$("#home").addEventListener('click',showMissions);
+$("#resultHome").addEventListener('click',showMissions);
 $("#again").addEventListener('click',()=>{stopCamera();$("#result").classList.add('hidden');$("#permission").classList.remove('hidden')});
+showMenu();
 // Mouse/touch fallback for desktop testing when camera is unavailable.
 let fallbackEl=null;document.addEventListener('pointerdown',e=>{if(!gameKind)return;const x=e.clientX,y=e.clientY;fallbackEl=hit("#area [data-drag],#area .seedling",x,y);if(fallbackEl)move(fallbackEl,x,y)});document.addEventListener('pointermove',e=>{if(fallbackEl)move(fallbackEl,e.clientX,e.clientY)});document.addEventListener('pointerup',e=>{if(!fallbackEl)return;const x=e.clientX,y=e.clientY;if(gameKind==='altar')altarGestureFallback(fallbackEl,x,y);else if(gameKind==='sort')sortFallback(fallbackEl,x,y);else if(gameKind==='tree'){const soil=hit('#area .soil',x,y);if(soil){fallbackEl.remove();completeTree()}}reset(fallbackEl);fallbackEl=null});
 function checkAltarComplete(){if(!finished && !$("#area [data-drag]"))setTimeout(()=>finish("จัดโต๊ะหมู่บูชาครบถ้วนแล้ว 🪷🎉"),450)}

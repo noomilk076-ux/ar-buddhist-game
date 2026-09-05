@@ -4,30 +4,34 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#10051f">
-<title>ภารกิจชาวพุทธน้อย เทพสุนทรินทร์</title>
-<link rel="stylesheet" href="style.css?v=28">
+<title>ภารกิจชาวพุทธน้อย</title>
+<link rel="stylesheet" href="style.css?v=29">
 </head>
 <body>
-<div id="menu" class="screen">
-  <main class="menuCard">
-    <div class="schoolMark"><img src="school-logo.png" alt="ตราโรงเรียนอนุบาลเทพสุนทรินทร์"></div>
-    <div class="eyebrow">AR GAME STATION</div>
-    <div class="welcomeLine">🌸 ยินดีต้อนรับสู่สถานีเกมคุณธรรม</div>
-    <h1>ภารกิจชาวพุทธน้อย<br><span>เทพสุนทรินทร์</span></h1>
-    <p class="tagline">เรียนรู้ • ลงมือทำ • สร้างความดี</p>
-    <div class="playSteps"><span>① เลือกภารกิจ</span><i>→</i><span>② เปิดกล้อง</span><i>→</i><span>③ ลงมือเล่น</span></div>
-    <div class="stationStats"><span>⭐ คะแนนรวม <b id="menuScore">0</b></span><span id="menuRank">🌱 ผู้เริ่มต้นทำความดี</span></div>
-    <div class="menuHint">🫶 เลือกภารกิจที่สนใจได้เลย • ระบบจะเปิดกล้องเมื่อกดเริ่ม • <b>ไม่จับเวลา</b></div>
-    <div class="grid">
-      <button data-game="altar"><span class="missionBadge">๑</span><span class="missionDone">✓</span><b>จัดโต๊ะหมู่บูชา</b><small>ใช้มือหยิบ ลาก ปล่อย จัดโต๊ะหมู่และเครื่องบูชา</small><em class="missionPts">ยังไม่เล่น</em></button>
-      <button data-game="sort"><span class="missionBadge">๒</span><span class="missionDone">✓</span><b>นักคัดแยกขยะ</b><small>ใช้มือซ้าย–ขวาปัดขยะลงถังให้ถูกประเภท</small><em class="missionPts">ยังไม่เล่น</em></button>
-      <button data-game="quiz"><span class="missionBadge">๓</span><span class="missionDone">✓</span><b>ธรรมะท้าประลอง</b><small>เอียงศีรษะซ้าย–ขวาเพื่อเลือกคำตอบ</small><em class="missionPts">ยังไม่เล่น</em></button>
-      <button data-game="fill"><span class="missionBadge">๔</span><span class="missionDone">✓</span><b>เติมคำธรรมะ</b><small>ใช้มือทั้ง ๕ นิ้วกำจับคำ • ลาก • ปล่อยลงช่องที่ถูกต้อง</small><em class="missionPts">ยังไม่เล่น</em></button>
-      <button data-game="moral"><span class="missionBadge">๕</span><span class="missionDone">✓</span><b>พุทธศาสนิกชนตัวน้อย</b><small>ใช้ 👍 / 👎 เลือกการกระทำที่ควรหรือไม่ควรทำ</small><em class="missionPts">ยังไม่เล่น</em></button>
-      <button data-game="tree"><span class="missionBadge">๖</span><span class="missionDone">✓</span><b>ต้นไม้แห่งความดี</b><small>ใช้นิ้วชี้จีบ ลาก ปล่อยต้นกล้าลงบนต้นไม้ ๓ ต้น</small><em class="missionPts">ยังไม่เล่น</em></button>
-    </div>
-    <div class="menuProgress"><span>🏅 สำเร็จแล้ว <b id="completedCount">0</b>/6 ภารกิจ</span><div class="progressBar"><i id="completedBar"></i></div></div><div class="menuFooter">🌸 ภารกิจเล็ก ๆ สร้างคุณธรรมและพุทธวิถีในชีวิตประจำวัน</div>
-  </main>
+<div id="menu" class="screen openingScreen">
+  <div class="artScreen coverArt" role="img" aria-label="หน้าปกเกม ภารกิจชาวพุทธน้อย">
+    <button id="openHowto" class="artHotspot coverStartHotspot" aria-label="เริ่มทำภารกิจ"></button>
+  </div>
+</div>
+
+<div id="howto" class="screen hidden artScreenWrap">
+  <div class="artScreen howtoArt" role="img" aria-label="วิธีเล่นเกม ภารกิจชาวพุทธน้อย">
+    <button id="howtoHome" class="artHotspot howtoHomeHotspot" aria-label="กลับหน้าหลัก"></button>
+    <button id="howtoNext" class="artHotspot howtoNextButton" aria-label="พร้อมแล้ว เริ่มเลือกภารกิจ">▶ พร้อมแล้ว เริ่มเลือกภารกิจ</button>
+  </div>
+</div>
+
+<div id="missionSelect" class="screen hidden artScreenWrap">
+  <div class="artScreen missionsArt" role="img" aria-label="เลือกภารกิจ ภารกิจชาวพุทธน้อย">
+    <button class="artHotspot missionHotspot m1" data-game="altar" aria-label="ภารกิจ 1 จัดโต๊ะหมู่บูชา"></button>
+    <button class="artHotspot missionHotspot m2" data-game="sort" aria-label="ภารกิจ 2 นักคัดแยกขยะ"></button>
+    <button class="artHotspot missionHotspot m3" data-game="quiz" aria-label="ภารกิจ 3 ธรรมะท้าประลอง"></button>
+    <button class="artHotspot missionHotspot m4" data-game="fill" aria-label="ภารกิจ 4 เติมคำธรรมะ"></button>
+    <button class="artHotspot missionHotspot m5" data-game="moral" aria-label="ภารกิจ 5 พุทธศาสนิกชนตัวน้อย"></button>
+    <button class="artHotspot missionHotspot m6" data-game="tree" aria-label="ภารกิจ 6 ต้นไม้แห่งความดี"></button>
+    <button id="missionHowto" class="artHotspot missionHowtoHotspot" aria-label="วิธีเล่น"></button>
+    <button id="missionHome" class="artHotspot missionHomeHotspot" aria-label="กลับหน้าหลัก"></button>
+  </div>
 </div>
 
 <div id="permission" class="screen hidden">
@@ -53,7 +57,7 @@
   <div id="trackingStatus">● กำลังตรวจจับการเคลื่อนไหว</div>
   <div id="pointer"><span></span></div>
   <div id="feedback"></div>
-  <button id="home">⌂ สถานี</button>
+  <button id="home">↩ กลับหน้าภารกิจ</button>
 </div>
 
 <div id="grandFinale" class="hidden" aria-hidden="true">
@@ -78,7 +82,7 @@
     <div class="resultActions"><button id="again">↻ เล่นภารกิจนี้อีกครั้ง</button><button id="resultHome" class="ghostBtn">⌂ เลือกภารกิจอื่น</button></div>
   </section>
 </div>
-<script type="module" src="script.js?v=28"></script>
+<script type="module" src="script.js?v=29"></script>
 
 <div id="fxLayer" aria-hidden="true"></div>
 </body>

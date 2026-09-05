@@ -580,3 +580,39 @@ body{background:#09030f}
 .mission1Scene .altarTray{background:rgba(20,7,33,.88)!important}
 
 @media(max-width:800px){#game[class*="mission"] #camera{opacity:.40}}
+
+/* v29 — New 3D opening flow using the supplied 16:9 artwork. Gameplay logic is unchanged. */
+.openingScreen,.artScreenWrap{padding:0!important;background:#07020f!important;overflow:hidden!important;display:grid!important;place-items:center!important}
+.artScreen{position:relative;width:100vw;height:100vh;overflow:hidden;background-position:center;background-repeat:no-repeat;background-size:100% 100%;isolation:isolate}
+.coverArt{background-image:url("cover-bg.png")}
+.howtoArt{background-image:url("howto-bg.png")}
+.missionsArt{background-image:url("missions-bg.png")}
+.artHotspot{position:absolute;border:0;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;z-index:10;padding:0}
+.artHotspot:focus-visible{outline:4px solid #fff;outline-offset:4px;border-radius:20px;background:#ffffff12}
+.coverStartHotspot{left:34%;top:56%;width:32%;height:16%}
+.howtoHomeHotspot{right:0.8%;bottom:1.2%;width:13%;height:10%}
+.howtoNextButton{left:35%;bottom:3%;width:30%;height:10%;border-radius:999px;color:#fff;font-weight:1000;font-size:clamp(16px,1.7vw,30px);background:linear-gradient(135deg,#5e1ca7ee,#8c2fcaee);border:3px solid #ffd66b;box-shadow:0 8px 28px #0009,0 0 22px #ffd66b66;text-shadow:0 2px 7px #000;transition:transform .16s,filter .16s}
+.howtoNextButton:hover,.howtoNextButton:active{transform:scale(1.035);filter:brightness(1.12)}
+.missionHotspot{width:21%;height:23%;border-radius:28px}
+.m1{left:20.5%;top:28%}.m2{left:39.5%;top:28%}.m3{left:58.5%;top:28%}
+.m4{left:20.5%;top:51.5%}.m5{left:39.5%;top:51.5%}.m6{left:58.5%;top:51.5%}
+.missionHowtoHotspot{left:1%;bottom:1%;width:14%;height:11%}.missionHomeHotspot{right:1%;bottom:1%;width:14%;height:11%}
+.missionHotspot:hover,.missionHotspot:active{background:#ffffff10;box-shadow:inset 0 0 0 3px #ffd66b66,0 0 25px #ffd66b44}
+
+/* Keep the real game/result screens exactly as before. */
+@media(max-aspect-ratio:4/3){
+  .artScreen{background-size:cover}
+}
+@media(max-width:900px){
+  .howtoNextButton{left:29%;width:42%;font-size:16px}
+  .missionHotspot{height:24%;border-radius:20px}
+}
+@media(max-width:620px){
+  .coverStartHotspot{left:30%;width:40%;top:56%;height:17%}
+  .howtoHomeHotspot{width:18%;height:11%}
+  .howtoNextButton{left:22%;width:56%;bottom:2%;height:11%;font-size:14px}
+  .missionHotspot{width:28%;height:22%}
+  .m1{left:18%;top:28%}.m2{left:36%;top:28%}.m3{left:54%;top:28%}
+  .m4{left:18%;top:51%}.m5{left:36%;top:51%}.m6{left:54%;top:51%}
+  .missionHowtoHotspot,.missionHomeHotspot{width:19%;height:11%}
+}
