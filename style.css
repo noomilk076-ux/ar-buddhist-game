@@ -554,13 +554,29 @@ body{background:#09030f}
 @media(max-width:620px){.welcomeLine{font-size:14px}.playSteps{gap:5px;margin:8px auto 10px}.playSteps span{font-size:11px;padding:6px 9px}.playSteps i{font-size:14px}}
 
 
-/* v28 — Mission 1 cinematic 3D temple background. Camera remains active above the scene. */
-#sceneBackground{position:absolute;inset:0;background-image:url("mission1-bg.png");background-size:cover;background-position:center center;background-repeat:no-repeat;z-index:0;display:none}
-.mission1Scene #sceneBackground{display:block}
-.mission1Scene #camera{opacity:.48}
-.mission1Scene .veil{background:linear-gradient(180deg,#09031535 0%,#1b0a2d18 48%,#08030f70 100%)}
-.mission1Scene .cameraGlow{box-shadow:inset 0 0 90px #0008}
-.mission1Scene .altarSeven{background:linear-gradient(180deg,rgba(42,16,35,.58),rgba(10,5,16,.48))!important;backdrop-filter:blur(1.5px);-webkit-backdrop-filter:blur(1.5px)}
+/* v28 — Cinematic 3D backgrounds for all 6 missions. Camera remains active above each scene. */
+#sceneBackground{position:absolute;inset:0;background-size:cover;background-position:center center;background-repeat:no-repeat;z-index:0;display:none;pointer-events:none}
+#game[class*="mission"] #sceneBackground{display:block}
+#game[class*="mission"] #camera{opacity:.44}
+#game[class*="mission"] .veil{background:linear-gradient(180deg,#09031524 0%,#1b0a2d10 48%,#08030f66 100%)}
+#game[class*="mission"] .cameraGlow{box-shadow:inset 0 0 90px #0007}
+
+.mission1Scene #sceneBackground{background-image:url("mission1-bg.png")}
+.mission2Scene #sceneBackground{background-image:url("mission2-bg.png")}
+.mission3Scene #sceneBackground{background-image:url("mission3-bg.png")}
+.mission4Scene #sceneBackground{background-image:url("mission4-bg.png")}
+.mission5Scene #sceneBackground{background-image:url("mission5-bg.png")}
+.mission6Scene #sceneBackground{background-image:url("mission6-bg.png")}
+
+/* Let the generated artwork show through the interactive panels while keeping text readable. */
+.mission1Scene .altarSeven,
+.mission2Scene .swipeBin,
+.mission3Scene .card,
+.mission4Scene .fillCell,
+.mission5Scene .thumbAnswer,
+.mission6Scene .seedling{backdrop-filter:blur(1.5px);-webkit-backdrop-filter:blur(1.5px)}
+.mission1Scene .altarSeven{background:linear-gradient(180deg,rgba(42,16,35,.58),rgba(10,5,16,.48))!important}
 .mission1Scene .altarSeven .altarHeader{background:#160821aa;padding:3px 18px;border-radius:999px;border:1px solid #ffd66b55;text-shadow:0 2px 8px #000}
 .mission1Scene .altarTray{background:rgba(20,7,33,.88)!important}
-@media(max-width:800px){.mission1Scene #camera{opacity:.42}}
+
+@media(max-width:800px){#game[class*="mission"] #camera{opacity:.40}}

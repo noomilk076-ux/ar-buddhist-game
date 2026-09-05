@@ -59,7 +59,7 @@ function move(e,x,y){e.style.position="fixed";e.style.left=x-e.offsetWidth/2+"px
 function reset(e){if(!e)return;e.style.position="";e.style.left="";e.style.top="";e.style.zIndex="";e.classList.remove("dragging")}
 function gestureFrame(t){if(gameKind==="altar")altarGesture();else if(gameKind==="sort")sortGesture();else if(gameKind==="quiz")quizGesture(t);else if(gameKind==="fill")fillGesture(t);else if(gameKind==="moral")moralGesture(t);else if(gameKind==="tree")treeGesture()}
 
-function setup(kind){stopCamera();gameKind=kind;document.querySelector("#game").classList.toggle("mission1Scene",kind==="altar");round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];$("#permissionTitle").textContent=names[kind];$("#menu").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
+function setup(kind){stopCamera();gameKind=kind;const game=document.querySelector("#game");game.classList.remove("mission1Scene","mission2Scene","mission3Scene","mission4Scene","mission5Scene","mission6Scene");const sceneNo={altar:1,sort:2,quiz:3,fill:4,moral:5,tree:6}[kind];if(sceneNo)game.classList.add(`mission${sceneNo}Scene`);round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];$("#permissionTitle").textContent=names[kind];$("#menu").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
 function startGame(){$("#permission").classList.add("hidden");$("#game").classList.remove("hidden");({altar,sort,quiz,fill,moral,tree}[gameKind])();startCamera()}
 function showGrandFinale(done){
   const layer=$("#grandFinale");
