@@ -586,7 +586,7 @@ body{background:#09030f}
 .artScreen{position:relative;width:100vw;height:100vh;overflow:hidden;background-position:center;background-repeat:no-repeat;background-size:100% 100%;isolation:isolate}
 .coverArt{background-image:url("cover-bg.png")}
 .howtoArt{background-image:url("howto-bg.png")}
-.missionsArt{background-image:url("missions-bg.png")}
+
 .artHotspot{position:absolute;border:0;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;z-index:10;padding:0}
 .artHotspot:focus-visible{outline:4px solid #fff;outline-offset:4px;border-radius:20px;background:#ffffff12}
 .coverStartHotspot{left:32%;top:55%;width:36%;height:19%}
@@ -639,32 +639,19 @@ body{background:#09030f}
 @media(max-width:900px){.coverMain{grid-template-columns:17% 66% 17%}.coverChild{font-size:clamp(48px,12vw,100px)}.coverBuddha{transform:scale(.8)}.coverMissionStrip{grid-template-columns:repeat(3,1fr);bottom:5%}.coverFooter{display:none}.howtoSteps{gap:9px}.howtoCard{min-height:220px;padding-left:10px;padding-right:10px}.codeHowto{padding-left:3vw;padding-right:3vw}}
 @media(max-width:650px){.coverTop{top:1%;left:2%;right:2%}.coverSchool img{width:48px;height:48px}.coverSchool b{font-size:13px}.coverSchool span,.coverPill{display:none}.coverMain{inset:13% 2% 28%;grid-template-columns:1fr}.coverBuddha{position:absolute;top:-4%;left:50%;transform:translateX(-50%) scale(.55);opacity:.8}.coverTitleBlock{margin-top:10vh}.coverTitleBlock h1{font-size:clamp(36px,12vw,58px)}.coverTitleBlock p{font-size:12px}.coverChild{display:none}.coverMissionStrip{left:3%;right:3%;grid-template-columns:repeat(2,1fr);bottom:3%;gap:5px}.coverMissionStrip div{min-height:34px;border-radius:10px;font-size:9px}.coverStartButton{width:85%;padding:14px 16px}.codeHowto{height:auto;min-height:100vh;padding:3vh 3vw 2vh}.howtoHeader{gap:9px}.howtoHeader img{width:50px;height:50px}.howtoHeader h2{font-size:28px}.howtoHeader p{font-size:11px}.howtoSteps{grid-template-columns:repeat(2,1fr);margin:3vh auto 2vh;gap:8px}.howtoCard{min-height:180px;border-radius:17px;padding:25px 8px 10px}.stepNo{width:35px;height:35px;font-size:16px;top:-14px}.stepIcon{font-size:35px}.howtoCard h3{font-size:16px}.howtoCard p{font-size:10px}.howtoTips{font-size:10px;padding:9px}.howtoActions{gap:8px}.howtoActions button{padding:10px 13px;font-size:12px}}
 
-/* v32 — ใช้ภาพฉากหน้าปก/วิธีเล่นตามต้นฉบับที่ผู้ใช้ให้มา
-   ปุ่มทั้งหมดเป็น HTML/CSS overlay เพื่อให้กดได้จริง โดยไม่ทับงานภาพ */
-.photoSceneScreen{padding:0!important;background:#05020b!important;overflow:hidden!important;display:grid!important;place-items:center!important}
-.photoScene{position:relative;width:100vw;height:100vh;overflow:hidden;background-position:center center;background-repeat:no-repeat;background-size:100% 100%;isolation:isolate}
-.coverScene{background-image:url("cover-scene.jpeg")}
-.howtoScene{background-image:url("howto-scene.jpeg")}
-.sceneButton{position:absolute;display:block;border:0;background:transparent;padding:0;margin:0;cursor:pointer;z-index:20;-webkit-tap-highlight-color:transparent;outline:none}
-.sceneButton:focus-visible{box-shadow:0 0 0 5px #fff,0 0 0 9px #ffd66b;border-radius:30px}
-/* ตำแหน่งยึดตามปุ่มที่อยู่ในภาพ 1536×864 */
-.coverStartHotspot{left:34.3%;top:66.2%;width:32.0%;height:16.0%;border-radius:999px}
-.coverHowtoHotspot{right:1.4%;bottom:2.2%;width:14.0%;height:9.0%;border-radius:999px}
-/* หน้าวิธีเล่น: ปุ่มกลับหน้าหลักอยู่มุมขวาล่างตามภาพ */
-.howtoHomeHotspot{right:0.6%;bottom:0.8%;width:17.0%;height:11.5%;border-radius:999px}
-/* แถบข้อความล่างกลางภาพใช้เป็นปุ่มไปหน้าเลือกภารกิจแบบโปร่งใส */
-.howtoNextHotspot{left:28%;bottom:1.2%;width:44%;height:8.5%;border-radius:999px}
-.sceneButton:hover{background:#ffffff08}
-.sceneButton:active{background:#ffd66b18;transform:scale(.985)}
-@media(max-width:900px){
- .coverStartHotspot{left:29%;top:64%;width:42%;height:19%}
- .coverHowtoHotspot{right:1%;bottom:2%;width:19%;height:11%}
- .howtoHomeHotspot{right:0.5%;bottom:0.5%;width:22%;height:14%}
- .howtoNextHotspot{left:23%;width:54%;bottom:0.5%;height:10%}
-}
-@media(max-width:600px){
- .coverStartHotspot{left:23%;top:62%;width:54%;height:22%}
- .coverHowtoHotspot{right:0.5%;bottom:1%;width:27%;height:13%}
- .howtoHomeHotspot{right:0.5%;bottom:0.5%;width:29%;height:16%}
- .howtoNextHotspot{left:17%;width:66%;bottom:0.5%;height:12%}
-}
+
+/* ===== v33: CODE-ONLY MISSION SELECT ===== */
+.codeMissionScreen{position:fixed;inset:0;display:grid;place-items:center;background:radial-gradient(circle at 50% 10%,#ffd66b20,transparent 32%),linear-gradient(145deg,#11051f,#32115a 48%,#8d3e91);overflow:hidden;color:#fff}
+.codeMissionScreen:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 18% 25%,#fff6c914 0 8%,transparent 20%),radial-gradient(circle at 82% 70%,#ffb7df12 0 10%,transparent 25%);pointer-events:none}
+.missionBoard{position:relative;z-index:2;width:min(1280px,94vw);height:min(900px,94vh);padding:clamp(18px,3vh,34px) clamp(18px,3vw,42px) clamp(14px,2vh,24px);box-sizing:border-box;border:1px solid #ffd66b55;border-radius:32px;background:#12051dcc;box-shadow:0 25px 70px #0009,inset 0 0 50px #ffd66b0b;display:flex;flex-direction:column}
+.missionBoardTop{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:clamp(12px,2vh,22px)}
+.missionBrand{display:flex;align-items:center;gap:15px}.missionBrand img{width:clamp(58px,6vw,88px);height:clamp(58px,6vw,88px);object-fit:contain;filter:drop-shadow(0 5px 12px #0008)}
+.missionBrand span{color:#ffe7a0;font-size:clamp(10px,1vw,15px);font-weight:1000;letter-spacing:1px}.missionBrand h2{margin:2px 0 2px;color:#fff0b0;font-size:clamp(28px,3.5vw,52px);line-height:1;text-shadow:0 4px 14px #0008}.missionBrand p{margin:4px 0 0;color:#fff1dd;font-size:clamp(11px,1.25vw,18px)}
+.stationScore{min-width:150px;padding:12px 18px;border:1px solid #ffd66b66;border-radius:18px;background:#24103ad9;text-align:center;color:#ffe38a;font-size:clamp(18px,1.8vw,28px);box-shadow:0 8px 25px #0005}.stationScore b{color:#fff}.stationScore small{display:block;color:#fff0cfaa;font-size:11px;margin-top:2px;font-weight:800}
+.missionGridCode{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,1.4vw,18px);flex:1;min-height:0}
+.missionCardCode{position:relative;min-height:0;padding:clamp(14px,1.8vw,24px);border:2px solid #ffd66b55;border-radius:24px;background:linear-gradient(150deg,#ffffff12,#1c092ecc 72%);color:#fff;text-align:left;box-shadow:0 10px 26px #0005,inset 0 0 35px #ffd66b08;cursor:pointer;overflow:hidden;transition:transform .16s,filter .16s,border-color .16s,box-shadow .16s}
+.missionCardCode:before{content:"";position:absolute;inset:auto -20% -45% -20%;height:60%;background:radial-gradient(circle,#ffd66b14,transparent 65%);pointer-events:none}.missionCardCode:hover,.missionCardCode:focus,.missionCardCode:active{transform:translateY(-3px);filter:brightness(1.12);border-color:#ffd66bcc;box-shadow:0 15px 34px #0007,0 0 25px #ffd66b1c}
+.codeBadge{position:absolute;right:13px;top:12px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ffd66b,#a66a19);border:2px solid #fff0a4;color:#4a1a4e;font-size:20px;font-weight:1000;box-shadow:0 4px 14px #0006}.codeIcon{display:block;font-size:clamp(44px,5vw,72px);line-height:1;margin:5px 0 14px;filter:drop-shadow(0 5px 9px #0005)}.missionCardCode b{display:block;color:#ffe99c;font-size:clamp(17px,1.7vw,26px);line-height:1.15;margin-bottom:8px}.missionCardCode small{display:block;color:#fff1df;line-height:1.5;font-size:clamp(10px,1.05vw,15px);min-height:3em}.missionCardCode em{display:inline-block;margin-top:12px;padding:6px 10px;border-radius:999px;background:#ffffff10;border:1px solid #ffffff22;color:#ffe8ad;font-size:11px;font-style:normal;font-weight:900}.missionCardCode.completed{border-color:#8ef0b477;background:linear-gradient(150deg,#1d74441f,#1c092ecc)}.missionCardCode.completed .missionPts{color:#aaffc9;border-color:#8ef0b455;background:#69e59c12}
+.missionBoardBottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:clamp(10px,1.7vh,18px)}.boardNavButton{padding:11px 18px;border-radius:999px;border:1px solid #ffd66b77;background:#1a082ddd;color:#fff0bd;font-weight:1000;font-size:clamp(12px,1.2vw,17px);cursor:pointer}.boardNavButton:hover,.boardNavButton:focus{background:#5e2390;border-color:#ffd66b}.boardHint{flex:1;text-align:center;color:#fff0d0aa;font-size:clamp(10px,1vw,14px);font-weight:800}
+@media(max-width:900px){.missionBoard{height:96vh;border-radius:24px}.missionGridCode{gap:9px}.missionCardCode{padding:13px;border-radius:18px}.codeIcon{font-size:42px;margin-bottom:9px}.missionCardCode b{font-size:16px}.missionCardCode small{font-size:10px}.stationScore{min-width:110px;padding:9px 12px}}
+@media(max-width:650px){.missionBoard{width:96vw;height:96vh;padding:13px;border-radius:20px}.missionBoardTop{margin-bottom:10px}.missionBrand{gap:8px}.missionBrand img{width:48px;height:48px}.missionBrand h2{font-size:25px}.missionBrand p{font-size:10px}.stationScore{min-width:88px;padding:7px 9px;font-size:16px}.stationScore small{font-size:9px}.missionGridCode{grid-template-columns:repeat(2,1fr);gap:8px}.missionCardCode{padding:10px;border-radius:15px}.codeBadge{width:30px;height:30px;font-size:15px;right:7px;top:7px}.codeIcon{font-size:34px;margin:2px 0 7px}.missionCardCode b{font-size:13px;margin-bottom:4px}.missionCardCode small{font-size:9px;line-height:1.35}.missionCardCode em{margin-top:7px;font-size:9px;padding:4px 7px}.missionBoardBottom{margin-top:8px}.boardNavButton{padding:8px 11px;font-size:10px}.boardHint{font-size:8px}}

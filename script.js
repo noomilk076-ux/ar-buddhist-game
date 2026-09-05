@@ -295,3 +295,15 @@ ui();
  });
  obs.observe(document.body,{subtree:true,childList:true,characterData:true});
 })();
+
+
+// v33: keep code-only mission board score in sync with the station total.
+function syncMissionBoard(){
+  const el=document.querySelector("#missionTotalScore");
+  if(el && typeof totalScore !== "undefined") el.textContent=totalScore;
+}
+const _showMissionsV33=showMissions;
+showMissions=function(){_showMissionsV33();syncMissionBoard();};
+const _uiV33=ui;
+ui=function(){_uiV33();syncMissionBoard();};
+syncMissionBoard();
