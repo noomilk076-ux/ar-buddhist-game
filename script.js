@@ -61,11 +61,29 @@ function gestureFrame(t){if(gameKind==="altar")altarGesture();else if(gameKind==
 
 function setup(kind){stopCamera();gameKind=kind;round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];$("#permissionTitle").textContent=names[kind];$("#menu").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
 function startGame(){$("#permission").classList.add("hidden");$("#game").classList.remove("hidden");({altar,sort,quiz,fill,moral,tree}[gameKind])();startCamera()}
+function showGrandFinale(done){
+  const layer=$("#grandFinale");
+  if(!layer)return done();
+  $("#finaleTotal").textContent=total;$("#finaleRank").textContent=rank(total);
+  const flowers=$(".finaleFlowers"); flowers.innerHTML="";
+  ["🌸","🤍","🌹","🌼","🌸","🤍","🌹","🌸","🌼","🤍","🌸","🌹"].forEach((f,i)=>{
+    const el=document.createElement("span");el.textContent=f;el.style.left=(8+i*7.4)+"%";el.style.animationDelay=(i*.08)+"s";flowers.appendChild(el);
+  });
+  layer.classList.remove("hidden");layer.setAttribute("aria-hidden","false");
+  setTimeout(()=>{layer.classList.add("show");},30);
+  setTimeout(()=>{layer.classList.remove("show");setTimeout(()=>{layer.classList.add("hidden");layer.setAttribute("aria-hidden","true");done();},450);},3000);
+}
 function finish(msg){
   if(finished)return;finished=true;missionScores[gameKind]=round;completed.add(gameKind);
   $("#resultTitle").textContent=msg;$("#resultRound").textContent="+"+round;$("#resultTotal").textContent=total;$("#resultRank").textContent=rank(total);$("#resultProgress").textContent=`🏅 สำเร็จแล้ว ${completed.size}/6 ภารกิจ`;
-  $("#game").classList.add("hidden");$("#result").classList.remove("hidden");stopCamera();ui();
-  if(completed.size===6){$("#resultTitle").textContent="🏆 สุดยอด! ภารกิจครบทั้ง ๖ ด่านแล้ว";$("#resultProgress").textContent="🌸 คุณพิชิตภารกิจชาวพุทธน้อย เทพสุนทรินทร์ครบทุกภารกิจแล้ว!";}
+  $("#game").classList.add("hidden");stopCamera();ui();
+  if(completed.size===6){
+    $("#resultTitle").textContent="🏆 สุดยอด! ภารกิจครบทั้ง ๖ ด่านแล้ว";
+    $("#resultProgress").textContent="🌸 คุณพิชิตภารกิจชาวพุทธน้อย เทพสุนทรินทร์ครบทุกภารกิจแล้ว!";
+    showGrandFinale(()=>$("#result").classList.remove("hidden"));
+  }else{
+    $("#result").classList.remove("hidden");
+  }
 }
 function stopCamera(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}cancelAnimationFrame(raf);$("#camera").srcObject=null;hands=[];poseLm=null;faceLm=null}
 

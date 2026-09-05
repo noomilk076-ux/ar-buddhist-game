@@ -333,3 +333,30 @@ body{background:#09030f}
   .altarSeven .tierSlot{font-size:15px!important}
   .altarSeven .ritualSlot{font-size:13px!important}
 }
+
+
+/* v21 — Grand Finale after completing all 6 missions */
+#grandFinale{position:fixed;inset:0;z-index:12000;display:grid;place-items:center;text-align:center;overflow:hidden;background:radial-gradient(circle at 50% 42%,rgba(255,211,78,.18),rgba(20,5,35,.97) 58%);opacity:0;transform:scale(.98);transition:opacity .45s ease,transform .45s ease;pointer-events:none}
+#grandFinale.hidden{display:none}
+#grandFinale.show{opacity:1;transform:scale(1)}
+#grandFinale:before,#grandFinale:after{content:"";position:absolute;width:48vw;height:48vw;border-radius:50%;border:1px solid rgba(255,211,78,.22);animation:finaleRing 3s ease-out infinite}
+#grandFinale:after{animation-delay:1.2s}
+.finaleGlow{position:absolute;width:32vw;height:32vw;border-radius:50%;background:rgba(255,220,120,.18);filter:blur(45px);animation:finalePulse 1.6s ease-in-out infinite}
+.finaleLotus{position:relative;font-size:clamp(70px,11vw,145px);filter:drop-shadow(0 0 24px rgba(255,215,100,.75));animation:finaleLotus 1.2s cubic-bezier(.2,1.5,.4,1) both}
+.finaleEyebrow{position:relative;margin-top:-4px;font-weight:900;letter-spacing:.18em;font-size:clamp(12px,1.4vw,20px);color:#ffd75a}
+#grandFinale h2{position:relative;margin:8px 16px 4px;font-size:clamp(44px,7vw,92px);line-height:1;color:#fff0a0;text-shadow:0 4px 0 rgba(70,25,60,.4),0 0 28px rgba(255,220,100,.55);animation:finaleText .8s .15s both}
+#grandFinale p{position:relative;margin:0 20px 18px;font-size:clamp(16px,2vw,28px);color:#fff}
+.finaleScore{position:relative;display:flex;align-items:center;justify-content:center;gap:16px;margin:8px auto;padding:10px 24px;width:min(430px,80vw);border:1px solid rgba(255,215,90,.45);border-radius:999px;background:rgba(25,5,35,.58);color:#fff}
+.finaleScore span{font-size:clamp(14px,1.5vw,20px)}
+.finaleScore b{font-size:clamp(30px,4vw,56px);color:#ffd34e}
+.finaleRank{position:relative;font-size:clamp(18px,2vw,30px);font-weight:800;color:#fff0b0}
+.finaleSchool{position:relative;margin-top:14px;font-size:clamp(13px,1.4vw,19px);color:rgba(255,255,255,.75)}
+.finaleFlowers{position:absolute;left:0;right:0;bottom:-8px;height:30%;pointer-events:none}
+.finaleFlowers span{position:absolute;bottom:-80px;font-size:clamp(22px,3vw,44px);animation:finaleFlower 2.4s ease-out infinite}
+@keyframes finaleRing{0%{transform:scale(.25);opacity:0}25%{opacity:1}100%{transform:scale(2);opacity:0}}
+@keyframes finalePulse{0%,100%{transform:scale(.8);opacity:.45}50%{transform:scale(1.15);opacity:.8}}
+@keyframes finaleLotus{0%{opacity:0;transform:translateY(35px) scale(.3) rotate(-8deg)}100%{opacity:1;transform:translateY(0) scale(1) rotate(0)}}
+@keyframes finaleText{0%{opacity:0;transform:translateY(20px) scale(.85)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes finaleFlower{0%{opacity:0;transform:translateY(0) rotate(0)}15%{opacity:1}100%{opacity:0;transform:translateY(-45vh) rotate(240deg)}}
+@media(max-width:700px){#grandFinale h2{font-size:48px}.finaleScore{margin-top:10px}.finaleFlowers{height:24%}}
+@media(prefers-reduced-motion:reduce){#grandFinale:before,#grandFinale:after,.finaleGlow,.finaleLotus,#grandFinale h2,.finaleFlowers span{animation:none!important}}
