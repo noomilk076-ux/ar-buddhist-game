@@ -7,7 +7,7 @@
 <title>ภารกิจชาวพุทธน้อย</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
-<link rel="stylesheet" href="style.css?v=37">
+<link rel="stylesheet" href="style.css?v=41">
 </head>
 <body>
 <div id="menu" class="screen hidden imageLandingScreen" aria-label="หน้าปกเกม">
@@ -15,8 +15,7 @@
     <img class="landingBgImage" src="cover-bg.png" alt="ภาพหน้าปกเกม ภารกิจชาวพุทธน้อย">
     <!-- ปุ่มจริงทับตำแหน่งปุ่มในภาพ -->
     <button class="imageHit coverStartHit" aria-label="เริ่มทำภารกิจ" onclick="window.goHowto()"></button>
-    <button class="imageHit coverHowtoHit" aria-label="วิธีเล่น" onclick="window.goHowto()"></button>
-  </div>
+      </div>
 </div>
 
 <div id="howto" class="screen hidden imageLandingScreen" aria-label="หน้าวิธีเล่น">
@@ -97,63 +96,94 @@
   </section>
 </div>
 <script>
-/* FINAL IMAGE LANDING FLOW
-   COVER -> HOWTO -> MISSION SELECT.
-   The three landing screens use the supplied 16:9 artwork as the visual layer.
-   Real HTML hit areas are positioned over the printed buttons/cards so taps/clicks work.
+/* FINAL LANDING NAVIGATION v40
+   Single controller for: COVER -> HOWTO -> MISSION SELECT.
+   The game module never controls these landing screens.
 */
 (function(){
-  const pages=['menu','howto','missionSelect','permission','game','result'];
-  const q=id=>document.getElementById(id);
-  function hideAll(){ pages.forEach(id=>{ const el=q(id); if(el) el.classList.add('hidden'); }); }
-  function show(id){ hideAll(); const el=q(id); if(el) el.classList.remove('hidden'); window.__landingPage=id; }
-  function stopCamera(){ try{ if(window.stopGameCamera) window.stopGameCamera(); }catch(e){} }
+  const PAGES = ["menu","howto","missionSelect","permission","game","result"];
+  const $ = id => document.getElementById(id);
 
-  window.goMenu=function(){ stopCamera(); show('menu'); };
-  window.goHowto=function(){ stopCamera(); show('howto'); };
-  window.goMissions=function(){ stopCamera(); show('missionSelect'); try{ if(window.refreshGameUI) window.refreshGameUI(); }catch(e){} };
+  function hideAll(){
+    for(const id of PAGES){
+      const el=$(id);
+      if(el) el.classList.add("hidden");
+    }
+  }
+
+  function show(page){
+    hideAll();
+    const el=$(page);
+    if(!el) return;
+    el.classList.remove("hidden");
+    el.setAttribute("aria-hidden","false");
+    document.body.dataset.page=page;
+  }
+
+  function stopCamera(){
+    try{ if(typeof window.stopGameCamera === "function") window.stopGameCamera(); }catch(e){}
+  }
+
+  window.APP_NAV = Object.freeze({
+    menu(){ stopCamera(); show("menu"); },
+    howto(){ stopCamera(); show("howto"); },
+    missions(){
+      stopCamera();
+      show("missionSelect");
+      try{ if(typeof window.refreshGameUI === "function") window.refreshGameUI(); }catch(e){}
+    }
+  });
+
+  // Compatibility aliases for existing game controls.
+  window.goMenu = () => window.APP_NAV.menu();
+  window.goHowto = () => window.APP_NAV.howto();
+  window.goMissions = () => window.APP_NAV.missions();
 
   const names={
-    altar:'ภารกิจ ๑ · จัดโต๊ะหมู่บูชา',
-    sort:'ภารกิจ ๒ · นักคัดแยกขยะ',
-    quiz:'ภารกิจ ๓ · ธรรมะท้าประลอง',
-    fill:'ภารกิจ ๔ · เติมคำธรรมะ',
-    moral:'ภารกิจ ๕ · พุทธศาสนิกชนตัวน้อย',
-    tree:'ภารกิจ ๖ · ต้นไม้แห่งความดี'
+    altar:"ภารกิจ ๑ · จัดโต๊ะหมู่บูชา",
+    sort:"ภารกิจ ๒ · นักคัดแยกขยะ",
+    quiz:"ภารกิจ ๓ · ธรรมะท้าประลอง",
+    fill:"ภารกิจ ๔ · เติมคำธรรมะ",
+    moral:"ภารกิจ ๕ · พุทธศาสนิกชนตัวน้อย",
+    tree:"ภารกิจ ๖ · ต้นไม้แห่งความดี"
   };
 
   window.chooseMission=function(kind){
     window.pendingMission=kind;
-    const title=q('permissionTitle');
-    if(title) title.textContent=names[kind]||'กำลังเตรียมภารกิจ';
-    show('permission');
+    const title=$("permissionTitle");
+    if(title) title.textContent=names[kind] || "กำลังเตรียมภารกิจ";
+    show("permission");
   };
 
   window.startSelectedMission=function(){
-    if(typeof window.startGameForUI==='function'){ window.startGameForUI(); return; }
-    const s=q('status'); if(s) s.textContent='กำลังเตรียมระบบ… กรุณารอสักครู่แล้วกดเริ่มอีกครั้ง';
+    if(typeof window.startGameForUI === "function"){ window.startGameForUI(); return; }
+    const s=$("status");
+    if(s) s.textContent="กำลังเตรียมระบบ… กรุณารอสักครู่แล้วกดเริ่มอีกครั้ง";
   };
 
   window.retryMission=function(){
     if(window.pendingMission){
-      const title=q('permissionTitle');
-      if(title) title.textContent=names[window.pendingMission]||'กำลังเตรียมภารกิจ';
-      show('permission');
-    } else show('missionSelect');
+      const title=$("permissionTitle");
+      if(title) title.textContent=names[window.pendingMission] || "กำลังเตรียมภารกิจ";
+      show("permission");
+    }else{
+      window.APP_NAV.missions();
+    }
   };
 
   window.syncLandingScore=function(total){
-    const el=q('missionLiveScore');
+    const el=$("missionLiveScore");
     if(el) el.textContent=String(total ?? 0);
   };
 
-  // Start on the cover. No game-module load event changes the landing page.
-  show('menu');
+  // IMPORTANT: every fresh page load ALWAYS starts at the cover.
+  // No localStorage/session state is used to choose the landing page.
+  show("menu");
   window.syncLandingScore(0);
 })();
 </script>
 
-<script type="module" src="script.js?v=39"></script>
+<script type="module" src="script.js?v=41"></script>
 
 <div id="fxLayer" aria-hidden="true"></div>
 </body>
