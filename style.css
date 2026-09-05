@@ -822,3 +822,92 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
   .howtoMinimal .howtoHomeFixed{left:3vw!important;bottom:2.5vh!important;min-width:145px!important;min-height:50px!important;font-size:15px!important}
   .howtoMinimal .howtoNextFixed{left:50%!important;bottom:2.2vh!important;min-width:68vw!important;min-height:58px!important;padding:10px 16px!important;font-size:16px!important}
 }
+
+
+/* =========================================================
+   v36 FINAL — CLEAN 3-PAGE LANDING FLOW
+   Cover -> How-to -> Mission Select
+   ========================================================= */
+.codeCoverScreen,.howtoScreenFinal{
+  position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;
+  padding:0!important;margin:0!important;overflow:hidden!important;
+  display:grid!important;place-items:center!important;
+  background:#0b0318!important;
+  pointer-events:auto!important;
+}
+.coverFinalStage{
+  position:relative;width:100vw;height:100vh;overflow:hidden;isolation:isolate;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;color:#fff;
+  background:
+    radial-gradient(circle at 50% 35%,rgba(255,220,130,.24),transparent 18%),
+    radial-gradient(circle at 50% 75%,rgba(255,150,210,.18),transparent 32%),
+    linear-gradient(145deg,#160526 0%,#45206c 48%,#b56b82 100%);
+}
+.coverFinalStage:before{
+  content:"";position:absolute;inset:-15%;z-index:-2;
+  background:radial-gradient(ellipse at 50% 110%,rgba(255,223,151,.38),transparent 40%);
+}
+.coverFinalStage:after{
+  content:"";position:absolute;inset:0;z-index:-1;opacity:.22;
+  background:linear-gradient(115deg,transparent 0 35%,rgba(255,255,255,.12) 50%,transparent 65%);
+  transform:skewX(-10deg);
+}
+.coverFinalGlow{position:absolute;width:45vw;height:45vw;max-width:650px;max-height:650px;border-radius:50%;background:radial-gradient(circle,rgba(255,220,130,.18),transparent 65%);filter:blur(2px);top:8%;left:50%;transform:translateX(-50%);z-index:0}
+.coverFinalLotus{position:absolute;right:4vw;bottom:4vh;font-size:clamp(80px,12vw,190px);opacity:.10;z-index:0;filter:blur(.2px)}
+.coverFinalLogo{position:relative;z-index:2;margin-bottom:10px}
+.coverFinalLogo img{width:clamp(72px,8vw,120px);height:clamp(72px,8vw,120px);object-fit:contain;filter:drop-shadow(0 8px 18px rgba(0,0,0,.45))}
+.coverFinalSchool{position:relative;z-index:2;color:#ffe7a5;font-size:clamp(15px,1.5vw,25px);font-weight:900;letter-spacing:.03em;margin-bottom:clamp(12px,2vh,24px)}
+.coverFinalKicker{position:relative;z-index:2;color:#ffe9a7;font-size:clamp(15px,1.6vw,25px);font-weight:900;text-shadow:0 3px 10px #0008}
+.coverFinalStage h1{position:relative;z-index:2;margin:4px 0 8px;font-size:clamp(42px,6vw,92px);line-height:1.02;color:#fff0ad;font-weight:1000;letter-spacing:-.02em;text-shadow:0 5px 18px #17051f,0 0 28px rgba(255,220,120,.18)}
+.coverFinalStage p{position:relative;z-index:2;margin:0;color:#fff4dc;font-size:clamp(14px,1.5vw,24px);font-weight:700;text-shadow:0 3px 10px #0007}
+.coverFinalStart{
+  position:relative;z-index:10;margin-top:clamp(30px,5vh,58px);
+  min-width:clamp(250px,25vw,410px);min-height:clamp(64px,7vh,88px);
+  padding:15px 34px;border:3px solid #ffe07a;border-radius:999px;
+  background:linear-gradient(135deg,#6418ad,#a72ec8 55%,#7220b0);
+  color:#fff;font-size:clamp(21px,2vw,32px);font-weight:1000;letter-spacing:.01em;
+  cursor:pointer;pointer-events:auto!important;touch-action:manipulation!important;
+  box-shadow:0 10px 34px rgba(10,2,22,.65),0 0 30px rgba(255,218,110,.30);
+  text-shadow:0 2px 8px #000;transition:transform .16s,filter .16s;
+}
+.coverFinalStart:hover,.coverFinalStart:active{transform:scale(1.04);filter:brightness(1.12)}
+
+.howtoStageFinal{
+  position:absolute;inset:0;overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 35%,rgba(255,222,137,.16),transparent 25%),
+    radial-gradient(circle at 20% 80%,rgba(255,170,210,.12),transparent 28%),
+    linear-gradient(145deg,#17052d,#54217b 52%,#d29a59);
+}
+.howtoStageFinal:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 105%,rgba(255,225,160,.22),transparent 42%)}
+.howtoGlowFinal{position:absolute;left:50%;top:16%;transform:translateX(-50%);width:45vw;height:45vw;border-radius:50%;background:radial-gradient(circle,rgba(255,221,126,.12),transparent 68%)}
+.howtoLotusFinal{position:absolute;right:4vw;bottom:4vh;font-size:clamp(90px,14vw,220px);opacity:.08}
+.howtoHomeFinal,.howtoNextFinal{
+  position:absolute!important;z-index:20!important;pointer-events:auto!important;touch-action:manipulation!important;cursor:pointer!important;
+}
+.howtoHomeFinal{
+  left:3vw;bottom:3vh;min-width:180px;min-height:58px;padding:12px 24px;
+  border:2px solid #ffd66b;border-radius:999px;background:rgba(25,8,43,.92);color:#ffeab0;
+  font-size:clamp(17px,1.45vw,24px);font-weight:1000;box-shadow:0 8px 24px #0008;
+}
+.howtoNextFinal{
+  left:50%;bottom:2.5vh;transform:translateX(-50%);
+  min-width:min(520px,42vw);min-height:74px;padding:14px 34px;
+  border:3px solid #ffd66b;border-radius:999px;background:linear-gradient(135deg,#6519ad,#a72dca);
+  color:#fff;font-size:clamp(20px,1.8vw,30px);font-weight:1000;
+  box-shadow:0 10px 32px #16051f99,0 0 26px #ffd66b55;text-shadow:0 2px 7px #000;
+}
+.howtoHomeFinal:hover,.howtoHomeFinal:active{transform:scale(1.04);filter:brightness(1.12)}
+.howtoNextFinal:hover,.howtoNextFinal:active{transform:translateX(-50%) scale(1.04);filter:brightness(1.12)}
+
+@media(max-width:900px){
+  .coverFinalSchool{font-size:16px}.coverFinalStart{min-width:280px}
+  .howtoHomeFinal{left:2.5vw;bottom:2.5vh;min-width:155px;min-height:52px;font-size:17px}
+  .howtoNextFinal{bottom:2vh;min-width:46vw;min-height:64px;font-size:21px}
+}
+@media(max-width:650px){
+  .coverFinalSchool{font-size:13px}.coverFinalStage h1{font-size:clamp(38px,12vw,58px)}.coverFinalStage p{font-size:12px}.coverFinalStart{width:78vw;min-width:0;min-height:58px;font-size:18px}
+  .howtoHomeFinal{left:3vw;bottom:2.5vh;min-width:145px;min-height:50px;padding:10px 16px;font-size:15px}
+  .howtoNextFinal{bottom:2.2vh;min-width:68vw;min-height:58px;padding:10px 16px;font-size:16px}
+}

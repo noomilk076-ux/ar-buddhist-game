@@ -7,45 +7,29 @@
 <title>ภารกิจชาวพุทธน้อย</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
-<link rel="stylesheet" href="style.css?v=354">
+<link rel="stylesheet" href="style.css?v=36">
 </head>
 <body>
 <div id="menu" class="screen openingScreen codeCoverScreen">
-  <div class="codeCover">
-    <div class="coverSky"></div>
-    <div class="coverTempleGlow"></div>
-    <div class="coverDecor decor1">✦</div><div class="coverDecor decor2">✧</div><div class="coverDecor decor3">🌸</div><div class="coverDecor decor4">🪷</div>
-    <div class="coverTop">
-      <div class="coverSchool">
-        <img src="school-logo.png" alt="ตราโรงเรียนอนุบาลเทพสุนทรินทร์">
-        <div><b>โรงเรียนอนุบาลเทพสุนทรินทร์</b><span>“พุทธวิถี สานคุณค่า สู่ชีวิตพอเพียง”</span></div>
-      </div>
-      <div class="coverPill">เกมการเรียนรู้วิถีพุทธ • AR INTERACTIVE GAME</div>
-    </div>
-    <div class="coverMain">
-      <div class="coverBuddha" aria-hidden="true"><div class="buddhaHalo">☸</div><div class="buddhaEmoji">🧘</div><div class="coverLotus">🪷</div></div>
-      <div class="coverTitleBlock">
-        <div class="coverKicker">🌸 ภารกิจแห่งความดี 🌸</div>
-        <h1>ภารกิจชาวพุทธน้อย</h1>
-        <p>เรียนรู้คุณธรรม • ลงมือทำ • สนุกกับการเป็นคนดี</p>
-        <div class="coverRule"><span>✦</span><i></i><span>✦</span></div>
-        <button id="openHowto" class="coverStartButton" onclick="window.goHowto()">▶ เริ่มทำภารกิจ</button>
-      </div>
-      <div class="coverChild coverChildLeft" aria-hidden="true">👦🏻<span>สวัสดีครับ!</span></div>
-      <div class="coverChild coverChildRight" aria-hidden="true">👧🏻<span>พร้อมลุยกันไหมคะ?</span></div>
-    </div>
-    <div class="coverMissionStrip">
-      <div><b>①</b><span>จัดโต๊ะหมู่บูชา</span></div><div><b>②</b><span>คัดแยกขยะ</span></div><div><b>③</b><span>ตอบธรรมะ</span></div><div><b>④</b><span>เติมคำธรรมะ</span></div><div><b>⑤</b><span>เลือกพฤติกรรม</span></div><div><b>⑥</b><span>ต้นไม้แห่งความดี</span></div>
-    </div>
-    <div class="coverFooter">โรงเรียนอนุบาลเทพสุนทรินทร์ • เรียนรู้ธรรมะผ่านการลงมือทำ</div>
+  <div class="coverFinalStage">
+    <div class="coverFinalGlow"></div>
+    <div class="coverFinalLotus">🪷</div>
+    <div class="coverFinalLogo"><img src="school-logo.png" alt="ตราโรงเรียนอนุบาลเทพสุนทรินทร์"></div>
+    <div class="coverFinalSchool">โรงเรียนอนุบาลเทพสุนทรินทร์</div>
+    <div class="coverFinalKicker">🌸 ภารกิจแห่งความดี 🌸</div>
+    <h1>ภารกิจชาวพุทธน้อย</h1>
+    <p>เรียนรู้คุณธรรม • ลงมือทำ • สนุกกับการเป็นคนดี</p>
+    <button id="openHowto" class="coverFinalStart" onclick="window.goHowto()">▶ เริ่มทำภารกิจ</button>
   </div>
 </div>
 
-<div id="howto" class="screen hidden artScreenWrap codeHowtoScreen">
-  <div class="codeHowto howtoMinimal">
-    <button id="howtoHome" class="howtoHomeButton howtoHomeFixed" onclick="goMenu()">⌂ กลับหน้าหลัก</button>
-    <button id="howtoNext" class="howtoNextButton howtoNextFixed" onclick="window.goMissions()">▶ พร้อมแล้ว เริ่มเลือกภารกิจ</button>
+<div id="howto" class="screen hidden howtoScreenFinal" aria-label="หน้าวิธีเล่น">
+  <div class="howtoStageFinal" aria-hidden="true">
+    <div class="howtoGlowFinal"></div>
+    <div class="howtoLotusFinal">🪷</div>
   </div>
+  <button id="howtoHome" class="howtoHomeFinal" onclick="window.goMenu()">⌂ กลับหน้าหลัก</button>
+  <button id="howtoNext" class="howtoNextFinal" onclick="window.goMissions()">▶ พร้อมแล้ว เริ่มเลือกภารกิจ</button>
 </div>
 
 <div id="missionSelect" class="screen hidden codeMissionScreen">
@@ -65,7 +49,7 @@
       <button data-game="moral" onclick="chooseMission('moral')" class="missionCardCode missionCard5"><span class="codeBadge">๕</span><span class="codeIcon">👍</span><b>พุทธศาสนิกชนตัวน้อย</b><small>ใช้ 👍 / 👎 เลือกการกระทำที่ควรหรือไม่ควรทำ</small><em class="missionPts">ยังไม่เล่น</em></button>
       <button data-game="tree" onclick="chooseMission('tree')" class="missionCardCode missionCard6"><span class="codeBadge">๖</span><span class="codeIcon">🌳</span><b>ต้นไม้แห่งความดี</b><small>ใช้นิ้วชี้จีบ ลาก และปล่อยต้นกล้าลงบนต้นไม้</small><em class="missionPts">ยังไม่เล่น</em></button>
     </div>
-    <div class="missionBoardBottom"><button id="missionHowto" class="boardNavButton" onclick="return window.openHowToFromMission(event)">📖 วิธีเล่น</button><div class="boardHint">💡 เลือกภารกิจที่สนใจได้เลย • ไม่มีการจับเวลา</div><button id="missionHome" class="boardNavButton" onclick="window.goMenu()">⌂ หน้าหลัก</button></div>
+    <div class="missionBoardBottom"><button id="missionHowto" class="boardNavButton" onclick="window.goHowto(); return false">📖 วิธีเล่น</button><div class="boardHint">💡 เลือกภารกิจที่สนใจได้เลย • ไม่มีการจับเวลา</div><button id="missionHome" class="boardNavButton" onclick="window.goMenu()">⌂ หน้าหลัก</button></div>
   </main>
 </div>
 
@@ -118,28 +102,62 @@
   </section>
 </div>
 <script>
-/* v35.4 FINAL FLOW LOCK — UI navigation is owned by this inline controller.
-   The game module must NEVER decide which landing screen is visible. */
+/* v36 FINAL LANDING FLOW
+   The three landing screens are controlled ONLY here:
+   COVER -> HOWTO -> MISSION SELECT.
+   The game module is not allowed to choose a landing screen. */
 (function(){
-  const ids=['#menu','#howto','#missionSelect','#permission','#game','#result'];
-  const q=s=>document.querySelector(s);
-  function hideAll(){ids.forEach(id=>{const e=q(id);if(e)e.classList.add('hidden')})}
-  function show(id){hideAll();const e=q(id);if(e)e.classList.remove('hidden')}
-  function stop(){try{window.stopGameCamera&&window.stopGameCamera()}catch(e){}}
-  function refresh(){try{window.refreshGameUI&&window.refreshGameUI()}catch(e){}}
-  window.__navStarted=true;
-  window.goMenu=function(){window.__navStarted=true;stop();show('#menu');refresh()};
-  window.goHowto=function(){window.__navStarted=true;stop();show('#howto')};
-  window.openHowToFromMission=function(ev){if(ev){ev.preventDefault();ev.stopImmediatePropagation&&ev.stopImmediatePropagation();}window.__navStarted=true;stop();show('#howto');return false};
-  window.goMissions=function(){window.__navStarted=true;stop();show('#missionSelect');refresh()};
-  window.chooseMission=function(kind){window.__navStarted=true;window.pendingMission=kind;const names={altar:'ภารกิจ ๑ · จัดโต๊ะหมู่บูชา',sort:'ภารกิจ ๒ · นักคัดแยกขยะ',quiz:'ภารกิจ ๓ · ธรรมะท้าประลอง',fill:'ภารกิจ ๔ · เติมคำธรรมะ',moral:'ภารกิจ ๕ · พุทธศาสนิกชนตัวน้อย',tree:'ภารกิจ ๖ · ต้นไม้แห่งความดี'};const t=q('#permissionTitle');if(t)t.textContent=names[kind]||'กำลังเตรียมภารกิจ';show('#permission')};
-  window.startSelectedMission=function(){window.__navStarted=true;if(typeof window.startGameForUI==='function'){window.startGameForUI();return}const s=q('#status');if(s)s.textContent='กำลังเตรียมระบบ… กรุณารอสักครู่แล้วกดเริ่มอีกครั้ง'};
-  window.retryMission=function(){window.__navStarted=true;stop();show('#permission')};
-  // Initial state: cover only. No later script is allowed to reset it.
-  hideAll();show('#menu');
+  const pages=['menu','howto','missionSelect','permission','game','result'];
+  const q=id=>document.getElementById(id);
+  function hideAll(){ pages.forEach(id=>{ const el=q(id); if(el) el.classList.add('hidden'); }); }
+  function show(id){ hideAll(); const el=q(id); if(el) el.classList.remove('hidden'); window.__landingPage=id; }
+  function stopCamera(){ try{ if(window.stopGameCamera) window.stopGameCamera(); }catch(e){} }
+
+  window.goMenu=function(){ window.__landingPage='menu'; stopCamera(); show('menu'); };
+  window.goHowto=function(){ window.__landingPage='howto'; stopCamera(); show('howto'); };
+  window.goMissions=function(){ window.__landingPage='missionSelect'; stopCamera(); show('missionSelect'); try{ if(window.refreshGameUI) window.refreshGameUI(); }catch(e){} };
+
+  window.openHowToFromMission=function(ev){
+    if(ev){ ev.preventDefault(); ev.stopPropagation(); }
+    window.goHowto();
+    return false;
+  };
+
+  window.chooseMission=function(kind){
+    window.pendingMission=kind;
+    const names={
+      altar:'ภารกิจ ๑ · จัดโต๊ะหมู่บูชา',
+      sort:'ภารกิจ ๒ · นักคัดแยกขยะ',
+      quiz:'ภารกิจ ๓ · ธรรมะท้าประลอง',
+      fill:'ภารกิจ ๔ · เติมคำธรรมะ',
+      moral:'ภารกิจ ๕ · พุทธศาสนิกชนตัวน้อย',
+      tree:'ภารกิจ ๖ · ต้นไม้แห่งความดี'
+    };
+    const title=q('permissionTitle');
+    if(title) title.textContent=names[kind]||'กำลังเตรียมภารกิจ';
+    show('permission');
+  };
+
+  window.startSelectedMission=function(){
+    if(typeof window.startGameForUI==='function'){ window.startGameForUI(); return; }
+    const s=q('status'); if(s) s.textContent='กำลังเตรียมระบบ… กรุณารอสักครู่แล้วกดเริ่มอีกครั้ง';
+  };
+
+  window.retryMission=function(){
+    if(window.pendingMission){
+      const title=q('permissionTitle');
+      const names={altar:'ภารกิจ ๑ · จัดโต๊ะหมู่บูชา',sort:'ภารกิจ ๒ · นักคัดแยกขยะ',quiz:'ภารกิจ ๓ · ธรรมะท้าประลอง',fill:'ภารกิจ ๔ · เติมคำธรรมะ',moral:'ภารกิจ ๕ · พุทธศาสนิกชนตัวน้อย',tree:'ภารกิจ ๖ · ต้นไม้แห่งความดี'};
+      if(title) title.textContent=names[window.pendingMission]||'กำลังเตรียมภารกิจ';
+      show('permission');
+    } else { show('missionSelect'); }
+  };
+
+  // Always start at the cover. No module load event may change this.
+  show('menu');
 })();
 </script>
-<script type="module" src="script.js?v=354"></script>
+
+<script type="module" src="script.js?v=36"></script>
 
 <div id="fxLayer" aria-hidden="true"></div>
 </body>
