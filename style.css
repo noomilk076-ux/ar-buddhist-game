@@ -665,3 +665,84 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
 .howtoActions button{position:relative;z-index:101!important}
 .missionBoard{pointer-events:auto!important}
 .missionCardCode{position:relative;z-index:5!important}
+
+
+/* ===== v35 POSITION FIX — desktop / 16:9 booth screen ===== */
+.codeHowtoScreen{padding:0!important;overflow:hidden!important}
+.codeHowto{
+  width:100vw;height:100vh;min-height:0;
+  padding:18px 4vw 12px!important;
+  box-sizing:border-box;
+  justify-content:flex-start;
+  overflow:hidden!important;
+}
+.howtoHeader{flex:0 0 auto;min-height:72px}
+.howtoHeader img{width:72px;height:72px}
+.howtoHeader h2{font-size:clamp(34px,4vw,58px)}
+.howtoSteps{
+  flex:0 0 auto!important;
+  width:min(1160px,92vw)!important;
+  margin:22px auto 16px!important;
+  gap:14px!important;
+  align-items:stretch!important;
+}
+.howtoCard{
+  min-height:0!important;
+  height:190px;
+  padding:28px 14px 14px!important;
+}
+.stepIcon{font-size:52px!important;margin:8px 0 4px!important}
+.howtoCard h3{font-size:clamp(18px,1.8vw,27px)!important;margin:4px 0 6px!important}
+.howtoCard p{font-size:clamp(11px,1.05vw,16px)!important;line-height:1.45!important}
+.howtoTips{flex:0 0 auto!important;width:min(900px,86vw)!important;margin:0 auto 10px!important;padding:8px 16px!important}
+.howtoActions{flex:0 0 auto!important;display:flex!important;justify-content:center!important;align-items:center!important;gap:14px!important;width:100%!important}
+.howtoActions button{position:relative!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;width:auto!important;height:auto!important;min-width:150px!important;padding:10px 22px!important;box-sizing:border-box!important}
+.howtoNextButton{left:auto!important;bottom:auto!important;width:auto!important;height:auto!important;border-radius:999px!important;font-size:clamp(14px,1.25vw,20px)!important}
+.howtoHomeButton{font-size:clamp(13px,1.15vw,18px)!important}
+
+.codeMissionScreen{padding:0!important;overflow:hidden!important}
+.missionBoard{
+  width:min(1240px,96vw)!important;
+  height:min(680px,calc(100vh - 24px))!important;
+  max-height:calc(100vh - 24px)!important;
+  padding:20px 28px 16px!important;
+  border-radius:26px!important;
+}
+.missionBoardTop{margin-bottom:12px!important}
+.missionBrand img{width:68px;height:68px}
+.missionBrand h2{font-size:clamp(28px,3vw,46px)!important}
+.missionBrand p{font-size:clamp(10px,1.05vw,16px)!important}
+.stationScore{min-width:120px!important;padding:9px 14px!important}
+.missionGridCode{gap:12px!important}
+.missionCardCode{padding:14px 16px!important;border-radius:19px!important}
+.codeIcon{font-size:clamp(40px,4vw,58px)!important;margin:2px 0 9px!important}
+.missionCardCode b{font-size:clamp(15px,1.45vw,22px)!important;margin-bottom:5px!important}
+.missionCardCode small{font-size:clamp(9px,.9vw,13px)!important;line-height:1.35!important}
+.missionCardCode em{margin-top:8px!important;padding:4px 8px!important;font-size:10px!important}
+.missionBoardBottom{margin-top:10px!important}
+.boardNavButton{padding:8px 14px!important}
+
+@media(max-height:700px) and (min-width:651px){
+  .codeHowto{padding-top:10px!important;padding-bottom:8px!important}
+  .howtoHeader{min-height:58px}
+  .howtoHeader img{width:58px;height:58px}
+  .howtoHeader h2{font-size:40px}
+  .howtoHeader p{margin-top:3px;font-size:11px}
+  .howtoSteps{margin:12px auto 10px!important}
+  .howtoCard{height:165px}
+  .stepNo{width:40px;height:40px;font-size:18px;top:-15px}
+  .stepIcon{font-size:43px!important}
+  .howtoCard h3{font-size:20px!important}
+  .howtoTips{padding:6px 12px!important;margin-bottom:7px!important}
+  .howtoActions button{padding:8px 18px!important}
+  .missionBoard{height:calc(100vh - 16px)!important;padding:14px 22px 10px!important}
+  .missionBrand img{width:58px;height:58px}
+  .missionBrand h2{font-size:32px!important}
+  .missionBrand p{font-size:10px!important}
+  .missionGridCode{gap:9px!important}
+  .missionCardCode{padding:10px 12px!important}
+  .codeIcon{font-size:38px!important;margin:0 0 5px!important}
+  .missionCardCode b{font-size:17px!important}
+  .missionCardCode small{font-size:9px!important}
+  .missionCardCode em{margin-top:5px!important}
+}
