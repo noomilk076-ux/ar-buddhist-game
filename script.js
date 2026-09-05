@@ -90,7 +90,7 @@ function stopCamera(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=
 function altar(){
   $("#title").innerHTML="<h2>จัดโต๊ะหมู่บูชา</h2><p>ลากโต๊ะหมู่ ๗ และเครื่องบูชาไปจัดวางให้ถูกตำแหน่ง</p>";
   $("#hint").textContent="🤏 ใช้นิ้วมือจับ • ลาก • ปล่อยโต๊ะและเครื่องบูชา";
-  $("#area").innerHTML=`<div class="altarBoard altarSeven"><div class="altarHeader">โต๊ะหมู่ ๗</div><div class="buddhaFigure"><div class="buddhaIcon">🪷</div><b>พระพุทธรูป</b></div><div class="altarSlots"></div></div><div class="tray altarTray"><div class="trayLabel">เครื่องสำหรับจัดโต๊ะหมู่ ๗</div></div>`;
+  $("#area").innerHTML=`<div class="altarBoard altarSeven"><div class="altarHeader">โต๊ะหมู่ ๗</div><div class="buddhaFigure"><img class="buddhaImage" src="buddha.png" alt="พระพุทธรูปนั่งสมาธิบนฐานทอง"><b>พระพุทธรูป</b></div><div class="altarSlots"></div></div><div class="tray altarTray"><div class="trayLabel">เครื่องสำหรับจัดโต๊ะหมู่ ๗</div></div>`;
   const b=$(".altarBoard .altarSlots"),tr=$(".altarTray");
   const positions=[[1,39,10,22,16],[2,12,29,28,16],[3,60,29,28,16],[4,4,49,28,16],[5,36,49,28,16],[6,68,49,28,16],[7,36,69,28,16]];
   positions.forEach(([n,left,top,width,height])=>{const slot=document.createElement("div");slot.className="tierSlot";slot.dataset.slot=n;slot.textContent="โต๊ะ "+n;slot.style.left=left+"%";slot.style.top=top+"%";slot.style.width=width+"%";slot.style.height=height+"%";b.appendChild(slot);const piece=document.createElement("div");piece.className="piece altarTablePiece";piece.dataset.drag=1;piece.dataset.slot=n;piece.textContent="โต๊ะ "+n;tr.appendChild(piece)});

@@ -552,3 +552,36 @@ body{background:#09030f}
 .playSteps span{padding:7px 13px;border:1px solid #ffd66b55;border-radius:999px;background:#0d0618aa;color:#fff4d0;font-weight:900;font-size:clamp(12px,1.05vw,15px);box-shadow:inset 0 1px #fff2}
 .playSteps i{font-style:normal;color:#ffd66b;font-weight:1000;font-size:18px}
 @media(max-width:620px){.welcomeLine{font-size:14px}.playSteps{gap:5px;margin:8px auto 10px}.playSteps span{font-size:11px;padding:6px 9px}.playSteps i{font-size:14px}}
+
+
+/* v28 — Mission 1 Buddha visual + larger return-to-station button */
+.altarSeven .buddhaFigure{
+  position:absolute!important;left:50%!important;top:-5%!important;transform:translateX(-50%)!important;
+  z-index:20!important;text-align:center!important;pointer-events:none!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;
+}
+.altarSeven .buddhaImage{
+  display:block!important;width:clamp(96px,10vw,145px)!important;height:auto!important;
+  max-height:145px!important;object-fit:contain!important;
+  filter:drop-shadow(0 8px 12px #0009) drop-shadow(0 0 14px #ffd66b55)!important;
+}
+.altarSeven .buddhaFigure b{margin-top:-2px!important}
+#home{
+  left:18px!important;bottom:18px!important;
+  min-width:160px!important;min-height:56px!important;
+  padding:12px 22px!important;border-radius:999px!important;
+  font-size:clamp(18px,1.7vw,24px)!important;font-weight:1000!important;
+  letter-spacing:.2px!important;background:linear-gradient(135deg,#4c1d70ee,#1b092bdd)!important;
+  border:2px solid #ffd66b88!important;box-shadow:0 10px 28px #0008,0 0 18px #ffd66b18!important;
+  text-shadow:0 2px 7px #000!important;
+}
+#home:hover,#home:focus{transform:translateY(-2px) scale(1.02);border-color:#ffd66b!important}
+@media(max-width:800px){
+  .altarSeven .buddhaFigure{top:-3%!important}
+  .altarSeven .buddhaImage{width:92px!important;max-height:110px!important}
+  #home{left:12px!important;bottom:12px!important;min-width:150px!important;min-height:52px!important;font-size:18px!important;padding:10px 18px!important}
+}
+@media(max-width:520px){
+  .altarSeven .buddhaImage{width:78px!important;max-height:92px!important}
+  #home{min-width:136px!important;min-height:48px!important;font-size:16px!important;padding:8px 15px!important}
+}
