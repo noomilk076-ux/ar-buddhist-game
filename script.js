@@ -59,7 +59,7 @@ function move(e,x,y){e.style.position="fixed";e.style.left=x-e.offsetWidth/2+"px
 function reset(e){if(!e)return;e.style.position="";e.style.left="";e.style.top="";e.style.zIndex="";e.classList.remove("dragging")}
 function gestureFrame(t){if(gameKind==="altar")altarGesture();else if(gameKind==="sort")sortGesture();else if(gameKind==="quiz")quizGesture(t);else if(gameKind==="fill")fillGesture(t);else if(gameKind==="moral")moralGesture(t);else if(gameKind==="tree")treeGesture()}
 
-function setup(kind){stopCamera();gameKind=kind;round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];$("#permissionTitle").textContent=names[kind];$("#menu").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
+function setup(kind){stopCamera();gameKind=kind;document.querySelector("#game").classList.toggle("mission1Scene",kind==="altar");round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];$("#permissionTitle").textContent=names[kind];$("#menu").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
 function startGame(){$("#permission").classList.add("hidden");$("#game").classList.remove("hidden");({altar,sort,quiz,fill,moral,tree}[gameKind])();startCamera()}
 function showGrandFinale(done){
   const layer=$("#grandFinale");
@@ -90,7 +90,7 @@ function stopCamera(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=
 function altar(){
   $("#title").innerHTML="<h2>จัดโต๊ะหมู่บูชา</h2><p>ลากโต๊ะหมู่ ๗ และเครื่องบูชาไปจัดวางให้ถูกตำแหน่ง</p>";
   $("#hint").textContent="🤏 ใช้นิ้วมือจับ • ลาก • ปล่อยโต๊ะและเครื่องบูชา";
-  $("#area").innerHTML=`<div class="altarBoard altarSeven"><div class="altarHeader">โต๊ะหมู่ ๗</div><div class="buddhaFigure"><img class="buddhaImage" src="buddha.png" alt="พระพุทธรูปนั่งสมาธิบนฐานทอง"><b>พระพุทธรูป</b></div><div class="altarSlots"></div></div><div class="tray altarTray"><div class="trayLabel">เครื่องสำหรับจัดโต๊ะหมู่ ๗</div></div>`;
+  $("#area").innerHTML=`<div class="altarBoard altarSeven"><div class="altarHeader">โต๊ะหมู่ ๗</div><div class="altarSlots"></div></div><div class="tray altarTray"><div class="trayLabel">เครื่องสำหรับจัดโต๊ะหมู่ ๗</div></div>`;
   const b=$(".altarBoard .altarSlots"),tr=$(".altarTray");
   const positions=[[1,39,10,22,16],[2,12,29,28,16],[3,60,29,28,16],[4,4,49,28,16],[5,36,49,28,16],[6,68,49,28,16],[7,36,69,28,16]];
   positions.forEach(([n,left,top,width,height])=>{const slot=document.createElement("div");slot.className="tierSlot";slot.dataset.slot=n;slot.textContent="โต๊ะ "+n;slot.style.left=left+"%";slot.style.top=top+"%";slot.style.width=width+"%";slot.style.height=height+"%";b.appendChild(slot);const piece=document.createElement("div");piece.className="piece altarTablePiece";piece.dataset.drag=1;piece.dataset.slot=n;piece.textContent="โต๊ะ "+n;tr.appendChild(piece)});
