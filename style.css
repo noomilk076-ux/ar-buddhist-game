@@ -914,7 +914,7 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
 
 /* v37 REAL HOW-TO PAGE: actual content + stable 16:9/iPad layout */
 .howtoRealScreen{background:linear-gradient(145deg,#16072b 0%,#4d1e72 52%,#d99a58 100%);overflow:hidden;pointer-events:auto!important}
-.howtoRealPanel{position:relative;width:100vw;height:100vh;height:100dvh;min-height:540px;padding:5vh 6vw 3vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;color:#fff;overflow:hidden;box-sizing:border-box}
+.howtoRealPanel{position:relative;width:100vw;height:100vh;min-height:540px;padding:5vh 6vw 3vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;color:#fff;overflow:hidden}
 .howtoRealPanel:before,.howtoRealPanel:after{content:"🪷";position:absolute;z-index:0;opacity:.08;font-size:clamp(90px,13vw,190px);pointer-events:none}
 .howtoRealPanel:before{left:-2vw;bottom:-3vh}.howtoRealPanel:after{right:-2vw;top:3vh}
 .howtoRealHeader{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:18px;text-align:left}
@@ -930,54 +930,109 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
 .howtoRealCard p{margin:0;color:#fff3df;font-size:clamp(12px,1.15vw,17px);line-height:1.55}
 .howtoRealTip{position:relative;z-index:3;width:min(930px,88vw);padding:10px 18px;border-radius:15px;border:1px solid #ffd66b66;background:#fff8e91a;color:#fff4e2;text-align:center;font-size:clamp(11px,1.1vw,16px);line-height:1.45;margin-bottom:18px}
 .howtoRealTip b{color:#ffe07a}
-.howtoRealHome,.howtoRealNext{position:fixed;z-index:200;bottom:max(46px,calc(env(safe-area-inset-bottom) + 24px));min-height:52px;border-radius:999px;cursor:pointer!important;pointer-events:auto!important;touch-action:manipulation!important;font-weight:1000}
+.howtoRealHome,.howtoRealNext{position:absolute;z-index:20;bottom:2.4vh;min-height:52px;border-radius:999px;cursor:pointer!important;pointer-events:auto!important;touch-action:manipulation!important;font-weight:1000}
 .howtoRealHome{left:3vw;min-width:155px;padding:10px 20px;background:#170a2ee8;color:#ffe9ae;border:2px solid #ffd66b88;box-shadow:0 7px 20px #0007;font-size:clamp(14px,1.2vw,18px)}
 .howtoRealNext{left:50%;transform:translateX(-50%);min-width:min(420px,38vw);padding:12px 28px;background:linear-gradient(135deg,#5d1aa5,#a52ac8);color:#fff;border:3px solid #ffd66b;box-shadow:0 8px 28px #0009,0 0 22px #ffd66b55;text-shadow:0 2px 7px #000;font-size:clamp(16px,1.45vw,22px)}
 .howtoRealNext:hover,.howtoRealNext:active{transform:translateX(-50%) scale(1.035);filter:brightness(1.12)}
 .howtoRealHome:hover,.howtoRealHome:active{transform:scale(1.03);filter:brightness(1.1)}
-/* iPad / short landscape viewport: keep bottom navigation completely visible */
-@media (max-height:1100px) and (orientation:landscape){
-  .howtoRealPanel{height:100dvh;min-height:0;padding-bottom:1vh}
-  .howtoRealHome,.howtoRealNext{bottom:max(52px,calc(env(safe-area-inset-bottom) + 28px))}
-}
-
 @media(max-width:900px){.howtoRealPanel{padding:3vh 3vw 2vh}.howtoRealSteps{gap:10px;margin-top:3vh}.howtoRealCard{min-height:205px;padding:28px 10px 14px}.howtoRealHeader h2{font-size:40px}.howtoRealNext{min-width:46vw}}
-@media(max-width:650px){.howtoRealHeader{gap:9px}.howtoRealHeader img{width:52px;height:52px}.howtoRealHeader h2{font-size:30px}.howtoRealHeader p{font-size:11px}.howtoRealSteps{grid-template-columns:repeat(2,1fr);gap:8px;margin:3vh auto 1.5vh}.howtoRealCard{min-height:165px;border-radius:17px;padding:25px 8px 10px}.howtoRealCard>span{width:35px;height:35px;top:-14px;font-size:16px}.howtoRealIcon{font-size:36px;margin:4px 0 7px}.howtoRealCard h3{font-size:17px;margin-bottom:5px}.howtoRealCard p{font-size:10px;line-height:1.4}.howtoRealTip{font-size:10px;padding:7px 10px;margin-bottom:5px}.howtoRealHome{left:3vw;bottom:max(42px,calc(env(safe-area-inset-bottom) + 22px));min-width:135px;min-height:48px;font-size:14px}.howtoRealNext{bottom:max(42px,calc(env(safe-area-inset-bottom) + 22px));min-width:58vw;min-height:54px;font-size:15px;padding:10px 14px}}
+@media(max-width:650px){.howtoRealHeader{gap:9px}.howtoRealHeader img{width:52px;height:52px}.howtoRealHeader h2{font-size:30px}.howtoRealHeader p{font-size:11px}.howtoRealSteps{grid-template-columns:repeat(2,1fr);gap:8px;margin:3vh auto 1.5vh}.howtoRealCard{min-height:165px;border-radius:17px;padding:25px 8px 10px}.howtoRealCard>span{width:35px;height:35px;top:-14px;font-size:16px}.howtoRealIcon{font-size:36px;margin:4px 0 7px}.howtoRealCard h3{font-size:17px;margin-bottom:5px}.howtoRealCard p{font-size:10px;line-height:1.4}.howtoRealTip{font-size:10px;padding:7px 10px;margin-bottom:5px}.howtoRealHome{left:3vw;bottom:2vh;min-width:135px;min-height:48px;font-size:14px}.howtoRealNext{bottom:2vh;min-width:58vw;min-height:54px;font-size:15px;padding:10px 14px}}
 
-
-/* ===== v38 FINAL UI POLISH ===== */
-/* Mission 1: replace emoji square with a font-independent altar icon */
-.altarIcon{
-  position:relative!important;
-  width:78px!important;
-  height:66px!important;
-  margin:2px 0 13px!important;
-  font-size:0!important;
-  filter:drop-shadow(0 5px 9px #0006)!important;
+/* =========================================================
+   v39 FINAL ARTWORK LANDING SCREENS
+   The supplied artwork is the visual source of truth.
+   Real transparent HTML hit areas sit exactly over the printed controls.
+   ========================================================= */
+.imageLandingScreen{
+  position:fixed!important;
+  inset:0!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#07020f!important;
 }
-.altarIcon i{position:absolute;display:block;background:linear-gradient(180deg,#ffe98a,#c98920);border:2px solid #6d3d0a;box-shadow:inset 0 2px #fff8,0 3px 4px #0005}
-.altarIcon i:nth-child(1){width:20px;height:12px;left:29px;top:0;border-radius:5px 5px 2px 2px}
-.altarIcon i:nth-child(2){width:34px;height:13px;left:22px;top:13px;border-radius:4px}
-.altarIcon i:nth-child(3){width:52px;height:13px;left:13px;top:27px;border-radius:4px}
-.altarIcon i:nth-child(4){width:70px;height:13px;left:4px;top:41px;border-radius:4px}
-.altarIcon:after{content:"";position:absolute;left:18px;top:54px;width:42px;height:8px;border-radius:50%;background:#8b5a18;opacity:.8}
-
-/* Larger mission descriptions for a large TV / booth viewing distance */
-.missionCardCode small{font-size:clamp(11px,1.08vw,16px)!important;line-height:1.45!important}
-.missionCardCode b{font-size:clamp(18px,1.75vw,27px)!important}
-.missionCardCode em{font-size:11px!important}
-
-/* Keep the how-to home button safely inside the 16:9 screen */
-.howtoHomeButton{margin-left:0!important;margin-bottom:8px!important}
-.howtoActions{padding-bottom:8px!important}
-
-@media(max-width:900px){
-  .altarIcon{width:56px!important;height:49px!important;transform:scale(.85);transform-origin:left top;margin-bottom:8px!important}
-  .missionCardCode small{font-size:11px!important;line-height:1.4!important}
-  .missionCardCode b{font-size:17px!important}
+.imageLandingStage{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  isolation:isolate;
+  background:#07020f;
 }
-@media(max-width:650px){
-  .altarIcon{width:42px!important;height:37px!important;transform:scale(.72);margin-bottom:2px!important}
-  .missionCardCode small{font-size:9.5px!important}
-  .missionCardCode b{font-size:13px!important}
+.landingBgImage{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:fill;
+  user-select:none;
+  -webkit-user-drag:none;
+  pointer-events:none;
+}
+.imageHit{
+  position:absolute;
+  z-index:20;
+  display:block;
+  margin:0;
+  padding:0;
+  border:0;
+  border-radius:999px;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:transparent!important;
+  cursor:pointer!important;
+  pointer-events:auto!important;
+  touch-action:manipulation!important;
+  -webkit-tap-highlight-color:transparent;
+}
+.imageHit:focus-visible{
+  outline:3px solid rgba(255,236,139,.95);
+  outline-offset:4px;
+  background:rgba(255,255,255,.06)!important;
+}
+.imageHit:active{background:rgba(255,255,255,.04)!important}
+
+/* Cover 1920×1080 artwork */
+.coverStartHit{left:35.25%;top:67.45%;width:29.65%;height:15.05%}
+/* The supplied cover artwork also contains a printed วิธีเล่น control. */
+.coverHowtoHit{left:85.9%;top:88.85%;width:11.7%;height:8.0%}
+
+/* How-to artwork 1671×941 */
+.howtoHomeHit{left:2.25%;top:89.25%;width:13.1%;height:9.7%}
+.howtoNextHit{left:32.95%;top:85.5%;width:37.65%;height:9.7%}
+
+/* Mission-select artwork 1672×941 */
+.missionsImageStage{background:#07020f}
+.missionLiveScore{
+  position:absolute;
+  z-index:10;
+  right:8.15%;
+  top:7.0%;
+  width:4.8%;
+  height:6.4%;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-size:clamp(26px,3.0vw,58px);
+  font-weight:1000;
+  line-height:1;
+  text-shadow:0 3px 10px #000,0 0 12px rgba(255,214,107,.55);
+  pointer-events:none;
+}
+.missionHit1{left:20.9%;top:22.5%;width:18.7%;height:28.3%}
+.missionHit2{left:40.25%;top:22.5%;width:18.7%;height:28.3%}
+.missionHit3{left:59.6%;top:22.5%;width:18.7%;height:28.3%}
+.missionHit4{left:20.9%;top:52.8%;width:18.7%;height:28.0%}
+.missionHit5{left:40.25%;top:52.8%;width:18.7%;height:28.0%}
+.missionHit6{left:59.6%;top:52.8%;width:18.7%;height:28.0%}
+.missionsHowtoHit{left:9.5%;top:89.0%;width:13.5%;height:8.0%}
+.missionsHomeHit{left:73.2%;top:88.8%;width:16.0%;height:8.2%}
+
+@media (max-aspect-ratio: 4/3){
+  /* Keep the artwork stretched to the exact viewport so hit areas stay aligned
+     with the printed controls on iPad/browser viewports as well as 16:9 displays. */
+  .landingBgImage{object-fit:fill}
 }

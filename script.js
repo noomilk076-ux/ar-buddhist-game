@@ -288,7 +288,7 @@ ui();
 
 
 // v36: keep the mission board score in sync without changing page navigation.
-function syncMissionBoard(){ const el=document.querySelector("#missionTotalScore"); if(el && typeof total !== "undefined") el.textContent=total; }
+function syncMissionBoard(){ const el=document.querySelector("#missionTotalScore"); if(el && typeof total !== "undefined") el.textContent=total; if(window.syncLandingScore && typeof total !== "undefined") window.syncLandingScore(total); }
 const _uiV36=ui;
 ui=function(){_uiV36();syncMissionBoard();};
 syncMissionBoard();
