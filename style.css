@@ -372,3 +372,20 @@ body{background:#09030f}
 @keyframes finaleLogo{0%{opacity:0;transform:translateY(30px) scale(.35) rotate(-10deg)}100%{opacity:1;transform:translateY(0) scale(1) rotate(0)}}
 @media(max-width:700px){.resultLogo{width:68px;height:65px}}
 @media(prefers-reduced-motion:reduce){.finaleLogo{animation:none!important}}
+
+
+/* v23 — school logo menu placement */
+.menuCard > .schoolMark{
+  width:54px!important;height:54px!important;
+  margin:0 auto 5px!important;
+  border-radius:50%;overflow:hidden;
+  background:#fff!important;
+  box-shadow:0 0 20px rgba(255,214,107,.28);
+}
+.menuCard > .schoolMark img{width:100%!important;height:100%!important;object-fit:contain!important;display:block!important}
+.menuCard > .eyebrow{margin-top:4px!important}
+.permissionCard > .schoolMark.small{width:46px!important;height:46px!important;margin:0 auto 4px!important}
+.permissionCard > .eyebrow{margin-top:4px!important}
+.resultLogo{width:72px!important;height:69px!important}
+.finaleLogo{width:clamp(76px,8vw,108px)!important;height:clamp(73px,7.5vw,103px)!important}
+@media(max-width:620px){.menuCard > .schoolMark{width:48px!important;height:48px!important}.permissionCard > .schoolMark.small{width:42px!important;height:42px!important}}
