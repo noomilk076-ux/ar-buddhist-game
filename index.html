@@ -7,7 +7,7 @@
 <title>ภารกิจชาวพุทธน้อย</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
-<link rel="stylesheet" href="style.css?v=36">
+<link rel="stylesheet" href="style.css?v=37">
 </head>
 <body>
 <div id="menu" class="screen openingScreen codeCoverScreen">
@@ -23,13 +23,45 @@
   </div>
 </div>
 
-<div id="howto" class="screen hidden howtoScreenFinal" aria-label="หน้าวิธีเล่น">
-  <div class="howtoStageFinal" aria-hidden="true">
-    <div class="howtoGlowFinal"></div>
-    <div class="howtoLotusFinal">🪷</div>
-  </div>
-  <button id="howtoHome" class="howtoHomeFinal" onclick="window.goMenu()">⌂ กลับหน้าหลัก</button>
-  <button id="howtoNext" class="howtoNextFinal" onclick="window.goMissions()">▶ พร้อมแล้ว เริ่มเลือกภารกิจ</button>
+<div id="howto" class="screen hidden howtoRealScreen" aria-label="หน้าวิธีเล่น">
+  <section class="howtoRealPanel">
+    <div class="howtoRealHeader">
+      <img src="school-logo.png" alt="ตราโรงเรียนอนุบาลเทพสุนทรินทร์">
+      <div>
+        <div class="howtoRealKicker">ภารกิจชาวพุทธน้อย</div>
+        <h2>📖 วิธีเล่น</h2>
+        <p>ทำตามขั้นตอนง่าย ๆ แล้วลงมือทำภารกิจด้วยตัวเอง</p>
+      </div>
+    </div>
+
+    <div class="howtoRealSteps">
+      <article class="howtoRealCard">
+        <span>๑</span><div class="howtoRealIcon">🎯</div>
+        <h3>เลือกภารกิจ</h3>
+        <p>เลือก 1 จาก 6 ภารกิจที่อยากทดลองทำ</p>
+      </article>
+      <article class="howtoRealCard">
+        <span>๒</span><div class="howtoRealIcon">📷</div>
+        <h3>เปิดกล้อง</h3>
+        <p>กดเริ่มภารกิจ แล้วอนุญาตให้ระบบใช้กล้อง</p>
+      </article>
+      <article class="howtoRealCard">
+        <span>๓</span><div class="howtoRealIcon">🖐️</div>
+        <h3>ลงมือเล่น</h3>
+        <p>ทำท่าทางตามคำแนะนำของแต่ละภารกิจ</p>
+      </article>
+      <article class="howtoRealCard">
+        <span>๔</span><div class="howtoRealIcon">⭐</div>
+        <h3>สะสมคะแนน</h3>
+        <p>ทำภารกิจให้สำเร็จ เพื่อสะสมคะแนนความดี</p>
+      </article>
+    </div>
+
+    <div class="howtoRealTip">💡 <b>เคล็ดลับ</b> ยืนให้กล้องเห็นชัด • ทำท่าช้า ๆ • อ่านคำแนะนำบนหน้าจอ • <b>เกมไม่มีการจับเวลา</b></div>
+
+    <button id="howtoHome" class="howtoRealHome" onclick="window.goMenu()">⌂ กลับหน้าหลัก</button>
+    <button id="howtoNext" class="howtoRealNext" onclick="window.goMissions()">▶ พร้อมแล้ว เริ่มเลือกภารกิจ</button>
+  </section>
 </div>
 
 <div id="missionSelect" class="screen hidden codeMissionScreen">
@@ -157,7 +189,7 @@
 })();
 </script>
 
-<script type="module" src="script.js?v=36"></script>
+<script type="module" src="script.js?v=37"></script>
 
 <div id="fxLayer" aria-hidden="true"></div>
 </body>
