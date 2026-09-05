@@ -937,3 +937,41 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
 .howtoRealHome:hover,.howtoRealHome:active{transform:scale(1.03);filter:brightness(1.1)}
 @media(max-width:900px){.howtoRealPanel{padding:3vh 3vw 2vh}.howtoRealSteps{gap:10px;margin-top:3vh}.howtoRealCard{min-height:205px;padding:28px 10px 14px}.howtoRealHeader h2{font-size:40px}.howtoRealNext{min-width:46vw}}
 @media(max-width:650px){.howtoRealHeader{gap:9px}.howtoRealHeader img{width:52px;height:52px}.howtoRealHeader h2{font-size:30px}.howtoRealHeader p{font-size:11px}.howtoRealSteps{grid-template-columns:repeat(2,1fr);gap:8px;margin:3vh auto 1.5vh}.howtoRealCard{min-height:165px;border-radius:17px;padding:25px 8px 10px}.howtoRealCard>span{width:35px;height:35px;top:-14px;font-size:16px}.howtoRealIcon{font-size:36px;margin:4px 0 7px}.howtoRealCard h3{font-size:17px;margin-bottom:5px}.howtoRealCard p{font-size:10px;line-height:1.4}.howtoRealTip{font-size:10px;padding:7px 10px;margin-bottom:5px}.howtoRealHome{left:3vw;bottom:2vh;min-width:135px;min-height:48px;font-size:14px}.howtoRealNext{bottom:2vh;min-width:58vw;min-height:54px;font-size:15px;padding:10px 14px}}
+
+
+/* ===== v38 FINAL UI POLISH ===== */
+/* Mission 1: replace emoji square with a font-independent altar icon */
+.altarIcon{
+  position:relative!important;
+  width:78px!important;
+  height:66px!important;
+  margin:2px 0 13px!important;
+  font-size:0!important;
+  filter:drop-shadow(0 5px 9px #0006)!important;
+}
+.altarIcon i{position:absolute;display:block;background:linear-gradient(180deg,#ffe98a,#c98920);border:2px solid #6d3d0a;box-shadow:inset 0 2px #fff8,0 3px 4px #0005}
+.altarIcon i:nth-child(1){width:20px;height:12px;left:29px;top:0;border-radius:5px 5px 2px 2px}
+.altarIcon i:nth-child(2){width:34px;height:13px;left:22px;top:13px;border-radius:4px}
+.altarIcon i:nth-child(3){width:52px;height:13px;left:13px;top:27px;border-radius:4px}
+.altarIcon i:nth-child(4){width:70px;height:13px;left:4px;top:41px;border-radius:4px}
+.altarIcon:after{content:"";position:absolute;left:18px;top:54px;width:42px;height:8px;border-radius:50%;background:#8b5a18;opacity:.8}
+
+/* Larger mission descriptions for a large TV / booth viewing distance */
+.missionCardCode small{font-size:clamp(11px,1.08vw,16px)!important;line-height:1.45!important}
+.missionCardCode b{font-size:clamp(18px,1.75vw,27px)!important}
+.missionCardCode em{font-size:11px!important}
+
+/* Keep the how-to home button safely inside the 16:9 screen */
+.howtoHomeButton{margin-left:0!important;margin-bottom:8px!important}
+.howtoActions{padding-bottom:8px!important}
+
+@media(max-width:900px){
+  .altarIcon{width:56px!important;height:49px!important;transform:scale(.85);transform-origin:left top;margin-bottom:8px!important}
+  .missionCardCode small{font-size:11px!important;line-height:1.4!important}
+  .missionCardCode b{font-size:17px!important}
+}
+@media(max-width:650px){
+  .altarIcon{width:42px!important;height:37px!important;transform:scale(.72);margin-bottom:2px!important}
+  .missionCardCode small{font-size:9.5px!important}
+  .missionCardCode b{font-size:13px!important}
+}
