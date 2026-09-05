@@ -65,7 +65,7 @@
       <button data-game="moral" onclick="chooseMission('moral')" class="missionCardCode missionCard5"><span class="codeBadge">๕</span><span class="codeIcon">👍</span><b>พุทธศาสนิกชนตัวน้อย</b><small>ใช้ 👍 / 👎 เลือกการกระทำที่ควรหรือไม่ควรทำ</small><em class="missionPts">ยังไม่เล่น</em></button>
       <button data-game="tree" onclick="chooseMission('tree')" class="missionCardCode missionCard6"><span class="codeBadge">๖</span><span class="codeIcon">🌳</span><b>ต้นไม้แห่งความดี</b><small>ใช้นิ้วชี้จีบ ลาก และปล่อยต้นกล้าลงบนต้นไม้</small><em class="missionPts">ยังไม่เล่น</em></button>
     </div>
-    <div class="missionBoardBottom"><button id="missionHowto" class="boardNavButton" onclick="window.goHowto()">📖 วิธีเล่น</button><div class="boardHint">💡 เลือกภารกิจที่สนใจได้เลย • ไม่มีการจับเวลา</div><button id="missionHome" class="boardNavButton" onclick="window.goMenu()">⌂ หน้าหลัก</button></div>
+    <div class="missionBoardBottom"><button id="missionHowto" class="boardNavButton" onclick="return window.openHowToFromMission(event)">📖 วิธีเล่น</button><div class="boardHint">💡 เลือกภารกิจที่สนใจได้เลย • ไม่มีการจับเวลา</div><button id="missionHome" class="boardNavButton" onclick="window.goMenu()">⌂ หน้าหลัก</button></div>
   </main>
 </div>
 
@@ -118,61 +118,33 @@
   </section>
 </div>
 <script>
-/* v35 FINAL: bulletproof UI navigation. Uses direct onclick handlers so navigation still works even if the AI module is loading. */
+/* v35.3 FINAL FLOW LOCK: cover -> how-to -> missions.
+   Navigation is inline and protected from late-loading module code. */
 (function(){
   const ids=['#menu','#howto','#missionSelect','#permission','#game','#result'];
   function q(s){return document.querySelector(s)}
   function hideAll(){ids.forEach(s=>{const e=q(s);if(e)e.classList.add('hidden')})}
   function show(id){hideAll();const e=q(id);if(e)e.classList.remove('hidden')}
-  window.goMenu=function(){
-    try{window.stopGameCamera?.()}catch(e){}
-    show('#menu');
-    try{window.refreshGameUI?.()}catch(e){}
-  };
-  window.goHowto=function(){show('#howto')};
-  window.goMissions=function(){
-    try{window.stopGameCamera?.()}catch(e){}
-    show('#missionSelect');
-    try{window.refreshGameUI?.()}catch(e){}
-  };
+  function stop(){try{window.stopGameCamera?.()}catch(e){}}
+  function refresh(){try{window.refreshGameUI?.()}catch(e){}}
+  function mark(){window.__navStarted=true}
+  window.goMenu=function(){mark();stop();show('#menu');refresh();};
+  window.goHowto=function(){mark();stop();show('#howto');};
+  window.openHowToFromMission=function(ev){if(ev){ev.preventDefault();ev.stopPropagation();} mark();stop();show('#howto');return false;};
+  window.goMissions=function(){mark();stop();show('#missionSelect');refresh();};
   window.chooseMission=function(kind){
-    window.pendingMission=kind;
+    mark(); window.pendingMission=kind;
     const names={altar:'ภารกิจ ๑ · จัดโต๊ะหมู่บูชา',sort:'ภารกิจ ๒ · นักคัดแยกขยะ',quiz:'ภารกิจ ๓ · ธรรมะท้าประลอง',fill:'ภารกิจ ๔ · เติมคำธรรมะ',moral:'ภารกิจ ๕ · พุทธศาสนิกชนตัวน้อย',tree:'ภารกิจ ๖ · ต้นไม้แห่งความดี'};
     const t=q('#permissionTitle'); if(t)t.textContent=names[kind]||'กำลังเตรียมภารกิจ';
     show('#permission');
   };
   window.startSelectedMission=function(){
+    mark();
     if(typeof window.startGameForUI==='function'){window.startGameForUI();return}
     const s=q('#status');if(s)s.textContent='กำลังเตรียมระบบ… กรุณารอสักครู่แล้วกดเริ่มอีกครั้ง';
   };
-  window.retryMission=function(){
-    try{window.stopGameCamera?.()}catch(e){}
-    show('#permission');
-  };
+  window.retryMission=function(){mark();stop();show('#permission');};
 })();
-</script>
-<script>
-/* v35.2 FINAL FLOW: cover -> how-to -> mission select. */
-window.goHowto=function(){
-  try{window.stopGameCamera?.()}catch(e){}
-  ['#menu','#missionSelect','#permission','#game','#result'].forEach(function(sel){var el=document.querySelector(sel);if(el)el.classList.add('hidden')});
-  var how=document.querySelector('#howto');
-  if(how)how.classList.remove('hidden');
-};
-window.goMissions=function(){
-  try{window.stopGameCamera?.()}catch(e){}
-  ['#menu','#howto','#permission','#game','#result'].forEach(function(sel){var el=document.querySelector(sel);if(el)el.classList.add('hidden')});
-  var m=document.querySelector('#missionSelect');
-  if(m)m.classList.remove('hidden');
-  try{window.refreshGameUI?.()}catch(e){}
-};
-window.goMenu=function(){
-  try{window.stopGameCamera?.()}catch(e){}
-  ['#howto','#missionSelect','#permission','#game','#result'].forEach(function(sel){var el=document.querySelector(sel);if(el)el.classList.add('hidden')});
-  var menu=document.querySelector('#menu');
-  if(menu)menu.classList.remove('hidden');
-  try{window.refreshGameUI?.()}catch(e){}
-};
 </script>
 <script type="module" src="script.js?v=352"></script>
 

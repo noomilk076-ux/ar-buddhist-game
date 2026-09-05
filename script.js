@@ -259,7 +259,7 @@ window.startGameForUI=function(){const k=window.pendingMission||gameKind;if(!k)r
 window.stopGameCamera=function(){stopCamera()};
 window.refreshGameUI=function(){ui()};
 window.chooseMission=function(kind){window.pendingMission=kind;setup(kind)};
-showMenu();
+if(!window.__navStarted){ showMenu(); }
 // Mouse/touch fallback for desktop testing when camera is unavailable.
 let fallbackEl=null;document.addEventListener('pointerdown',e=>{if(!gameKind)return;const x=e.clientX,y=e.clientY;fallbackEl=hit("#area [data-drag],#area .seedling",x,y);if(fallbackEl)move(fallbackEl,x,y)});document.addEventListener('pointermove',e=>{if(fallbackEl)move(fallbackEl,e.clientX,e.clientY)});document.addEventListener('pointerup',e=>{if(!fallbackEl)return;const x=e.clientX,y=e.clientY;if(gameKind==='altar')altarGestureFallback(fallbackEl,x,y);else if(gameKind==='sort')sortFallback(fallbackEl,x,y);else if(gameKind==='tree'){const soil=hit('#area .soil',x,y);if(soil){fallbackEl.remove();completeTree()}}reset(fallbackEl);fallbackEl=null});
 function checkAltarComplete(){if(!finished && !$("#area [data-drag]"))setTimeout(()=>finish("จัดโต๊ะหมู่บูชาครบถ้วนแล้ว 🪷🎉"),450)}
