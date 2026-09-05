@@ -7,7 +7,7 @@
 <title>ภารกิจชาวพุทธน้อย</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
-<link rel="stylesheet" href="style.css?v=35">
+<link rel="stylesheet" href="style.css?v=351">
 </head>
 <body>
 <div id="menu" class="screen openingScreen codeCoverScreen">
@@ -43,16 +43,9 @@
 </div>
 
 <div id="howto" class="screen hidden artScreenWrap codeHowtoScreen">
-  <div class="codeHowto">
-    <div class="howtoHeader"><img src="school-logo.png" alt="ตราโรงเรียน"><div><div class="howtoKicker">ภารกิจชาวพุทธน้อย</div><h2>📖 วิธีเล่นเกม</h2><p>เลือกภารกิจที่สนใจ แล้วลงมือทำผ่านกล้อง</p></div></div>
-    <div class="howtoSteps">
-      <div class="howtoCard"><div class="stepNo">๑</div><div class="stepIcon">🎯</div><h3>เลือกภารกิจ</h3><p>เลือก 1 จาก 6 ภารกิจ<br>ที่อยากทดลองทำ</p></div>
-      <div class="howtoCard"><div class="stepNo">๒</div><div class="stepIcon">📷</div><h3>เปิดกล้อง</h3><p>กด “เปิดกล้องและเริ่มภารกิจ”<br>แล้วอนุญาตการใช้กล้อง</p></div>
-      <div class="howtoCard"><div class="stepNo">๓</div><div class="stepIcon">🫶</div><h3>ลงมือเล่น</h3><p>ใช้มือ ศีรษะ หรือท่าทาง<br>ตามคำแนะนำของแต่ละด่าน</p></div>
-      <div class="howtoCard"><div class="stepNo">๔</div><div class="stepIcon">⭐</div><h3>สะสมคะแนน</h3><p>ทำภารกิจให้สำเร็จ<br>เพื่อสะสมคะแนนและความดี</p></div>
-    </div>
-    <div class="howtoTips"><b>💡 เคล็ดลับ</b><span>ยืนให้กล้องเห็นชัด • ทำท่าช้า ๆ • อ่านคำแนะนำบนหน้าจอ • เกมนี้ไม่จับเวลา</span></div>
-    <div class="howtoActions"><button id="howtoHome" class="howtoHomeButton" onclick="goMenu()">⌂ กลับหน้าหลัก</button><button id="howtoNext" class="howtoNextButton" onclick="goMissions()">▶ พร้อมแล้ว เริ่มเลือกภารกิจ</button></div>
+  <div class="codeHowto howtoMinimal">
+    <button id="howtoHome" class="howtoHomeButton howtoHomeFixed" onclick="goMenu()">⌂ กลับหน้าหลัก</button>
+    <button id="howtoNext" class="howtoNextButton howtoNextFixed" onclick="goMissions()">▶ พร้อมแล้ว เริ่มเลือกภารกิจ</button>
   </div>
 </div>
 
@@ -159,7 +152,7 @@
   };
 })();
 </script>
-<script type="module" src="script.js?v=35"></script>
+<script type="module" src="script.js?v=351"></script>
 
 <div id="fxLayer" aria-hidden="true"></div>
 </body>
