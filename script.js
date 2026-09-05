@@ -254,12 +254,12 @@ function completeTree(virtue){
 function showMenu(){stopCamera();gameKind=null;$("#permission").classList.add('hidden');$("#howto").classList.add('hidden');$("#missionSelect").classList.add('hidden');$("#result").classList.add('hidden');$("#game").classList.add('hidden');$("#menu").classList.remove('hidden');ui()}
 function showHowto(){$("#menu").classList.add('hidden');$("#missionSelect").classList.add('hidden');$("#permission").classList.add('hidden');$("#howto").classList.remove('hidden')}
 function showMissions(){$("#menu").classList.add('hidden');$("#howto").classList.add('hidden');$("#permission").classList.add('hidden');$("#missionSelect").classList.remove('hidden');ui()}
-// v35: expose only the UI/game entry points used by inline buttons.
+// v35.4: game module exposes game entry points only; inline controller owns navigation.
 window.startGameForUI=function(){const k=window.pendingMission||gameKind;if(!k)return;setup(k);startGame()};
 window.stopGameCamera=function(){stopCamera()};
 window.refreshGameUI=function(){ui()};
 window.chooseMission=function(kind){window.pendingMission=kind;setup(kind)};
-if(!window.__navStarted){ showMenu(); }
+// IMPORTANT: do not call showMenu() here. The inline UI controller owns the landing flow.
 // Mouse/touch fallback for desktop testing when camera is unavailable.
 let fallbackEl=null;document.addEventListener('pointerdown',e=>{if(!gameKind)return;const x=e.clientX,y=e.clientY;fallbackEl=hit("#area [data-drag],#area .seedling",x,y);if(fallbackEl)move(fallbackEl,x,y)});document.addEventListener('pointermove',e=>{if(fallbackEl)move(fallbackEl,e.clientX,e.clientY)});document.addEventListener('pointerup',e=>{if(!fallbackEl)return;const x=e.clientX,y=e.clientY;if(gameKind==='altar')altarGestureFallback(fallbackEl,x,y);else if(gameKind==='sort')sortFallback(fallbackEl,x,y);else if(gameKind==='tree'){const soil=hit('#area .soil',x,y);if(soil){fallbackEl.remove();completeTree()}}reset(fallbackEl);fallbackEl=null});
 function checkAltarComplete(){if(!finished && !$("#area [data-drag]"))setTimeout(()=>finish("จัดโต๊ะหมู่บูชาครบถ้วนแล้ว 🪷🎉"),450)}

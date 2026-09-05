@@ -7,7 +7,7 @@
 <title>ภารกิจชาวพุทธน้อย</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
-<link rel="stylesheet" href="style.css?v=352">
+<link rel="stylesheet" href="style.css?v=354">
 </head>
 <body>
 <div id="menu" class="screen openingScreen codeCoverScreen">
@@ -118,35 +118,28 @@
   </section>
 </div>
 <script>
-/* v35.3 FINAL FLOW LOCK: cover -> how-to -> missions.
-   Navigation is inline and protected from late-loading module code. */
+/* v35.4 FINAL FLOW LOCK — UI navigation is owned by this inline controller.
+   The game module must NEVER decide which landing screen is visible. */
 (function(){
   const ids=['#menu','#howto','#missionSelect','#permission','#game','#result'];
-  function q(s){return document.querySelector(s)}
-  function hideAll(){ids.forEach(s=>{const e=q(s);if(e)e.classList.add('hidden')})}
+  const q=s=>document.querySelector(s);
+  function hideAll(){ids.forEach(id=>{const e=q(id);if(e)e.classList.add('hidden')})}
   function show(id){hideAll();const e=q(id);if(e)e.classList.remove('hidden')}
-  function stop(){try{window.stopGameCamera?.()}catch(e){}}
-  function refresh(){try{window.refreshGameUI?.()}catch(e){}}
-  function mark(){window.__navStarted=true}
-  window.goMenu=function(){mark();stop();show('#menu');refresh();};
-  window.goHowto=function(){mark();stop();show('#howto');};
-  window.openHowToFromMission=function(ev){if(ev){ev.preventDefault();ev.stopPropagation();} mark();stop();show('#howto');return false;};
-  window.goMissions=function(){mark();stop();show('#missionSelect');refresh();};
-  window.chooseMission=function(kind){
-    mark(); window.pendingMission=kind;
-    const names={altar:'ภารกิจ ๑ · จัดโต๊ะหมู่บูชา',sort:'ภารกิจ ๒ · นักคัดแยกขยะ',quiz:'ภารกิจ ๓ · ธรรมะท้าประลอง',fill:'ภารกิจ ๔ · เติมคำธรรมะ',moral:'ภารกิจ ๕ · พุทธศาสนิกชนตัวน้อย',tree:'ภารกิจ ๖ · ต้นไม้แห่งความดี'};
-    const t=q('#permissionTitle'); if(t)t.textContent=names[kind]||'กำลังเตรียมภารกิจ';
-    show('#permission');
-  };
-  window.startSelectedMission=function(){
-    mark();
-    if(typeof window.startGameForUI==='function'){window.startGameForUI();return}
-    const s=q('#status');if(s)s.textContent='กำลังเตรียมระบบ… กรุณารอสักครู่แล้วกดเริ่มอีกครั้ง';
-  };
-  window.retryMission=function(){mark();stop();show('#permission');};
+  function stop(){try{window.stopGameCamera&&window.stopGameCamera()}catch(e){}}
+  function refresh(){try{window.refreshGameUI&&window.refreshGameUI()}catch(e){}}
+  window.__navStarted=true;
+  window.goMenu=function(){window.__navStarted=true;stop();show('#menu');refresh()};
+  window.goHowto=function(){window.__navStarted=true;stop();show('#howto')};
+  window.openHowToFromMission=function(ev){if(ev){ev.preventDefault();ev.stopImmediatePropagation&&ev.stopImmediatePropagation();}window.__navStarted=true;stop();show('#howto');return false};
+  window.goMissions=function(){window.__navStarted=true;stop();show('#missionSelect');refresh()};
+  window.chooseMission=function(kind){window.__navStarted=true;window.pendingMission=kind;const names={altar:'ภารกิจ ๑ · จัดโต๊ะหมู่บูชา',sort:'ภารกิจ ๒ · นักคัดแยกขยะ',quiz:'ภารกิจ ๓ · ธรรมะท้าประลอง',fill:'ภารกิจ ๔ · เติมคำธรรมะ',moral:'ภารกิจ ๕ · พุทธศาสนิกชนตัวน้อย',tree:'ภารกิจ ๖ · ต้นไม้แห่งความดี'};const t=q('#permissionTitle');if(t)t.textContent=names[kind]||'กำลังเตรียมภารกิจ';show('#permission')};
+  window.startSelectedMission=function(){window.__navStarted=true;if(typeof window.startGameForUI==='function'){window.startGameForUI();return}const s=q('#status');if(s)s.textContent='กำลังเตรียมระบบ… กรุณารอสักครู่แล้วกดเริ่มอีกครั้ง'};
+  window.retryMission=function(){window.__navStarted=true;stop();show('#permission')};
+  // Initial state: cover only. No later script is allowed to reset it.
+  hideAll();show('#menu');
 })();
 </script>
-<script type="module" src="script.js?v=352"></script>
+<script type="module" src="script.js?v=354"></script>
 
 <div id="fxLayer" aria-hidden="true"></div>
 </body>
