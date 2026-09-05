@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#10051f">
+<title>ภารกิจชาวพุทธน้อย</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<link rel="stylesheet" href="style.css?v=33">
+</head>
+<body>
+<div id="menu" class="screen openingScreen codeCoverScreen">
+  <div class="codeCover">
+    <div class="coverSky"></div>
+    <div class="coverTempleGlow"></div>
+    <div class="coverDecor decor1">✦</div><div class="coverDecor decor2">✧</div><div class="coverDecor decor3">🌸</div><div class="coverDecor decor4">🪷</div>
+    <div class="coverTop">
+      <div class="coverSchool">
+        <img src="school-logo.png" alt="ตราโรงเรียนอนุบาลเทพสุนทรินทร์">
+        <div><b>โรงเรียนอนุบาลเทพสุนทรินทร์</b><span>“พุทธวิถี สานคุณค่า สู่ชีวิตพอเพียง”</span></div>
+      </div>
+      <div class="coverPill">เกมการเรียนรู้วิถีพุทธ • AR INTERACTIVE GAME</div>
+    </div>
+    <div class="coverMain">
+      <div class="coverBuddha" aria-hidden="true"><div class="buddhaHalo">☸</div><div class="buddhaEmoji">🧘</div><div class="coverLotus">🪷</div></div>
+      <div class="coverTitleBlock">
+        <div class="coverKicker">🌸 ภารกิจแห่งความดี 🌸</div>
+        <h1>ภารกิจชาวพุทธน้อย</h1>
+        <p>เรียนรู้คุณธรรม • ลงมือทำ • สนุกกับการเป็นคนดี</p>
+        <div class="coverRule"><span>✦</span><i></i><span>✦</span></div>
+        <button id="openHowto" class="coverStartButton">▶ เริ่มทำภารกิจ</button>
+        <button id="coverHowto" class="coverHowtoButton">📖 วิธีเล่น</button>
+      </div>
+      <div class="coverChild coverChildLeft" aria-hidden="true">👦🏻<span>สวัสดีครับ!</span></div>
+      <div class="coverChild coverChildRight" aria-hidden="true">👧🏻<span>พร้อมลุยกันไหมคะ?</span></div>
+    </div>
+    <div class="coverMissionStrip">
+      <div><b>①</b><span>จัดโต๊ะหมู่บูชา</span></div><div><b>②</b><span>คัดแยกขยะ</span></div><div><b>③</b><span>ตอบธรรมะ</span></div><div><b>④</b><span>เติมคำธรรมะ</span></div><div><b>⑤</b><span>เลือกพฤติกรรม</span></div><div><b>⑥</b><span>ต้นไม้แห่งความดี</span></div>
+    </div>
+    <div class="coverFooter">โรงเรียนอนุบาลเทพสุนทรินทร์ • เรียนรู้ธรรมะผ่านการลงมือทำ</div>
+  </div>
+</div>
+
+<div id="howto" class="screen hidden artScreenWrap codeHowtoScreen">
+  <div class="codeHowto">
+    <div class="howtoHeader"><img src="school-logo.png" alt="ตราโรงเรียน"><div><div class="howtoKicker">ภารกิจชาวพุทธน้อย</div><h2>📖 วิธีเล่นเกม</h2><p>เลือกภารกิจที่สนใจ แล้วลงมือทำผ่านกล้อง</p></div></div>
+    <div class="howtoSteps">
+      <div class="howtoCard"><div class="stepNo">๑</div><div class="stepIcon">🎯</div><h3>เลือกภารกิจ</h3><p>เลือก 1 จาก 6 ภารกิจ<br>ที่อยากทดลองทำ</p></div>
+      <div class="howtoCard"><div class="stepNo">๒</div><div class="stepIcon">📷</div><h3>เปิดกล้อง</h3><p>กด “เปิดกล้องและเริ่มภารกิจ”<br>แล้วอนุญาตการใช้กล้อง</p></div>
+      <div class="howtoCard"><div class="stepNo">๓</div><div class="stepIcon">🫶</div><h3>ลงมือเล่น</h3><p>ใช้มือ ศีรษะ หรือท่าทาง<br>ตามคำแนะนำของแต่ละด่าน</p></div>
+      <div class="howtoCard"><div class="stepNo">๔</div><div class="stepIcon">⭐</div><h3>สะสมคะแนน</h3><p>ทำภารกิจให้สำเร็จ<br>เพื่อสะสมคะแนนและความดี</p></div>
+    </div>
+    <div class="howtoTips"><b>💡 เคล็ดลับ</b><span>ยืนให้กล้องเห็นชัด • ทำท่าช้า ๆ • อ่านคำแนะนำบนหน้าจอ • เกมนี้ไม่จับเวลา</span></div>
+    <div class="howtoActions"><button id="howtoHome" class="howtoHomeButton">⌂ กลับหน้าหลัก</button><button id="howtoNext" class="howtoNextButton">▶ พร้อมแล้ว เริ่มเลือกภารกิจ</button></div>
+  </div>
+</div>
+
+<div id="missionSelect" class="screen hidden codeMissionScreen">
+  <main class="missionBoard">
+    <div class="missionBoardTop">
+      <div class="missionBrand">
+        <img src="school-logo.png" alt="ตราโรงเรียนอนุบาลเทพสุนทรินทร์">
+        <div><span>AR GAME STATION</span><h2>เลือกภารกิจของคุณ</h2><p>เลือก 1 จาก 6 ภารกิจ แล้วลงมือทำผ่านกล้อง</p></div>
+      </div>
+      <div class="stationScore">⭐ <b id="missionTotalScore">0</b><small>คะแนนรวม</small></div>
+    </div>
+    <div class="missionGridCode">
+      <button data-game="altar" class="missionCardCode missionCard1"><span class="codeBadge">๑</span><span class="codeIcon">🪷</span><b>จัดโต๊ะหมู่บูชา</b><small>ใช้มือหยิบ ลาก และวางเครื่องบูชาให้ถูกตำแหน่ง</small><em class="missionPts">ยังไม่เล่น</em></button>
+      <button data-game="sort" class="missionCardCode missionCard2"><span class="codeBadge">๒</span><span class="codeIcon">♻️</span><b>นักคัดแยกขยะ</b><small>ใช้มือซ้าย–ขวาปัดขยะลงถังให้ถูกประเภท</small><em class="missionPts">ยังไม่เล่น</em></button>
+      <button data-game="quiz" class="missionCardCode missionCard3"><span class="codeBadge">๓</span><span class="codeIcon">🧠</span><b>ธรรมะท้าประลอง</b><small>เอียงศีรษะซ้าย–ขวาเพื่อเลือกคำตอบ</small><em class="missionPts">ยังไม่เล่น</em></button>
+      <button data-game="fill" class="missionCardCode missionCard4"><span class="codeBadge">๔</span><span class="codeIcon">✍️</span><b>เติมคำธรรมะ</b><small>ใช้มือทั้ง ๕ นิ้วกำจับคำ แล้วลากลงช่องที่ถูกต้อง</small><em class="missionPts">ยังไม่เล่น</em></button>
+      <button data-game="moral" class="missionCardCode missionCard5"><span class="codeBadge">๕</span><span class="codeIcon">👍</span><b>พุทธศาสนิกชนตัวน้อย</b><small>ใช้ 👍 / 👎 เลือกการกระทำที่ควรหรือไม่ควรทำ</small><em class="missionPts">ยังไม่เล่น</em></button>
+      <button data-game="tree" class="missionCardCode missionCard6"><span class="codeBadge">๖</span><span class="codeIcon">🌳</span><b>ต้นไม้แห่งความดี</b><small>ใช้นิ้วชี้จีบ ลาก และปล่อยต้นกล้าลงบนต้นไม้</small><em class="missionPts">ยังไม่เล่น</em></button>
+    </div>
+    <div class="missionBoardBottom"><button id="missionHowto" class="boardNavButton">📖 วิธีเล่น</button><div class="boardHint">💡 เลือกภารกิจที่สนใจได้เลย • ไม่มีการจับเวลา</div><button id="missionHome" class="boardNavButton">⌂ หน้าหลัก</button></div>
+  </main>
+</div>
+
+<div id="permission" class="screen hidden">
+  <section class="permissionCard">
+    <div class="schoolMark small"><img src="school-logo.png" alt="ตราโรงเรียนอนุบาลเทพสุนทรินทร์"></div><div class="eyebrow">เตรียมพร้อมสำหรับภารกิจ</div>
+    <h2 id="permissionTitle">กำลังเตรียมภารกิจ</h2>
+    <p>เมื่อกดเริ่ม ระบบจะเปิดกล้องหน้า<br>และตรวจจับมือ • ศีรษะ • ไหล่ • ลำตัวตามภารกิจ</p>
+    <button id="start">📷 เปิดกล้องและเริ่มภารกิจ</button>
+    <p id="status">อนุญาตการใช้กล้องเมื่อระบบถาม</p>
+    <button id="cancelStart" class="ghostBtn">กลับไปเลือกภารกิจ</button>
+  </section>
+</div>
+
+<div id="game" class="hidden">
+  <div id="sceneBackground" aria-hidden="true"></div>
+  <video id="camera" autoplay muted playsinline></video>
+  <div class="veil"></div>
+  <div class="cameraGlow"></div>
+  <header class="hud"><span id="gameName">ภารกิจ</span><span>⭐ <b id="score">0</b></span></header>
+  <div id="title" class="title"></div>
+  <div id="area"></div>
+  <div id="hint"></div>
+  <div id="trackingStatus">● กำลังตรวจจับการเคลื่อนไหว</div>
+  <div id="pointer"><span></span></div>
+  <div id="feedback"></div>
+  <button id="home">↩ กลับหน้าภารกิจ</button>
+</div>
+
+<div id="grandFinale" class="hidden" aria-hidden="true">
+  <div class="finaleGlow"></div>
+  <div class="finaleLogo"><img src="school-logo.png" alt="ตราโรงเรียนอนุบาลเทพสุนทรินทร์"></div>
+  <div class="finaleEyebrow">MISSION 6 / 6 COMPLETE</div>
+  <h2>สุดยอด! 🌟</h2>
+  <p>คุณพิชิตภารกิจชาวพุทธน้อยครบทั้ง ๖ ด่านแล้ว</p>
+  <div class="finaleScore"><span>⭐ คะแนนรวม</span><b id="finaleTotal">0</b></div>
+  <div class="finaleRank" id="finaleRank">🏆 ทูตวิถีพุทธ</div>
+  <div class="finaleSchool">โรงเรียนอนุบาลเทพสุนทรินทร์</div>
+  <div class="finaleFlowers" aria-hidden="true"></div>
+</div>
+
+<div id="result" class="screen hidden">
+  <section class="resultCard">
+    <div class="resultLogo"><img src="school-logo.png" alt="ตราโรงเรียนอนุบาลเทพสุนทรินทร์"></div><div class="resultSpark">✨</div><div class="eyebrow">MISSION COMPLETE</div>
+    <h2 id="resultTitle">เก่งมาก!</h2>
+    <div class="resultScore"><b id="resultRound">+0</b><small>คะแนนภารกิจนี้</small></div>
+    <div class="resultTotal">คะแนนรวมสถานี <b id="resultTotal">0</b></div><div id="resultProgress" class="resultProgress">สำเร็จแล้ว 0/6 ภารกิจ</div>
+    <div id="resultRank" class="resultRank">🌱 ผู้เริ่มต้นทำความดี</div>
+    <div class="resultActions"><button id="again">↻ เล่นภารกิจนี้อีกครั้ง</button><button id="resultHome" class="ghostBtn">⌂ เลือกภารกิจอื่น</button></div>
+  </section>
+</div>
+<script>
+/* UI navigation fallback: keeps the menu/how-to buttons responsive even if the AI module is still loading. */
+(function(){
+  function q(s){return document.querySelector(s)}
+  function show(id){
+    ['#menu','#howto','#missionSelect','#permission','#game','#result'].forEach(s=>{const e=q(s);if(e)e.classList.add('hidden')});
+    const e=q(id);if(e)e.classList.remove('hidden');
+  }
+  function bind(){
+    const start=q('#openHowto'), howto=q('#coverHowto'), next=q('#howtoNext'), back=q('#howtoHome'), mh=q('#missionHowto'), home=q('#missionHome'), cancel=q('#cancelStart'), resultHome=q('#resultHome');
+    start?.addEventListener('click',function(){show('#missionSelect'); document.dispatchEvent(new CustomEvent('ui-go-missions'));});
+    howto?.addEventListener('click',function(){show('#howto'); document.dispatchEvent(new CustomEvent('ui-go-howto'));});
+    next?.addEventListener('click',function(){show('#missionSelect'); document.dispatchEvent(new CustomEvent('ui-go-missions'));});
+    back?.addEventListener('click',function(){show('#menu'); document.dispatchEvent(new CustomEvent('ui-go-menu'));});
+    mh?.addEventListener('click',function(){show('#howto'); document.dispatchEvent(new CustomEvent('ui-go-howto'));});
+    home?.addEventListener('click',function(){show('#menu'); document.dispatchEvent(new CustomEvent('ui-go-menu'));});
+    cancel?.addEventListener('click',function(){show('#missionSelect'); document.dispatchEvent(new CustomEvent('ui-go-missions'));});
+    resultHome?.addEventListener('click',function(){show('#missionSelect'); document.dispatchEvent(new CustomEvent('ui-go-missions'));});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
+})();
+</script>
+<script type="module" src="script.js?v=34"></script>
+
+<div id="fxLayer" aria-hidden="true"></div>
+</body>
+</html>
