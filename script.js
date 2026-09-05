@@ -252,15 +252,13 @@ function completeTree(virtue){
  }
 }
 function showMenu(){stopCamera();gameKind=null;$("#permission").classList.add('hidden');$("#howto").classList.add('hidden');$("#missionSelect").classList.add('hidden');$("#result").classList.add('hidden');$("#game").classList.add('hidden');$("#menu").classList.remove('hidden');ui()}
-function showHowto(){$("#menu").classList.add('hidden');$("#missionSelect").classList.add('hidden');$("#howto").classList.remove('hidden')}
-function showMissions(){$("#menu").classList.add('hidden');$("#howto").classList.add('hidden');$("#missionSelect").classList.remove('hidden');ui()}
-$$('[data-game]').forEach(b=>b.addEventListener('click',()=>setup(b.dataset.game)));
-$("#start")?.addEventListener('click',startGame);
-$("#home")?.addEventListener('click',showMissions);
-$("#again")?.addEventListener('click',()=>{stopCamera();$("#result").classList.add('hidden');$("#permission").classList.remove('hidden')});
-document.addEventListener('ui-go-menu',()=>showMenu());
-document.addEventListener('ui-go-howto',()=>showHowto());
-document.addEventListener('ui-go-missions',()=>showMissions());
+function showHowto(){$("#menu").classList.add('hidden');$("#missionSelect").classList.add('hidden');$("#permission").classList.add('hidden');$("#howto").classList.remove('hidden')}
+function showMissions(){$("#menu").classList.add('hidden');$("#howto").classList.add('hidden');$("#permission").classList.add('hidden');$("#missionSelect").classList.remove('hidden');ui()}
+// v35: expose only the UI/game entry points used by inline buttons.
+window.startGameForUI=function(){const k=window.pendingMission||gameKind;if(!k)return;setup(k);startGame()};
+window.stopGameCamera=function(){stopCamera()};
+window.refreshGameUI=function(){ui()};
+window.chooseMission=function(kind){window.pendingMission=kind;setup(kind)};
 showMenu();
 // Mouse/touch fallback for desktop testing when camera is unavailable.
 let fallbackEl=null;document.addEventListener('pointerdown',e=>{if(!gameKind)return;const x=e.clientX,y=e.clientY;fallbackEl=hit("#area [data-drag],#area .seedling",x,y);if(fallbackEl)move(fallbackEl,x,y)});document.addEventListener('pointermove',e=>{if(fallbackEl)move(fallbackEl,e.clientX,e.clientY)});document.addEventListener('pointerup',e=>{if(!fallbackEl)return;const x=e.clientX,y=e.clientY;if(gameKind==='altar')altarGestureFallback(fallbackEl,x,y);else if(gameKind==='sort')sortFallback(fallbackEl,x,y);else if(gameKind==='tree'){const soil=hit('#area .soil',x,y);if(soil){fallbackEl.remove();completeTree()}}reset(fallbackEl);fallbackEl=null});

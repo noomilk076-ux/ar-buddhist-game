@@ -655,3 +655,13 @@ body{background:#09030f}
 .missionBoardBottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:clamp(10px,1.7vh,18px)}.boardNavButton{padding:11px 18px;border-radius:999px;border:1px solid #ffd66b77;background:#1a082ddd;color:#fff0bd;font-weight:1000;font-size:clamp(12px,1.2vw,17px);cursor:pointer}.boardNavButton:hover,.boardNavButton:focus{background:#5e2390;border-color:#ffd66b}.boardHint{flex:1;text-align:center;color:#fff0d0aa;font-size:clamp(10px,1vw,14px);font-weight:800}
 @media(max-width:900px){.missionBoard{height:96vh;border-radius:24px}.missionGridCode{gap:9px}.missionCardCode{padding:13px;border-radius:18px}.codeIcon{font-size:42px;margin-bottom:9px}.missionCardCode b{font-size:16px}.missionCardCode small{font-size:10px}.stationScore{min-width:110px;padding:9px 12px}}
 @media(max-width:650px){.missionBoard{width:96vw;height:96vh;padding:13px;border-radius:20px}.missionBoardTop{margin-bottom:10px}.missionBrand{gap:8px}.missionBrand img{width:48px;height:48px}.missionBrand h2{font-size:25px}.missionBrand p{font-size:10px}.stationScore{min-width:88px;padding:7px 9px;font-size:16px}.stationScore small{font-size:9px}.missionGridCode{grid-template-columns:repeat(2,1fr);gap:8px}.missionCardCode{padding:10px;border-radius:15px}.codeBadge{width:30px;height:30px;font-size:15px;right:7px;top:7px}.codeIcon{font-size:34px;margin:2px 0 7px}.missionCardCode b{font-size:13px;margin-bottom:4px}.missionCardCode small{font-size:9px;line-height:1.35}.missionCardCode em{margin-top:7px;font-size:9px;padding:4px 7px}.missionBoardBottom{margin-top:8px}.boardNavButton{padding:8px 11px;font-size:10px}.boardHint{font-size:8px}}
+
+
+/* ===== v35 FINAL: touch/click safety ===== */
+.screen{pointer-events:auto!important}
+button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.missionCardCode,.boardNavButton{pointer-events:auto!important;touch-action:manipulation!important;-webkit-user-select:none;user-select:none}
+.codeHowto,.howtoActions{pointer-events:auto!important}
+.howtoActions{z-index:100!important}
+.howtoActions button{position:relative;z-index:101!important}
+.missionBoard{pointer-events:auto!important}
+.missionCardCode{position:relative;z-index:5!important}
