@@ -389,3 +389,26 @@ body{background:#09030f}
 .resultLogo{width:72px!important;height:69px!important}
 .finaleLogo{width:clamp(76px,8vw,108px)!important;height:clamp(73px,7.5vw,103px)!important}
 @media(max-width:620px){.menuCard > .schoolMark{width:48px!important;height:48px!important}.permissionCard > .schoolMark.small{width:42px!important;height:42px!important}}
+
+
+/* v24 — move school logo to upper-left and enlarge it */
+.menuCard > .schoolMark{
+  position:absolute!important;
+  top:22px!important;
+  left:24px!important;
+  width:92px!important;
+  height:92px!important;
+  margin:0!important;
+  z-index:5;
+  border-radius:50%;
+  overflow:hidden;
+  background:#fff!important;
+  box-shadow:0 0 24px rgba(255,214,107,.38),0 8px 22px rgba(0,0,0,.28);
+}
+.menuCard > .eyebrow{margin-top:0!important}
+@media(max-width:800px){
+  .menuCard > .schoolMark{width:76px!important;height:76px!important;top:18px!important;left:18px!important}
+}
+@media(max-width:620px){
+  .menuCard > .schoolMark{width:64px!important;height:64px!important;top:14px!important;left:14px!important}
+}
