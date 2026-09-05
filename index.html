@@ -7,7 +7,7 @@
 <title>ภารกิจชาวพุทธน้อย</title>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
-<link rel="stylesheet" href="style.css?v=351">
+<link rel="stylesheet" href="style.css?v=352">
 </head>
 <body>
 <div id="menu" class="screen openingScreen codeCoverScreen">
@@ -29,8 +29,7 @@
         <h1>ภารกิจชาวพุทธน้อย</h1>
         <p>เรียนรู้คุณธรรม • ลงมือทำ • สนุกกับการเป็นคนดี</p>
         <div class="coverRule"><span>✦</span><i></i><span>✦</span></div>
-        <button id="openHowto" class="coverStartButton" onclick="goMissions()">▶ เริ่มทำภารกิจ</button>
-        <button id="coverHowto" class="coverHowtoButton" onclick="goHowto()">📖 วิธีเล่น</button>
+        <button id="openHowto" class="coverStartButton" onclick="window.goHowto()">▶ เริ่มทำภารกิจ</button>
       </div>
       <div class="coverChild coverChildLeft" aria-hidden="true">👦🏻<span>สวัสดีครับ!</span></div>
       <div class="coverChild coverChildRight" aria-hidden="true">👧🏻<span>พร้อมลุยกันไหมคะ?</span></div>
@@ -45,7 +44,7 @@
 <div id="howto" class="screen hidden artScreenWrap codeHowtoScreen">
   <div class="codeHowto howtoMinimal">
     <button id="howtoHome" class="howtoHomeButton howtoHomeFixed" onclick="goMenu()">⌂ กลับหน้าหลัก</button>
-    <button id="howtoNext" class="howtoNextButton howtoNextFixed" onclick="goMissions()">▶ พร้อมแล้ว เริ่มเลือกภารกิจ</button>
+    <button id="howtoNext" class="howtoNextButton howtoNextFixed" onclick="window.goMissions()">▶ พร้อมแล้ว เริ่มเลือกภารกิจ</button>
   </div>
 </div>
 
@@ -66,7 +65,7 @@
       <button data-game="moral" onclick="chooseMission('moral')" class="missionCardCode missionCard5"><span class="codeBadge">๕</span><span class="codeIcon">👍</span><b>พุทธศาสนิกชนตัวน้อย</b><small>ใช้ 👍 / 👎 เลือกการกระทำที่ควรหรือไม่ควรทำ</small><em class="missionPts">ยังไม่เล่น</em></button>
       <button data-game="tree" onclick="chooseMission('tree')" class="missionCardCode missionCard6"><span class="codeBadge">๖</span><span class="codeIcon">🌳</span><b>ต้นไม้แห่งความดี</b><small>ใช้นิ้วชี้จีบ ลาก และปล่อยต้นกล้าลงบนต้นไม้</small><em class="missionPts">ยังไม่เล่น</em></button>
     </div>
-    <div class="missionBoardBottom"><button id="missionHowto" class="boardNavButton" onclick="goHowto()">📖 วิธีเล่น</button><div class="boardHint">💡 เลือกภารกิจที่สนใจได้เลย • ไม่มีการจับเวลา</div><button id="missionHome" class="boardNavButton" onclick="goMenu()">⌂ หน้าหลัก</button></div>
+    <div class="missionBoardBottom"><button id="missionHowto" class="boardNavButton" onclick="window.goHowto()">📖 วิธีเล่น</button><div class="boardHint">💡 เลือกภารกิจที่สนใจได้เลย • ไม่มีการจับเวลา</div><button id="missionHome" class="boardNavButton" onclick="window.goMenu()">⌂ หน้าหลัก</button></div>
   </main>
 </div>
 
@@ -77,7 +76,7 @@
     <p>เมื่อกดเริ่ม ระบบจะเปิดกล้องหน้า<br>และตรวจจับมือ • ศีรษะ • ไหล่ • ลำตัวตามภารกิจ</p>
     <button id="start" onclick="startSelectedMission()">📷 เปิดกล้องและเริ่มภารกิจ</button>
     <p id="status">อนุญาตการใช้กล้องเมื่อระบบถาม</p>
-    <button id="cancelStart" class="ghostBtn" onclick="goMissions()">กลับไปเลือกภารกิจ</button>
+    <button id="cancelStart" class="ghostBtn" onclick="window.goMissions()">กลับไปเลือกภารกิจ</button>
   </section>
 </div>
 
@@ -93,7 +92,7 @@
   <div id="trackingStatus">● กำลังตรวจจับการเคลื่อนไหว</div>
   <div id="pointer"><span></span></div>
   <div id="feedback"></div>
-  <button id="home" onclick="goMissions()">↩ กลับหน้าภารกิจ</button>
+  <button id="home" onclick="window.goMissions()">↩ กลับหน้าภารกิจ</button>
 </div>
 
 <div id="grandFinale" class="hidden" aria-hidden="true">
@@ -115,7 +114,7 @@
     <div class="resultScore"><b id="resultRound">+0</b><small>คะแนนภารกิจนี้</small></div>
     <div class="resultTotal">คะแนนรวมสถานี <b id="resultTotal">0</b></div><div id="resultProgress" class="resultProgress">สำเร็จแล้ว 0/6 ภารกิจ</div>
     <div id="resultRank" class="resultRank">🌱 ผู้เริ่มต้นทำความดี</div>
-    <div class="resultActions"><button id="again" onclick="retryMission()">↻ เล่นภารกิจนี้อีกครั้ง</button><button id="resultHome" class="ghostBtn" onclick="goMissions()">⌂ เลือกภารกิจอื่น</button></div>
+    <div class="resultActions"><button id="again" onclick="retryMission()">↻ เล่นภารกิจนี้อีกครั้ง</button><button id="resultHome" class="ghostBtn" onclick="window.goMissions()">⌂ เลือกภารกิจอื่น</button></div>
   </section>
 </div>
 <script>
@@ -152,7 +151,30 @@
   };
 })();
 </script>
-<script type="module" src="script.js?v=351"></script>
+<script>
+/* v35.2 FINAL FLOW: cover -> how-to -> mission select. */
+window.goHowto=function(){
+  try{window.stopGameCamera?.()}catch(e){}
+  ['#menu','#missionSelect','#permission','#game','#result'].forEach(function(sel){var el=document.querySelector(sel);if(el)el.classList.add('hidden')});
+  var how=document.querySelector('#howto');
+  if(how)how.classList.remove('hidden');
+};
+window.goMissions=function(){
+  try{window.stopGameCamera?.()}catch(e){}
+  ['#menu','#howto','#permission','#game','#result'].forEach(function(sel){var el=document.querySelector(sel);if(el)el.classList.add('hidden')});
+  var m=document.querySelector('#missionSelect');
+  if(m)m.classList.remove('hidden');
+  try{window.refreshGameUI?.()}catch(e){}
+};
+window.goMenu=function(){
+  try{window.stopGameCamera?.()}catch(e){}
+  ['#howto','#missionSelect','#permission','#game','#result'].forEach(function(sel){var el=document.querySelector(sel);if(el)el.classList.add('hidden')});
+  var menu=document.querySelector('#menu');
+  if(menu)menu.classList.remove('hidden');
+  try{window.refreshGameUI?.()}catch(e){}
+};
+</script>
+<script type="module" src="script.js?v=352"></script>
 
 <div id="fxLayer" aria-hidden="true"></div>
 </body>
