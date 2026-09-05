@@ -125,7 +125,29 @@
     <div class="resultActions"><button id="again">↻ เล่นภารกิจนี้อีกครั้ง</button><button id="resultHome" class="ghostBtn">⌂ เลือกภารกิจอื่น</button></div>
   </section>
 </div>
-<script type="module" src="script.js?v=33"></script>
+<script>
+/* UI navigation fallback: keeps the menu/how-to buttons responsive even if the AI module is still loading. */
+(function(){
+  function q(s){return document.querySelector(s)}
+  function show(id){
+    ['#menu','#howto','#missionSelect','#permission','#game','#result'].forEach(s=>{const e=q(s);if(e)e.classList.add('hidden')});
+    const e=q(id);if(e)e.classList.remove('hidden');
+  }
+  function bind(){
+    const start=q('#openHowto'), howto=q('#coverHowto'), next=q('#howtoNext'), back=q('#howtoHome'), mh=q('#missionHowto'), home=q('#missionHome'), cancel=q('#cancelStart'), resultHome=q('#resultHome');
+    start?.addEventListener('click',function(){show('#missionSelect'); document.dispatchEvent(new CustomEvent('ui-go-missions'));});
+    howto?.addEventListener('click',function(){show('#howto'); document.dispatchEvent(new CustomEvent('ui-go-howto'));});
+    next?.addEventListener('click',function(){show('#missionSelect'); document.dispatchEvent(new CustomEvent('ui-go-missions'));});
+    back?.addEventListener('click',function(){show('#menu'); document.dispatchEvent(new CustomEvent('ui-go-menu'));});
+    mh?.addEventListener('click',function(){show('#howto'); document.dispatchEvent(new CustomEvent('ui-go-howto'));});
+    home?.addEventListener('click',function(){show('#menu'); document.dispatchEvent(new CustomEvent('ui-go-menu'));});
+    cancel?.addEventListener('click',function(){show('#missionSelect'); document.dispatchEvent(new CustomEvent('ui-go-missions'));});
+    resultHome?.addEventListener('click',function(){show('#missionSelect'); document.dispatchEvent(new CustomEvent('ui-go-missions'));});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
+})();
+</script>
+<script type="module" src="script.js?v=34"></script>
 
 <div id="fxLayer" aria-hidden="true"></div>
 </body>

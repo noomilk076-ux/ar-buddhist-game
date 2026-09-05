@@ -255,16 +255,12 @@ function showMenu(){stopCamera();gameKind=null;$("#permission").classList.add('h
 function showHowto(){$("#menu").classList.add('hidden');$("#missionSelect").classList.add('hidden');$("#howto").classList.remove('hidden')}
 function showMissions(){$("#menu").classList.add('hidden');$("#howto").classList.add('hidden');$("#missionSelect").classList.remove('hidden');ui()}
 $$('[data-game]').forEach(b=>b.addEventListener('click',()=>setup(b.dataset.game)));
-$("#openHowto").addEventListener('click',showHowto);
-$("#howtoNext").addEventListener('click',showMissions);
-$("#howtoHome").addEventListener('click',showMenu);
-$("#missionHowto").addEventListener('click',showHowto);
-$("#missionHome").addEventListener('click',showMenu);
-$("#start").addEventListener('click',startGame);
-$("#cancelStart").addEventListener('click',showMissions);
-$("#home").addEventListener('click',showMissions);
-$("#resultHome").addEventListener('click',showMissions);
-$("#again").addEventListener('click',()=>{stopCamera();$("#result").classList.add('hidden');$("#permission").classList.remove('hidden')});
+$("#start")?.addEventListener('click',startGame);
+$("#home")?.addEventListener('click',showMissions);
+$("#again")?.addEventListener('click',()=>{stopCamera();$("#result").classList.add('hidden');$("#permission").classList.remove('hidden')});
+document.addEventListener('ui-go-menu',()=>showMenu());
+document.addEventListener('ui-go-howto',()=>showHowto());
+document.addEventListener('ui-go-missions',()=>showMissions());
 showMenu();
 // Mouse/touch fallback for desktop testing when camera is unavailable.
 let fallbackEl=null;document.addEventListener('pointerdown',e=>{if(!gameKind)return;const x=e.clientX,y=e.clientY;fallbackEl=hit("#area [data-drag],#area .seedling",x,y);if(fallbackEl)move(fallbackEl,x,y)});document.addEventListener('pointermove',e=>{if(fallbackEl)move(fallbackEl,e.clientX,e.clientY)});document.addEventListener('pointerup',e=>{if(!fallbackEl)return;const x=e.clientX,y=e.clientY;if(gameKind==='altar')altarGestureFallback(fallbackEl,x,y);else if(gameKind==='sort')sortFallback(fallbackEl,x,y);else if(gameKind==='tree'){const soil=hit('#area .soil',x,y);if(soil){fallbackEl.remove();completeTree()}}reset(fallbackEl);fallbackEl=null});
@@ -300,7 +296,7 @@ ui();
 // v33: keep code-only mission board score in sync with the station total.
 function syncMissionBoard(){
   const el=document.querySelector("#missionTotalScore");
-  if(el && typeof totalScore !== "undefined") el.textContent=totalScore;
+  if(el && typeof total !== "undefined") el.textContent=total;
 }
 const _showMissionsV33=showMissions;
 showMissions=function(){_showMissionsV33();syncMissionBoard();};
