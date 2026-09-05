@@ -482,3 +482,66 @@ body{background:#09030f}
 @media(prefers-reduced-motion:reduce){
   #pointer,#feedback{transition:none!important}
 }
+
+
+/* v26 — Booth playability polish for Missions 3–6. Detection/game logic unchanged. */
+/* Mission 3: large, clearly separated answer targets */
+.answers{gap:26px!important;margin-top:30px!important}
+.answer{min-height:118px!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:18px 24px!important;border-width:2px!important;font-size:clamp(23px,2.2vw,32px)!important;line-height:1.25!important;text-shadow:0 3px 10px #0008}
+.answer.target{transform:scale(1.035)!important;border-width:3px!important;box-shadow:0 0 42px #ffd66b88,inset 0 0 28px #ffd66b22!important}
+
+/* Mission 4: bigger word cards and drop zone for standing players */
+.fillGrid.threeCols{gap:18px!important;margin-top:24px!important}
+.fillCell.wordDrag{min-height:138px!important;padding:18px 14px!important;font-size:clamp(22px,2.2vw,31px)!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important}
+.fillCell.wordDrag small{font-size:clamp(10px,1vw,14px)!important;margin-top:9px!important}
+.dropBlank{min-height:105px!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:16px!important;font-size:clamp(18px,1.8vw,25px)!important}
+.fillCell.active{transform:translateY(-6px) scale(1.035)!important}
+
+/* Mission 5: make the two gesture choices unmistakable from a distance */
+.thumbChoices{gap:30px!important;margin-top:30px!important}
+.thumbAnswer{min-height:220px!important;border-width:3px!important}
+.thumbAnswer.target{transform:scale(1.045)!important;border-width:4px!important}
+.thumbIcon{font-size:clamp(72px,8vw,110px)!important}
+.thumbAnswer b{font-size:clamp(23px,2.6vw,34px)!important}
+.thumbGuide{font-size:clamp(14px,1.3vw,19px)!important}
+
+/* Mission 6: larger seedling cards without changing their 3×2 layout */
+.seedTray{column-gap:18px!important;row-gap:14px!important}
+.seedling{width:clamp(108px,13vw,145px)!important;height:clamp(112px,13.5vw,138px)!important;padding:9px!important;border-width:2px!important}
+.seedling span{font-size:clamp(42px,4.5vw,58px)!important}
+.seedling b{font-size:clamp(16px,1.65vw,21px)!important}
+.seedling small{font-size:clamp(11px,1.1vw,14px)!important}
+.seedling em{font-size:clamp(9px,.95vw,12px)!important}
+.seedling.dragging{transform:scale(1.1)!important}
+
+@media(max-width:900px){
+  .answers{gap:14px!important}
+  .answer{min-height:100px!important;padding:14px!important;font-size:21px!important}
+  .fillGrid.threeCols{gap:10px!important}
+  .fillCell.wordDrag{min-height:112px!important;padding:10px!important;font-size:19px!important}
+  .dropBlank{min-height:88px!important;font-size:17px!important}
+  .thumbChoices{gap:14px!important}
+  .thumbAnswer{min-height:170px!important}
+  .thumbIcon{font-size:68px!important}
+  .thumbAnswer b{font-size:21px!important}
+  .seedling{width:27vw!important;height:105px!important}
+}
+
+@media(max-width:520px){
+  .answers{gap:9px!important;margin-top:18px!important}
+  .answer{min-height:82px!important;font-size:16px!important;padding:10px!important}
+  .fillGrid.threeCols{gap:6px!important}
+  .fillCell.wordDrag{min-height:92px!important;font-size:15px!important;padding:7px!important}
+  .fillCell.wordDrag small{font-size:8px!important}
+  .dropBlank{min-height:76px!important;font-size:13px!important}
+  .thumbChoices{gap:9px!important;margin-top:18px!important}
+  .thumbAnswer{min-height:135px!important}
+  .thumbIcon{font-size:54px!important}
+  .thumbAnswer b{font-size:16px!important}
+  .thumbGuide{font-size:10px!important}
+  .seedling{width:29vw!important;height:91px!important;padding:5px!important}
+  .seedling span{font-size:38px!important}
+  .seedling b{font-size:12px!important}
+  .seedling small{font-size:9px!important}
+  .seedling em{font-size:7px!important}
+}
