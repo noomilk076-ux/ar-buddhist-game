@@ -191,7 +191,7 @@ function fillGesture(){
 const ms=[
  ["หลังทำกิจกรรม ห้องเรียนมีขยะเต็มพื้น ควรช่วยกันเก็บและทิ้งให้ถูกถังหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
  ["พบของที่ไม่ใช่ของตนเอง ควรนำส่งครูหรือหาเจ้าของหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
- ["เมื่อครูมอบหมายงานกลุ่ม ควรปล่อยให้เพื่อนทำทั้งหมดหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",0],
+ ["เมื่อครูมอบหมายงานกลุ่ม ควรปล่อยให้เพื่อนทำทั้งหมดหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
  ["เพื่อนทำผิดแล้วมาขอโทษ เราควรให้อภัยและแนะนำด้วยเมตตาหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
  ["เมื่อเข้าร่วมกิจกรรมทางพระพุทธศาสนา ควรสำรวมกาย วาจา และตั้งใจร่วมกิจกรรมหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1]
 ];
@@ -253,7 +253,20 @@ function completeTree(virtue){
  }
 }
 // v36: landing navigation is owned exclusively by index.html inline controller.
-window.startGameForUI=function(){const k=window.pendingMission||gameKind;if(!k)return;setup(k);startGame()};
+window.startGameForUI = function () {
+  const k = window.pendingMission || gameKind;
+
+  if (!k) {
+    const status = document.querySelector("#status");
+    if (status) {
+      status.textContent = "กรุณาเลือกภารกิจก่อนเริ่มเล่น";
+    }
+    return;
+  }
+
+  setup(k);
+  startGame();
+};
 window.stopGameCamera=function(){stopCamera()};
 window.refreshGameUI=function(){ui()};
 // Landing navigation is owned exclusively by index.html.
@@ -294,15 +307,3 @@ const _uiV36=ui;
 ui=function(){_uiV36();syncMissionBoard();};
 syncMissionBoard();
 
-// Bridge สำหรับปุ่มเริ่มภารกิจจากหน้า HTML
-window.startGameForUI = function () {
-  gameKind = window.pendingMission;
-
-  if (!gameKind) {
-    const status = document.querySelector("#status");
-    if (status) status.textContent = "กรุณาเลือกภารกิจก่อนเริ่มเล่น";
-    return;
-  }
-
-  startGame();
-};
