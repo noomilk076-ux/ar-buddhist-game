@@ -66,8 +66,7 @@ function move(e,x,y){e.style.position="fixed";e.style.left=x-e.offsetWidth/2+"px
 function reset(e){if(!e)return;e.style.position="";e.style.left="";e.style.top="";e.style.zIndex="";e.classList.remove("dragging")}
 function gestureFrame(t){if(gameKind==="altar")altarGesture();else if(gameKind==="sort")sortGesture();else if(gameKind==="quiz")quizGesture(t);else if(gameKind==="fill")fillGesture(t);else if(gameKind==="moral")moralGesture(t);else if(gameKind==="tree")treeGesture()}
 
-function setup(kind){stopCamera();gameKind=kind;const game=document.querySelector("#game");game.classList.add("hidden");game.classList.remove("mission1Scene","mission2Scene","mission3Scene","mission4Scene","mission5Scene","mission6Scene");const sceneNo={altar:1,sort:2,quiz:3,fill:4,moral:5,tree:6}[kind];if(sceneNo)game.classList.add(`mission${sceneNo}Scene`);round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];const permissionTitle=$("#permissionTitle");
-if(permissionTitle) permissionTitle.textContent=names[kind];$("#menu").classList.add("hidden");$("#howto").classList.add("hidden");$("#missionSelect").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
+function setup(kind){stopCamera();gameKind=kind;const game=document.querySelector("#game");game.classList.add("hidden");game.classList.remove("mission1Scene","mission2Scene","mission3Scene","mission4Scene","mission5Scene","mission6Scene");const sceneNo={altar:1,sort:2,quiz:3,fill:4,moral:5,tree:6}[kind];if(sceneNo)game.classList.add(`mission${sceneNo}Scene`);round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];$("#permissionTitle").textContent=names[kind];$("#menu").classList.add("hidden");$("#howto").classList.add("hidden");$("#missionSelect").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
 function startGame(){$("#permission").classList.add("hidden");$("#game").classList.remove("hidden");({altar,sort,quiz,fill,moral,tree}[gameKind])();startCamera()}
 function showGrandFinale(done){
   const layer=$("#grandFinale");
@@ -107,11 +106,48 @@ function altar(){
 }
 function altarGesture(){const h=info(0);if(!h)return;pointer(h.p.x,h.p.y,h.pin);if(h.pin&&!pinchStates[0]){dragged[0]=hit("#area [data-drag]",h.p.x,h.p.y);dragged[0]?.classList.add("dragging")}if(h.pin&&dragged[0])move(dragged[0],h.p.x,h.p.y);if(!h.pin&&pinchStates[0]&&dragged[0]){const e=dragged[0],slot=hit("#area .tierSlot",h.p.x,h.p.y);if(e.dataset.ritual){if(slot?.dataset.slot==="ritual"){e.remove();slot.textContent="✓ เครื่องบูชา";add(5);toast("วางเครื่องบูชาถูกต้อง +5")}else reset(e)}else if(slot?.dataset.slot===e.dataset.slot){e.remove();slot.textContent="✓ โต๊ะ "+slot.dataset.slot;slot.classList.add("filled");add(5);toast("วางโต๊ะถูกต้อง +5")}else reset(e);dragged[0]=null;checkAltarComplete()}pinchStates[0]=h.pin}
 
-function sort(){
- $("#title").innerHTML="<h2>นักคัดแยกขยะ</h2><p>ใช้มือซ้ายและขวาปัดขยะลงถังให้ถูกประเภท</p>";$("#hint").textContent="🖐 ใช้มือซ้าย–ขวาหยิบหรือปัดขยะเข้าถังที่ถูกต้อง";
- $("#area").innerHTML='<div class="swipeBin bin-green">🟢<br>ขยะทั่วไป</div><div class="swipeBin bin-blue">🔵<br>รีไซเคิล</div><div class="swipeBin bin-yellow">🟡<br>กระดาษ</div><div class="swipeBin bin-red">🔴<br>อันตราย</div>';
- const ws=[["🍌","green"],["🍎","green"],["🍂","green"],["🥤","blue"],["🥫","blue"],["📦","blue"],["📰","yellow"],["📄","yellow"],["🔋","red"],["🧴","red"]];ws.forEach((w,i)=>{const d=document.createElement("div");d.className="waste";d.textContent=w[0];d.dataset.drag=1;d.dataset.type=w[1];d.style.left=8+(i%5)*18+"%";d.style.top=10+Math.floor(i/5)*26+"%";$("#area").appendChild(d)})
+function wasteSVG(kind){
+ const common='viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"';
+ const svg={
+  banana:`<svg ${common}><defs><linearGradient id="ban" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe96a"/><stop offset=".55" stop-color="#f5b51b"/><stop offset="1" stop-color="#b96b08"/></linearGradient></defs><path d="M28 30c8 32 22 48 51 54 14 3 25-1 29-10-15 4-29-3-39-13-13-13-20-29-23-42-4-9-21-2-18 11z" fill="url(#ban)" stroke="#8a4b08" stroke-width="3"/><path d="M28 30c-2-9 2-16 9-18l8 2-3 13" fill="#6d4215"/><path d="M48 47c10 20 23 30 42 34" fill="none" stroke="#fff4a5" stroke-width="5" opacity=".7"/></svg>`,
+  bottle:`<svg ${common}><defs><linearGradient id="wat" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e9fbff"/><stop offset=".45" stop-color="#8bd7ef"/><stop offset="1" stop-color="#3b8fc0"/></linearGradient></defs><path d="M47 14h26v13c0 5 7 8 10 15l7 48c2 10-5 16-14 16H44c-9 0-16-6-14-16l7-48c1-7 10-10 10-15z" fill="url(#wat)" stroke="#2c7198" stroke-width="3"/><rect x="45" y="7" width="30" height="12" rx="4" fill="#1670d0"/><path d="M43 38h34M39 70h42" stroke="#fff" stroke-width="4" opacity=".55"/></svg>`,
+  leaves:`<svg ${common}><path d="M54 101C49 75 48 51 55 20" fill="none" stroke="#6f4920" stroke-width="5"/><path d="M54 63C37 57 24 45 22 30c17-1 29 8 32 25z" fill="#c76a28" stroke="#7e3b16" stroke-width="2"/><path d="M55 48c14-17 29-23 42-19-2 17-14 29-38 32z" fill="#e58b32" stroke="#8a471a" stroke-width="2"/><path d="M51 83c-16-2-28-10-34-23 17-3 30 3 37 17z" fill="#9e5120" stroke="#6f3512" stroke-width="2"/></svg>`,
+  can:`<svg ${common}><defs><linearGradient id="can" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff7777"/><stop offset=".5" stop-color="#e52d36"/><stop offset="1" stop-color="#8f1018"/></linearGradient></defs><path d="M30 28h60l-4 70c-1 8-7 12-14 12H48c-7 0-13-4-14-12z" fill="url(#can)" stroke="#73131a" stroke-width="3"/><ellipse cx="60" cy="28" rx="30" ry="8" fill="#d7dce2" stroke="#777" stroke-width="2"/><ellipse cx="60" cy="29" rx="7" ry="2" fill="#888"/><path d="M38 48h44" stroke="#ffb2b2" stroke-width="5" opacity=".7"/><text x="60" y="73" text-anchor="middle" font-size="16" font-weight="900" fill="#fff">DRINK</text></svg>`,
+  cup:`<svg ${common}><path d="M28 30h64l-7 65c-1 10-8 15-25 15s-24-5-25-15z" fill="#f5f5f5" stroke="#b8b8b8" stroke-width="3"/><path d="M31 31h58" stroke="#c9c9c9" stroke-width="7"/><path d="M70 25l12-20" stroke="#e53935" stroke-width="7" stroke-linecap="round"/><path d="M43 49h34M45 63h30" stroke="#ddd" stroke-width="4"/><path d="M43 30c5 9 11 13 17 13" fill="none" stroke="#fff" stroke-width="4"/></svg>`,
+  box:`<svg ${common}><path d="M18 38l42-18 42 18-42 19z" fill="#d99b55" stroke="#7d4a22" stroke-width="3"/><path d="M18 38v48l42 21V57z" fill="#c7823d" stroke="#7d4a22" stroke-width="3"/><path d="M102 38v48L60 107V57z" fill="#e5a85f" stroke="#7d4a22" stroke-width="3"/><path d="M60 20v37M39 29l42 18" stroke="#f6cf91" stroke-width="4"/><text x="60" y="79" text-anchor="middle" font-size="17" font-weight="900" fill="#74431e">RECYCLE</text></svg>`,
+  paper:`<svg ${common}><path d="M28 24h58l10 12v65H28z" fill="#f6f2df" stroke="#aaa58f" stroke-width="3"/><path d="M86 24v16h10" fill="#ddd7bf" stroke="#aaa58f" stroke-width="3"/><path d="M39 50h45M39 62h45M39 74h34" stroke="#777" stroke-width="4"/><path d="M38 91h25" stroke="#c7b987" stroke-width="5"/></svg>`,
+  ball:`<svg ${common}><path d="M33 30c15-15 39-15 54 0l8 25c3 17-7 33-24 39-13 5-30 0-40-12-10-12-11-30-3-43z" fill="#f2f2f2" stroke="#bfc2c9" stroke-width="3"/><path d="M39 37c9 7 17 9 27 7 9-2 15-7 20-14M34 67c13-6 26-5 38 2 7 4 12 10 14 18M59 25c-3 12-1 22 6 31 5 7 13 12 22 14" fill="none" stroke="#d2d4da" stroke-width="4"/></svg>`,
+  battery:`<svg ${common}><defs><linearGradient id="bat" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4f5965"/><stop offset="1" stop-color="#161a1f"/></linearGradient></defs><rect x="32" y="28" width="56" height="72" rx="10" fill="url(#bat)" stroke="#080a0d" stroke-width="3"/><rect x="51" y="19" width="18" height="9" rx="3" fill="#858d96"/><path d="M60 39v18M51 48h18" stroke="#ffcc38" stroke-width="5"/><text x="60" y="80" text-anchor="middle" font-size="12" font-weight="900" fill="#ffd34e">TOXIC</text></svg>`,
+  chemical:`<svg ${common}><defs><linearGradient id="chem" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset=".6" stop-color="#e9eef4"/><stop offset="1" stop-color="#b7c4d0"/></linearGradient></defs><path d="M47 13h26v17l11 11v53c0 8-6 13-14 13H50c-8 0-14-5-14-13V41l11-11z" fill="url(#chem)" stroke="#8996a1" stroke-width="3"/><rect x="45" y="7" width="30" height="10" rx="3" fill="#ef4b42"/><path d="M42 53h36" stroke="#ef4b42" stroke-width="5"/><path d="M60 61l10 18H50z" fill="#f2c230" stroke="#8a6610" stroke-width="2"/><text x="60" y="75" text-anchor="middle" font-size="8" font-weight="900" fill="#222">!</text><text x="60" y="94" text-anchor="middle" font-size="9" font-weight="900" fill="#9c1d1d">CHEMICAL</text></svg>`
+ };
+ return svg[kind]||svg.bottle;
 }
+function binSVG(color,type){
+ const label=type==='red'?'☠':type==='blue'?'♻':type==='yellow'?'▤':'♧';
+ return `<svg viewBox="0 0 180 190" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="bin${type}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff" stop-opacity=".28"/><stop offset=".18" stop-color="${color}"/><stop offset="1" stop-color="#101820" stop-opacity=".5"/></linearGradient></defs><ellipse cx="90" cy="176" rx="62" ry="8" fill="#000" opacity=".28"/><rect x="35" y="42" width="110" height="125" rx="14" fill="url(#bin${type})" stroke="#fff" stroke-opacity=".35" stroke-width="3"/><rect x="25" y="31" width="130" height="22" rx="9" fill="${color}" stroke="#fff" stroke-opacity=".45" stroke-width="3"/><rect x="61" y="20" width="58" height="17" rx="8" fill="${color}" stroke="#fff" stroke-opacity=".35" stroke-width="3"/><circle cx="39" cy="169" r="10" fill="#171b20"/><circle cx="141" cy="169" r="10" fill="#171b20"/><text x="90" y="112" text-anchor="middle" font-size="45" font-weight="900" fill="#fff">${label}</text></svg>`;
+}
+function sort(){
+  $("#title").innerHTML="<h2>นักคัดแยกขยะ</h2><p>ใช้มือซ้ายและขวาปัดขยะลงถังให้ถูกประเภท</p>";
+  $("#hint").textContent="🖐 ใช้มือซ้าย–ขวาหยิบหรือปัดขยะเข้าถังที่ถูกต้อง";
+  $("#area").innerHTML=`<div class="swipeBin bin-green"><div class="binGraphic">${binSVG('#18a957','green')}</div><b>ขยะทั่วไป</b></div><div class="swipeBin bin-blue"><div class="binGraphic">${binSVG('#1877d3','blue')}</div><b>รีไซเคิล</b></div><div class="swipeBin bin-yellow"><div class="binGraphic">${binSVG('#f0b914','yellow')}</div><b>กระดาษ</b></div><div class="swipeBin bin-red"><div class="binGraphic">${binSVG('#e52532','red')}</div><b>อันตราย</b></div>`;
+  const ws=[
+   ['banana','green'],['bottle','blue'],['leaves','green'],['can','blue'],['cup','green'],
+   ['box','blue'],['paper','yellow'],['ball','yellow'],['battery','red'],['chemical','red']
+  ];
+  ws.forEach((w,i)=>{
+    const d=document.createElement('div');
+    d.className='waste waste3d';
+    d.dataset.drag=1;
+    d.dataset.type=w[1];
+    d.dataset.waste=w[0];
+    d.innerHTML=wasteSVG(w[0]);
+    d.setAttribute('aria-label',w[0]);
+    d.style.left=8+(i%5)*18+'%';
+    d.style.top=8+Math.floor(i/5)*29+'%';
+    $("#area").appendChild(d);
+  });
+}
+
 function sortGesture(){for(let i=0;i<Math.min(2,hands.length);i++){const h=info(i);if(!h)continue;pointer(h.p.x,h.p.y,h.pin);if(h.pin&&!pinchStates[i]&&!dragged[i]){dragged[i]=hit("#area .waste",h.p.x,h.p.y);dragged[i]?.classList.add("dragging")}if(dragged[i]){move(dragged[i],h.p.x,h.p.y);if(!h.pin){const e=dragged[i],bin=hit("#area .swipeBin",h.p.x,h.p.y),type=bin&&["green","blue","yellow","red"].find(c=>bin.classList.contains("bin-"+c));if(type===e.dataset.type){e.remove();add(10);toast("แยกถูกต้อง +10");if(!$("#area .waste"))finish("แยกขยะครบทุกประเภทแล้ว 🎉")}else{reset(e);toast("ลองปัดไปถังที่ถูกประเภท 💡")}dragged[i]=null}}pinchStates[i]=h.pin}}
 
 const qs=[
