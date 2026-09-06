@@ -1053,23 +1053,92 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
 }
 
 
-
-
-/* v44 — New score-summary background, matched to the 2048×1447 mission artwork size. */
-#result{
-  background-image:url("result-bg.png")!important;
-  background-size:cover!important;
-  background-position:center center!important;
-  background-repeat:no-repeat!important;
-  background-color:#24104d!important;
-}
-#result .resultCard{
-  background:rgba(18,5,35,.78);
-  backdrop-filter:blur(2px);
-}
-
 /* v43 — Prevent the previous mission scene from showing behind the preparation screen. */
 #permission{z-index:1000!important}
 #result{z-index:1100!important}
 #game{z-index:100!important}
 #game.hidden{display:none!important}
+
+/* v45 — Preparation scenes: one optimized artwork per mission, with transparent hit areas. */
+.prepScreen{
+  position:fixed!important;
+  inset:0!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#07020f!important;
+  z-index:1000!important;
+}
+.prepScreen.hidden{display:none!important}
+.prepStage{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  background:#07020f;
+}
+.prepBg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center center;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.prepStartHit,.prepBackHit{
+  position:absolute!important;
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  z-index:5!important;
+  touch-action:manipulation;
+}
+/* The baked artwork button is around the lower-middle of each 2048×1447 scene. */
+.prepStartHit{
+  left:30.5%;
+  top:69.5%;
+  width:39.5%;
+  height:14%;
+}
+/* The baked back button sits immediately below the start button. */
+.prepBackHit{
+  left:35.5%;
+  top:89%;
+  width:29%;
+  height:9%;
+}
+/* On 4:3-ish screens (e.g. many iPads), the artwork has little/no vertical crop,
+   so use hit areas aligned to the original 1366×965 artwork coordinates. */
+@media (max-aspect-ratio: 3/2){
+  .prepStartHit{left:30.5%;top:66%;width:39.5%;height:13%;}
+  .prepBackHit{left:35.5%;top:82%;width:29%;height:9%;}
+}
+
+.prepStartHit:focus-visible,.prepBackHit:focus-visible{
+  outline:3px solid #fff;
+  outline-offset:4px;
+  border-radius:30px;
+}
+.prepStatus{
+  position:absolute;
+  left:50%;
+  bottom:5.5%;
+  transform:translateX(-50%);
+  z-index:6;
+  max-width:72%;
+  padding:4px 12px;
+  border-radius:999px;
+  background:rgba(28,8,49,.28);
+  color:#fff;
+  font-size:clamp(11px,1.05vw,16px);
+  text-align:center;
+  text-shadow:0 2px 5px #000;
+  pointer-events:none;
+}
