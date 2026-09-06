@@ -1053,6 +1053,21 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
 }
 
 
+
+
+/* v44 — New score-summary background, matched to the 2048×1447 mission artwork size. */
+#result{
+  background-image:url("result-bg.png")!important;
+  background-size:cover!important;
+  background-position:center center!important;
+  background-repeat:no-repeat!important;
+  background-color:#24104d!important;
+}
+#result .resultCard{
+  background:rgba(18,5,35,.78);
+  backdrop-filter:blur(2px);
+}
+
 /* v43 — Prevent the previous mission scene from showing behind the preparation screen. */
 #permission{z-index:1000!important}
 #result{z-index:1100!important}
