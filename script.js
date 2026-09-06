@@ -254,14 +254,17 @@ function completeTree(virtue){
 }
 // Bridge สำหรับปุ่มเริ่มภารกิจจากหน้า HTML
 window.startGameForUI = function () {
-  gameKind = window.pendingMission;
+  const k = window.pendingMission || gameKind;
 
-  if (!gameKind) {
+  if (!k) {
     const status = document.querySelector("#status");
-    if (status) status.textContent = "กรุณาเลือกภารกิจก่อนเริ่มภารกิจ";
+    if (status) {
+      status.textContent = "กรุณาเลือกภารกิจก่อนเริ่มภารกิจ";
+    }
     return;
   }
 
+  setup(k);
   startGame();
 };
 window.stopGameCamera=function(){stopCamera()};
