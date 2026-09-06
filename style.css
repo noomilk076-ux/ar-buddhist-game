@@ -951,8 +951,6 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
   overflow:hidden!important;
   background:#07020f!important;
 }
-
-/* IMPORTANT: hidden must always win over the landing-screen layout. */
 .imageLandingScreen.hidden{
   display:none!important;
 }
@@ -1005,15 +1003,15 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
    Printed button: เริ่มทำภารกิจ
    Printed button: วิธีเล่น (bottom-right)
 */
-.coverStartHit{left:29.9%;top:57.7%;width:27.1%;height:12.4%}
-.coverHowtoHit{left:73.5%;top:75.6%;width:11.3%;height:7.6%}
+.coverStartHit{left:34.0%;top:65.4%;width:32.8%;height:15.8%}
+.coverHowtoHit{left:83.6%;top:87.4%;width:14.2%;height:9.0%}
 
 /* ---------- HOW TO PLAY ----------
-   Printed button: กลับหน้าหลัก
-   Printed button: พร้อมแล้ว เริ่มเลือกภารกิจ
+   Hit zones follow the actual printed controls in the 1920×1080 artwork.
+   They are intentionally larger than the visible button outlines for easy iPad tapping.
 */
-.howtoHomeHit{left:1.4%;top:77.2%;width:12.2%;height:6.3%}
-.howtoNextHit{left:29.1%;top:73.4%;width:27.8%;height:9.5%}
+.howtoHomeHit{left:1.0%;top:87.0%;width:16.2%;height:10.2%}
+.howtoNextHit{left:33.0%;top:84.3%;width:34.5%;height:12.0%}
 
 /* ---------- MISSION SELECT ----------
    Each transparent hit area sits directly over the printed เริ่มเล่น button.
@@ -1037,16 +1035,16 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
   pointer-events:none;
 }
 /* Row 1 printed เริ่มเล่น buttons */
-.missionHit1{left:21.4%;top:42.4%;width:9.3%;height:4.7%}
-.missionHit2{left:38.1%;top:42.4%;width:9.3%;height:4.7%}
-.missionHit3{left:54.8%;top:42.4%;width:9.3%;height:4.7%}
-/* Row 2 printed เริ่มเล่น buttons */
-.missionHit4{left:21.4%;top:70.3%;width:9.3%;height:4.7%}
-.missionHit5{left:38.1%;top:70.3%;width:9.3%;height:4.7%}
-.missionHit6{left:54.8%;top:70.3%;width:9.3%;height:4.7%}
-/* Bottom navigation */
-.missionsHowtoHit{left:8.0%;top:77.1%;width:13.0%;height:6.5%}
-.missionsHomeHit{left:62.4%;top:77.1%;width:14.0%;height:6.5%}
+.missionHit1{left:20.0%;top:23.8%;width:19.7%;height:31.4%}
+.missionHit2{left:39.8%;top:23.8%;width:19.0%;height:31.4%}
+.missionHit3{left:58.9%;top:23.8%;width:19.5%;height:31.4%}
+/* Row 2: the whole visible mission card is tappable, not only the tiny printed button. */
+.missionHit4{left:20.0%;top:55.5%;width:19.7%;height:31.2%}
+.missionHit5{left:39.8%;top:55.5%;width:19.0%;height:31.2%}
+.missionHit6{left:58.9%;top:55.5%;width:19.5%;height:31.2%}
+/* Bottom navigation — aligned to the printed วิธีเล่น / หน้าหลัก controls. */
+.missionsHowtoHit{left:8.0%;top:84.7%;width:16.0%;height:11.5%}
+.missionsHomeHit{left:72.2%;top:84.7%;width:15.7%;height:11.5%}
 
 @media (max-aspect-ratio: 4/3){
   /* Stretch rather than crop so the percentage hit areas remain aligned with
