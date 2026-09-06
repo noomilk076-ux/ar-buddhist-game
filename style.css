@@ -561,12 +561,12 @@ body{background:#09030f}
 #game[class*="mission"] .veil{background:linear-gradient(180deg,#09031524 0%,#1b0a2d10 48%,#08030f66 100%)}
 #game[class*="mission"] .cameraGlow{box-shadow:inset 0 0 90px #0007}
 
-.mission1Scene #sceneBackground{background-image:url("mission1-bg.jpg")}
-.mission2Scene #sceneBackground{background-image:url("mission2-bg.jpg")}
-.mission3Scene #sceneBackground{background-image:url("mission3-bg.jpg")}
-.mission4Scene #sceneBackground{background-image:url("mission4-bg.jpg")}
-.mission5Scene #sceneBackground{background-image:url("mission5-bg.jpg")}
-.mission6Scene #sceneBackground{background-image:url("mission6-bg.jpg")}
+.mission1Scene #sceneBackground{background-image:url("mission1-bg.png")}
+.mission2Scene #sceneBackground{background-image:url("mission2-bg.png")}
+.mission3Scene #sceneBackground{background-image:url("mission3-bg.png")}
+.mission4Scene #sceneBackground{background-image:url("mission4-bg.png")}
+.mission5Scene #sceneBackground{background-image:url("mission5-bg.png")}
+.mission6Scene #sceneBackground{background-image:url("mission6-bg.png")}
 
 /* Let the generated artwork show through the interactive panels while keeping text readable. */
 .mission1Scene .altarSeven,
@@ -1035,16 +1035,16 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
   pointer-events:none;
 }
 /* Row 1 printed เริ่มเล่น buttons */
-.missionHit1{left:19.0%;top:21.7%;width:20.8%;height:34.8%}
-.missionHit2{left:39.6%;top:21.7%;width:20.8%;height:34.8%}
-.missionHit3{left:60.2%;top:21.7%;width:20.8%;height:34.8%}
-/* Row 2 — intentionally generous hit zones for iPad/large-screen touch. */
-.missionHit4{left:19.0%;top:53.0%;width:20.8%;height:34.8%}
-.missionHit5{left:39.6%;top:53.0%;width:20.8%;height:34.8%}
-.missionHit6{left:60.2%;top:53.0%;width:20.8%;height:34.8%}
-/* Bottom navigation — generous zones, including space around the printed controls. */
-.missionsHowtoHit{left:6.0%;top:82.8%;width:20.5%;height:14.5%}
-.missionsHomeHit{left:69.5%;top:82.8%;width:20.5%;height:14.5%}
+.missionHit1{left:20.0%;top:23.8%;width:19.7%;height:31.4%}
+.missionHit2{left:39.8%;top:23.8%;width:19.0%;height:31.4%}
+.missionHit3{left:58.9%;top:23.8%;width:19.5%;height:31.4%}
+/* Row 2: the whole visible mission card is tappable, not only the tiny printed button. */
+.missionHit4{left:20.0%;top:55.5%;width:19.7%;height:31.2%}
+.missionHit5{left:39.8%;top:55.5%;width:19.0%;height:31.2%}
+.missionHit6{left:58.9%;top:55.5%;width:19.5%;height:31.2%}
+/* Bottom navigation — aligned to the printed วิธีเล่น / หน้าหลัก controls. */
+.missionsHowtoHit{left:8.0%;top:84.7%;width:16.0%;height:11.5%}
+.missionsHomeHit{left:72.2%;top:84.7%;width:15.7%;height:11.5%}
 
 @media (max-aspect-ratio: 4/3){
   /* Stretch rather than crop so the percentage hit areas remain aligned with
@@ -1053,99 +1053,8 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
 }
 
 
-/* =========================================================
-   v43 RESULT SCREEN — supplied score-stage artwork
-   The artwork is visual background only; the live score/card sits above it.
-   The screen never scrolls and the result card is constrained to the viewport.
-   ========================================================= */
-.resultScreen{
-  position:fixed!important;
-  inset:0!important;
-  display:grid!important;
-  place-items:center!important;
-  padding:0!important;
-  overflow:hidden!important;
-  background:#12051f!important;
-}
-.resultScreen.hidden{display:none!important}
-.resultBgImage{
-  position:absolute;
-  inset:0;
-  z-index:1;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center;
-  pointer-events:none;
-  user-select:none;
-  -webkit-user-drag:none;
-}
-.resultScreen .resultCard{
-  position:relative;
-  z-index:5;
-  width:min(720px,72vw);
-  max-height:86vh;
-  overflow:hidden!important;
-  padding:clamp(24px,3.2vh,42px) clamp(28px,3.2vw,48px) clamp(22px,2.8vh,34px);
-  border:3px solid rgba(255,214,107,.88);
-  border-radius:32px;
-  background:linear-gradient(145deg,rgba(35,9,57,.94),rgba(18,5,31,.93));
-  box-shadow:0 20px 60px rgba(0,0,0,.65),0 0 34px rgba(255,214,107,.18),inset 0 0 30px rgba(255,214,107,.05);
-  text-align:center;
-}
-.resultScreen .resultLogo{margin-bottom:2px}
-.resultScreen .resultLogo img{width:clamp(52px,5.5vw,78px);height:clamp(52px,5.5vw,78px);object-fit:contain}
-.resultScreen .eyebrow{font-size:clamp(11px,1vw,15px);margin-top:4px}
-.resultScreen .resultSpark{font-size:clamp(30px,3vw,48px);line-height:1}
-.resultScreen .resultCard h2{margin:4px 0 6px;font-size:clamp(30px,4vw,52px)}
-.resultScreen .resultScore{margin:8px auto 5px}
-.resultScreen .resultScore b{font-size:clamp(62px,7vw,96px);line-height:.95}
-.resultScreen .resultScore small{font-size:clamp(13px,1.2vw,18px)}
-.resultScreen .resultTotal{font-size:clamp(18px,1.8vw,27px);margin-top:5px}
-.resultScreen .resultProgress{font-size:clamp(14px,1.35vw,20px);margin-top:8px}
-.resultScreen .resultRank{font-size:clamp(14px,1.3vw,20px);margin:10px auto;padding:10px 12px}
-.resultScreen .resultActions{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:12px}
-.resultScreen .resultActions button{
-  width:min(500px,88%);
-  min-height:62px;
-  margin:0;
-  padding:13px 22px;
-  border-radius:999px;
-  font-size:clamp(17px,1.45vw,23px);
-  font-weight:1000;
-  touch-action:manipulation;
-}
-.resultScreen #resultHome{
-  min-height:68px;
-  border:3px solid #ffd66b!important;
-  background:linear-gradient(135deg,#4e178c,#8e2abb)!important;
-  color:#fff!important;
-  box-shadow:0 9px 26px rgba(0,0,0,.5),0 0 20px rgba(255,214,107,.16);
-}
-.resultScreen #again{
-  border:3px solid #ffd66b;
-  background:linear-gradient(135deg,#ffd66b,#ff9fce);
-  color:#24102e;
-}
-@media(max-width:800px){
-  .resultScreen .resultCard{width:min(760px,90vw);max-height:90vh;padding:18px 20px 20px;border-radius:28px}
-  .resultScreen .resultActions button{width:94%;min-height:58px;font-size:16px}
-}
-@media(max-width:520px){
-  .resultScreen .resultCard{width:94vw;max-height:92vh;padding:14px 14px 16px}
-  .resultScreen .resultSpark{font-size:28px}
-  .resultScreen .resultCard h2{font-size:30px}
-  .resultScreen .resultScore b{font-size:64px}
-  .resultScreen .resultActions{gap:6px;margin-top:8px}
-  .resultScreen .resultActions button{min-height:54px;width:98%;font-size:14px;padding:10px 12px}
-}
-
-/* v43 — make the game-level home button substantially easier to tap. */
-#home{
-  min-width:190px!important;
-  min-height:58px!important;
-  padding:12px 24px!important;
-  font-size:clamp(16px,1.35vw,22px)!important;
-  border:2px solid rgba(255,214,107,.7)!important;
-  box-shadow:0 10px 28px rgba(0,0,0,.5),0 0 16px rgba(255,214,107,.14)!important;
-}
+/* v43 — Prevent the previous mission scene from showing behind the preparation screen. */
+#permission{z-index:1000!important}
+#result{z-index:1100!important}
+#game{z-index:100!important}
+#game.hidden{display:none!important}
