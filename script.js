@@ -252,19 +252,16 @@ function completeTree(virtue){
    $("#area .treeDropText").textContent="🌸 ต้นไม้แห่งความดีผลิบาน! 🤍";setTimeout(()=>finish("ภารกิจสำเร็จ! ต้นไม้แห่งความดีออกดอกสีขาวและแดงเต็มต้น 🌸🤍🌹"),3800);
  }
 }
-// v36: landing navigation is owned exclusively by index.html inline controller.
+// Bridge สำหรับปุ่มเริ่มภารกิจจากหน้า HTML
 window.startGameForUI = function () {
-  const k = window.pendingMission || gameKind;
+  gameKind = window.pendingMission;
 
-  if (!k) {
+  if (!gameKind) {
     const status = document.querySelector("#status");
-    if (status) {
-      status.textContent = "กรุณาเลือกภารกิจก่อนเริ่มเล่น";
-    }
+    if (status) status.textContent = "กรุณาเลือกภารกิจก่อนเริ่มภารกิจ";
     return;
   }
 
-  setup(k);
   startGame();
 };
 window.stopGameCamera=function(){stopCamera()};
