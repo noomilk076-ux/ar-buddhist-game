@@ -293,3 +293,16 @@ function syncMissionBoard(){ const el=document.querySelector("#missionTotalScore
 const _uiV36=ui;
 ui=function(){_uiV36();syncMissionBoard();};
 syncMissionBoard();
+
+// Bridge สำหรับปุ่มเริ่มภารกิจจากหน้า HTML
+window.startGameForUI = function () {
+  gameKind = window.pendingMission;
+
+  if (!gameKind) {
+    const status = document.querySelector("#status");
+    if (status) status.textContent = "กรุณาเลือกภารกิจก่อนเริ่มเล่น";
+    return;
+  }
+
+  startGame();
+};
