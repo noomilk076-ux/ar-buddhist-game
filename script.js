@@ -66,7 +66,10 @@ function move(e,x,y){e.style.position="fixed";e.style.left=x-e.offsetWidth/2+"px
 function reset(e){if(!e)return;e.style.position="";e.style.left="";e.style.top="";e.style.zIndex="";e.classList.remove("dragging")}
 function gestureFrame(t){if(gameKind==="altar")altarGesture();else if(gameKind==="sort")sortGesture();else if(gameKind==="quiz")quizGesture(t);else if(gameKind==="fill")fillGesture(t);else if(gameKind==="moral")moralGesture(t);else if(gameKind==="tree")treeGesture()}
 
-function setup(kind){stopCamera();gameKind=kind;const game=document.querySelector("#game");game.classList.add("hidden");game.classList.remove("mission1Scene","mission2Scene","mission3Scene","mission4Scene","mission5Scene","mission6Scene");const sceneNo={altar:1,sort:2,quiz:3,fill:4,moral:5,tree:6}[kind];if(sceneNo)game.classList.add(`mission${sceneNo}Scene`);round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];$("#permissionTitle").textContent=names[kind];$("#menu").classList.add("hidden");$("#howto").classList.add("hidden");$("#missionSelect").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
+function setup(kind){stopCamera();gameKind=kind;const game=document.querySelector("#game");game.classList.add("hidden");game.classList.remove("mission1Scene","mission2Scene","mission3Scene","mission4Scene","mission5Scene","mission6Scene");const sceneNo={altar:1,sort:2,quiz:3,fill:4,moral:5,tree:6}[kind];if(sceneNo)game.classList.add(`mission${sceneNo}Scene`);round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];const permissionTitle = $("#permissionTitle");
+if (permissionTitle) {
+  permissionTitle.textContent = names[kind];
+}$("#menu").classList.add("hidden");$("#howto").classList.add("hidden");$("#missionSelect").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
 function startGame(){$("#permission").classList.add("hidden");$("#game").classList.remove("hidden");({altar,sort,quiz,fill,moral,tree}[gameKind])();startCamera()}
 function showGrandFinale(done){
   const layer=$("#grandFinale");
@@ -127,24 +130,83 @@ function binSVG(color,type){
  return `<svg viewBox="0 0 180 190" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="bin${type}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff" stop-opacity=".28"/><stop offset=".18" stop-color="${color}"/><stop offset="1" stop-color="#101820" stop-opacity=".5"/></linearGradient></defs><ellipse cx="90" cy="176" rx="62" ry="8" fill="#000" opacity=".28"/><rect x="35" y="42" width="110" height="125" rx="14" fill="url(#bin${type})" stroke="#fff" stroke-opacity=".35" stroke-width="3"/><rect x="25" y="31" width="130" height="22" rx="9" fill="${color}" stroke="#fff" stroke-opacity=".45" stroke-width="3"/><rect x="61" y="20" width="58" height="17" rx="8" fill="${color}" stroke="#fff" stroke-opacity=".35" stroke-width="3"/><circle cx="39" cy="169" r="10" fill="#171b20"/><circle cx="141" cy="169" r="10" fill="#171b20"/><text x="90" y="112" text-anchor="middle" font-size="45" font-weight="900" fill="#fff">${label}</text></svg>`;
 }
 function sort(){
-  $("#title").innerHTML="<h2>นักคัดแยกขยะ</h2><p>ใช้มือซ้ายและขวาปัดขยะลงถังให้ถูกประเภท</p>";
-  $("#hint").textContent="🖐 ใช้มือซ้าย–ขวาหยิบหรือปัดขยะเข้าถังที่ถูกต้อง";
-  $("#area").innerHTML=`<div class="swipeBin bin-green"><div class="binGraphic">${binSVG('#18a957','green')}</div><b>ขยะทั่วไป</b></div><div class="swipeBin bin-blue"><div class="binGraphic">${binSVG('#1877d3','blue')}</div><b>รีไซเคิล</b></div><div class="swipeBin bin-yellow"><div class="binGraphic">${binSVG('#f0b914','yellow')}</div><b>กระดาษ</b></div><div class="swipeBin bin-red"><div class="binGraphic">${binSVG('#e52532','red')}</div><b>อันตราย</b></div>`;
+  $("#title").innerHTML=
+    "<h2>นักคัดแยกขยะ</h2><p>ใช้มือซ้ายและขวาปัดขยะลงถังให้ถูกประเภท</p>";
+
+  $("#hint").textContent=
+    "🖐 ใช้มือซ้าย–ขวาหยิบหรือปัดขยะเข้าถังที่ถูกต้อง";
+
+  $("#area").innerHTML=`
+    <div class="swipeBin bin-green">
+      <div class="binGraphic">
+        ${binSVG('#18a957','green')}
+      </div>
+      <b>ขยะทั่วไป</b>
+    </div>
+
+    <div class="swipeBin bin-blue">
+      <div class="binGraphic">
+        ${binSVG('#1877d3','blue')}
+      </div>
+      <b>รีไซเคิล</b>
+    </div>
+
+    <div class="swipeBin bin-yellow">
+      <div class="binGraphic">
+        ${binSVG('#f0b914','yellow')}
+      </div>
+      <b>กระดาษ</b>
+    </div>
+
+    <div class="swipeBin bin-red">
+      <div class="binGraphic">
+        ${binSVG('#e52532','red')}
+      </div>
+      <b>อันตราย</b>
+    </div>
+
+    <div class="wasteLayer"></div>
+  `;
+
   const ws=[
-   ['banana','green'],['bottle','blue'],['leaves','green'],['can','blue'],['cup','green'],
-   ['box','blue'],['paper','yellow'],['ball','yellow'],['battery','red'],['chemical','red']
+    ['banana','green','เปลือกกล้วย'],
+    ['bottle','blue','ขวดน้ำ'],
+    ['leaves','green','ใบไม้'],
+    ['can','blue','กระป๋อง'],
+    ['cup','green','แก้วน้ำ'],
+    ['box','blue','กล่องกระดาษ'],
+    ['paper','yellow','กระดาษ'],
+    ['ball','yellow','ลูกบอล'],
+    ['battery','red','ถ่านไฟฉาย'],
+    ['chemical','red','ขวดสารเคมี']
   ];
+
+  const layer=$("#area .wasteLayer");
+
   ws.forEach((w,i)=>{
-    const d=document.createElement('div');
-    d.className='waste waste3d';
-    d.dataset.drag=1;
+
+    const d=document.createElement("div");
+
+    d.className="waste waste3d iconOverlay";
+
+    d.dataset.drag="1";
     d.dataset.type=w[1];
     d.dataset.waste=w[0];
-    d.innerHTML=wasteSVG(w[0]);
-    d.setAttribute('aria-label',w[0]);
-    d.style.left=8+(i%5)*18+'%';
-    d.style.top=8+Math.floor(i/5)*29+'%';
-    $("#area").appendChild(d);
+
+    d.innerHTML=`
+      <div class="wasteIcon">
+        ${wasteSVG(w[0])}
+      </div>
+      <span class="wasteLabel">${w[2]}</span>
+    `;
+
+    d.setAttribute("aria-label",w[2]);
+
+    // จัดตำแหน่ง 2 แถว
+    d.style.left=(7+(i%5)*18)+"%";
+    d.style.top=(4+Math.floor(i/5)*30)+"%";
+
+    layer.appendChild(d);
   });
 }
 
