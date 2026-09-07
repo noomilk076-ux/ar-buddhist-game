@@ -66,7 +66,7 @@ function move(e,x,y){e.style.position="fixed";e.style.left=x-e.offsetWidth/2+"px
 function reset(e){if(!e)return;e.style.position="";e.style.left="";e.style.top="";e.style.zIndex="";e.classList.remove("dragging")}
 function gestureFrame(t){if(gameKind==="altar")altarGesture();else if(gameKind==="sort")sortGesture();else if(gameKind==="quiz")quizGesture(t);else if(gameKind==="fill")fillGesture(t);else if(gameKind==="moral")moralGesture(t);else if(gameKind==="tree")treeGesture()}
 
-function setup(kind){stopCamera();gameKind=kind;const game=document.querySelector("#game");game.classList.add("hidden");game.classList.remove("mission1Scene","mission2Scene","mission3Scene","mission4Scene","mission5Scene","mission6Scene");const sceneNo={altar:1,sort:2,quiz:3,fill:4,moral:5,tree:6}[kind];if(sceneNo)game.classList.add(`mission${sceneNo}Scene`);round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];const permissionTitle=$("#permissionTitle");if(permissionTitle)permissionTitle.textContent=names[kind];$("#menu").classList.add("hidden");$("#howto").classList.add("hidden");$("#missionSelect").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
+function setup(kind){stopCamera();gameKind=kind;const game=document.querySelector("#game");game.classList.add("hidden");game.classList.remove("mission1Scene","mission2Scene","mission3Scene","mission4Scene","mission5Scene","mission6Scene");const sceneNo={altar:1,sort:2,quiz:3,fill:4,moral:5,tree:6}[kind];if(sceneNo)game.classList.add(`mission${sceneNo}Scene`);round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];if($("#permissionTitle")) $("#permissionTitle").textContent=names[kind];$("#menu").classList.add("hidden");$("#howto").classList.add("hidden");$("#missionSelect").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
 function startGame(){$("#permission").classList.add("hidden");$("#game").classList.remove("hidden");({altar,sort,quiz,fill,moral,tree}[gameKind])();startCamera()}
 function showGrandFinale(done){
   const layer=$("#grandFinale");
@@ -108,8 +108,9 @@ function altarGesture(){const h=info(0);if(!h)return;pointer(h.p.x,h.p.y,h.pin);
 
 function sort(){
  $("#title").innerHTML="<h2>นักคัดแยกขยะ</h2><p>ใช้มือซ้ายและขวาปัดขยะลงถังให้ถูกประเภท</p>";$("#hint").textContent="🖐 ใช้มือซ้าย–ขวาหยิบหรือปัดขยะเข้าถังที่ถูกต้อง";
- $("#area").innerHTML='<div class="swipeBin bin-green">🟢<br>ขยะทั่วไป</div><div class="swipeBin bin-blue">🔵<br>รีไซเคิล</div><div class="swipeBin bin-yellow">🟡<br>กระดาษ</div><div class="swipeBin bin-red">🔴<br>อันตราย</div>';
- const ws=[["🍌","green"],["🍎","green"],["🍂","green"],["🥤","blue"],["🥫","blue"],["📦","blue"],["📰","yellow"],["📄","yellow"],["🔋","red"],["🧴","red"]];ws.forEach((w,i)=>{const d=document.createElement("div");d.className="waste";d.textContent=w[0];d.dataset.drag=1;d.dataset.type=w[1];d.style.left=8+(i%5)*18+"%";d.style.top=10+Math.floor(i/5)*26+"%";$("#area").appendChild(d)})
+ $("#area").innerHTML='<div class="swipeBin bin-green"><img src="mission2_icons/bin-general.png" alt="ถังขยะทั่วไป"></div><div class="swipeBin bin-blue"><img src="mission2_icons/bin-recycle.png" alt="ถังรีไซเคิล"></div><div class="swipeBin bin-yellow"><img src="mission2_icons/bin-paper.png" alt="ถังกระดาษ"></div><div class="swipeBin bin-red"><img src="mission2_icons/bin-hazardous.png" alt="ถังขยะอันตราย"></div>';
+ const ws=[["banana.png","green"],["apple.png","green"],["leaves.png","green"],["cup.png","blue"],["can.png","blue"],["cardboard.png","blue"],["newspaper.png","yellow"],["paper.png","yellow"],["battery.png","red"],["chemical.png","red"]];
+ ws.forEach((w,i)=>{const d=document.createElement("div");d.className="waste";d.dataset.drag=1;d.dataset.type=w[1];d.style.left=7+(i%5)*18+"%";d.style.top=6+Math.floor(i/5)*27+"%";const img=document.createElement("img");img.src="mission2_icons/"+w[0];img.alt="ขยะ";d.appendChild(img);$("#area").appendChild(d)})
 }
 function sortGesture(){for(let i=0;i<Math.min(2,hands.length);i++){const h=info(i);if(!h)continue;pointer(h.p.x,h.p.y,h.pin);if(h.pin&&!pinchStates[i]&&!dragged[i]){dragged[i]=hit("#area .waste",h.p.x,h.p.y);dragged[i]?.classList.add("dragging")}if(dragged[i]){move(dragged[i],h.p.x,h.p.y);if(!h.pin){const e=dragged[i],bin=hit("#area .swipeBin",h.p.x,h.p.y),type=bin&&["green","blue","yellow","red"].find(c=>bin.classList.contains("bin-"+c));if(type===e.dataset.type){e.remove();add(10);toast("แยกถูกต้อง +10");if(!$("#area .waste"))finish("แยกขยะครบทุกประเภทแล้ว 🎉")}else{reset(e);toast("ลองปัดไปถังที่ถูกประเภท 💡")}dragged[i]=null}}pinchStates[i]=h.pin}}
 
@@ -191,7 +192,7 @@ function fillGesture(){
 const ms=[
  ["หลังทำกิจกรรม ห้องเรียนมีขยะเต็มพื้น ควรช่วยกันเก็บและทิ้งให้ถูกถังหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
  ["พบของที่ไม่ใช่ของตนเอง ควรนำส่งครูหรือหาเจ้าของหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
- ["เมื่อครูมอบหมายงานกลุ่ม ควรปล่อยให้เพื่อนทำทั้งหมดหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",0],
+ ["เมื่อครูมอบหมายงานกลุ่ม ควรปล่อยให้เพื่อนทำทั้งหมดหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
  ["เพื่อนทำผิดแล้วมาขอโทษ เราควรให้อภัยและแนะนำด้วยเมตตาหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
  ["เมื่อเข้าร่วมกิจกรรมทางพระพุทธศาสนา ควรสำรวมกาย วาจา และตั้งใจร่วมกิจกรรมหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1]
 ];
