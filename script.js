@@ -206,9 +206,35 @@ function altarGesture(){
 }
 
 function sort(){
- $("#title").innerHTML="<h2>นักคัดแยกขยะ</h2><p>ใช้มือซ้ายและขวาปัดขยะลงถังให้ถูกประเภท</p>";$("#hint").textContent="🖐 ใช้มือซ้าย–ขวาหยิบหรือปัดขยะเข้าถังที่ถูกต้อง";
- $("#area").innerHTML='<div class="swipeBin bin-green">🟢<br>ขยะทั่วไป</div><div class="swipeBin bin-blue">🔵<br>รีไซเคิล</div><div class="swipeBin bin-yellow">🟡<br>กระดาษ</div><div class="swipeBin bin-red">🔴<br>อันตราย</div>';
- const ws=[["🍌","green"],["🍎","green"],["🍂","green"],["🥤","blue"],["🥫","blue"],["📦","blue"],["📰","yellow"],["📄","yellow"],["🔋","red"],["🧴","red"]];ws.forEach((w,i)=>{const d=document.createElement("div");d.className="waste";d.textContent=w[0];d.dataset.drag=1;d.dataset.type=w[1];d.style.left=8+(i%5)*18+"%";d.style.top=10+Math.floor(i/5)*26+"%";$("#area").appendChild(d)})
+  $("#title").innerHTML="<h2>นักคัดแยกขยะ</h2><p>ใช้มือซ้ายและขวาปัดขยะลงถังให้ถูกประเภท</p>";
+  $("#hint").textContent="🖐 ใช้มือซ้าย–ขวาหยิบหรือปัดขยะเข้าถังที่ถูกต้อง";
+  $("#area").innerHTML=
+    '<div class="swipeBin bin-green"><img src="trash-icons/bin-general.png" alt="ถังขยะทั่วไป"></div>'+
+    '<div class="swipeBin bin-blue"><img src="trash-icons/bin-recycle.png" alt="ถังรีไซเคิล"></div>'+
+    '<div class="swipeBin bin-yellow"><img src="trash-icons/bin-paper.png" alt="ถังกระดาษ"></div>'+
+    '<div class="swipeBin bin-red"><img src="trash-icons/bin-hazardous.png" alt="ถังขยะอันตราย"></div>';
+
+  const ws=[
+    ["banana","green"],["apple","green"],["leaves","green"],
+    ["cup","blue"],["can","blue"],["cardboard","blue"],
+    ["newspaper","yellow"],["paper","yellow"],
+    ["battery","red"],["chemical","red"]
+  ];
+  ws.forEach((w,i)=>{
+    const d=document.createElement("div");
+    d.className="waste";
+    d.dataset.drag=1;
+    d.dataset.type=w[1];
+    d.setAttribute("aria-label",w[0]);
+    const img=document.createElement("img");
+    img.src="trash-icons/"+w[0]+".png";
+    img.alt="";
+    img.draggable=false;
+    d.appendChild(img);
+    d.style.left=8+(i%5)*18+"%";
+    d.style.top=8+Math.floor(i/5)*28+"%";
+    $("#area").appendChild(d);
+  });
 }
 function sortGesture(){for(let i=0;i<Math.min(2,hands.length);i++){const h=info(i);if(!h)continue;pointer(h.p.x,h.p.y,h.pin);if(h.pin&&!pinchStates[i]&&!dragged[i]){dragged[i]=hit("#area .waste",h.p.x,h.p.y);dragged[i]?.classList.add("dragging")}if(dragged[i]){move(dragged[i],h.p.x,h.p.y);if(!h.pin){const e=dragged[i],bin=hit("#area .swipeBin",h.p.x,h.p.y),type=bin&&["green","blue","yellow","red"].find(c=>bin.classList.contains("bin-"+c));if(type===e.dataset.type){e.remove();add(10);toast("แยกถูกต้อง +10");if(!$("#area .waste"))finish("แยกขยะครบทุกประเภทแล้ว 🎉")}else{reset(e);toast("ลองปัดไปถังที่ถูกประเภท 💡")}dragged[i]=null}}pinchStates[i]=h.pin}}
 
