@@ -1,4 +1,3 @@
-/* AR Buddhist Game — FIXED: playable bridge + draggable waste icon overlay */
 /* GAME CORE v41 — landing navigation is controlled by index.html only. */
 import {FilesetResolver,HandLandmarker,PoseLandmarker,FaceLandmarker} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22-rc.20250304/vision_bundle.mjs";
 const WASM="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22-rc.20250304/wasm";
@@ -67,10 +66,7 @@ function move(e,x,y){e.style.position="fixed";e.style.left=x-e.offsetWidth/2+"px
 function reset(e){if(!e)return;e.style.position="";e.style.left="";e.style.top="";e.style.zIndex="";e.classList.remove("dragging")}
 function gestureFrame(t){if(gameKind==="altar")altarGesture();else if(gameKind==="sort")sortGesture();else if(gameKind==="quiz")quizGesture(t);else if(gameKind==="fill")fillGesture(t);else if(gameKind==="moral")moralGesture(t);else if(gameKind==="tree")treeGesture()}
 
-function setup(kind){stopCamera();gameKind=kind;const game=document.querySelector("#game");game.classList.add("hidden");game.classList.remove("mission1Scene","mission2Scene","mission3Scene","mission4Scene","mission5Scene","mission6Scene");const sceneNo={altar:1,sort:2,quiz:3,fill:4,moral:5,tree:6}[kind];if(sceneNo)game.classList.add(`mission${sceneNo}Scene`);round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];const permissionTitle=$("#permissionTitle");
-  if(permissionTitle){
-    permissionTitle.textContent=names[kind];
-  }$("#menu").classList.add("hidden");$("#howto").classList.add("hidden");$("#missionSelect").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
+function setup(kind){stopCamera();gameKind=kind;const game=document.querySelector("#game");game.classList.add("hidden");game.classList.remove("mission1Scene","mission2Scene","mission3Scene","mission4Scene","mission5Scene","mission6Scene");const sceneNo={altar:1,sort:2,quiz:3,fill:4,moral:5,tree:6}[kind];if(sceneNo)game.classList.add(`mission${sceneNo}Scene`);round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];const permissionTitle=$("#permissionTitle");if(permissionTitle)permissionTitle.textContent=names[kind];$("#menu").classList.add("hidden");$("#howto").classList.add("hidden");$("#missionSelect").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
 function startGame(){$("#permission").classList.add("hidden");$("#game").classList.remove("hidden");({altar,sort,quiz,fill,moral,tree}[gameKind])();startCamera()}
 function showGrandFinale(done){
   const layer=$("#grandFinale");
@@ -111,66 +107,11 @@ function altar(){
 function altarGesture(){const h=info(0);if(!h)return;pointer(h.p.x,h.p.y,h.pin);if(h.pin&&!pinchStates[0]){dragged[0]=hit("#area [data-drag]",h.p.x,h.p.y);dragged[0]?.classList.add("dragging")}if(h.pin&&dragged[0])move(dragged[0],h.p.x,h.p.y);if(!h.pin&&pinchStates[0]&&dragged[0]){const e=dragged[0],slot=hit("#area .tierSlot",h.p.x,h.p.y);if(e.dataset.ritual){if(slot?.dataset.slot==="ritual"){e.remove();slot.textContent="✓ เครื่องบูชา";add(5);toast("วางเครื่องบูชาถูกต้อง +5")}else reset(e)}else if(slot?.dataset.slot===e.dataset.slot){e.remove();slot.textContent="✓ โต๊ะ "+slot.dataset.slot;slot.classList.add("filled");add(5);toast("วางโต๊ะถูกต้อง +5")}else reset(e);dragged[0]=null;checkAltarComplete()}pinchStates[0]=h.pin}
 
 function sort(){
-  $("#title").innerHTML=
-    "<h2>นักคัดแยกขยะ</h2><p>ใช้มือซ้ายและขวาปัดขยะลงถังให้ถูกประเภท</p>";
-
-  $("#hint").textContent=
-    "🖐 ใช้มือซ้าย–ขวาหยิบหรือปัดขยะเข้าถังที่ถูกต้อง";
-
-  $("#area").innerHTML=`
-    <div class="swipeBin bin-green">
-      <div class="binGraphic">${binSVG('#18a957','green')}</div>
-      <b>ขยะทั่วไป</b>
-    </div>
-    <div class="swipeBin bin-blue">
-      <div class="binGraphic">${binSVG('#1877d3','blue')}</div>
-      <b>รีไซเคิล</b>
-    </div>
-    <div class="swipeBin bin-yellow">
-      <div class="binGraphic">${binSVG('#f0b914','yellow')}</div>
-      <b>กระดาษ</b>
-    </div>
-    <div class="swipeBin bin-red">
-      <div class="binGraphic">${binSVG('#e52532','red')}</div>
-      <b>อันตราย</b>
-    </div>
-    <div class="wasteLayer"></div>
-  `;
-
-  const ws=[
-    ['banana','green','เปลือกกล้วย'],
-    ['bottle','blue','ขวดน้ำ'],
-    ['leaves','green','ใบไม้'],
-    ['can','blue','กระป๋อง'],
-    ['cup','green','แก้วน้ำ'],
-    ['box','blue','กล่องกระดาษ'],
-    ['paper','yellow','กระดาษ'],
-    ['ball','yellow','ลูกบอล'],
-    ['battery','red','ถ่านไฟฉาย'],
-    ['chemical','red','ขวดสารเคมี']
-  ];
-
-  const layer=$("#area .wasteLayer");
-
-  ws.forEach((w,i)=>{
-    const d=document.createElement('div');
-    d.className='waste waste3d iconOverlay';
-    d.dataset.drag='1';
-    d.dataset.type=w[1];
-    d.dataset.waste=w[0];
-    d.innerHTML=`
-      <div class="wasteIcon">${wasteSVG(w[0])}</div>
-      <span class="wasteLabel">${w[2]}</span>
-    `;
-    d.setAttribute('aria-label',w[2]);
-    d.style.left=(7+(i%5)*18)+'%';
-    d.style.top=(4+Math.floor(i/5)*30)+'%';
-    layer.appendChild(d);
-  });
+ $("#title").innerHTML="<h2>นักคัดแยกขยะ</h2><p>ใช้มือซ้ายและขวาปัดขยะลงถังให้ถูกประเภท</p>";$("#hint").textContent="🖐 ใช้มือซ้าย–ขวาหยิบหรือปัดขยะเข้าถังที่ถูกต้อง";
+ $("#area").innerHTML='<div class="swipeBin bin-green">🟢<br>ขยะทั่วไป</div><div class="swipeBin bin-blue">🔵<br>รีไซเคิล</div><div class="swipeBin bin-yellow">🟡<br>กระดาษ</div><div class="swipeBin bin-red">🔴<br>อันตราย</div>';
+ const ws=[["🍌","green"],["🍎","green"],["🍂","green"],["🥤","blue"],["🥫","blue"],["📦","blue"],["📰","yellow"],["📄","yellow"],["🔋","red"],["🧴","red"]];ws.forEach((w,i)=>{const d=document.createElement("div");d.className="waste";d.textContent=w[0];d.dataset.drag=1;d.dataset.type=w[1];d.style.left=8+(i%5)*18+"%";d.style.top=10+Math.floor(i/5)*26+"%";$("#area").appendChild(d)})
 }
-function sortGesture(){for(let i=0;i<Math.min(2,hands.length);i++){const h=info(i);if(!h)continue;pointer(h.p.x,h.p.y,h.pin);if(h.pin&&!pinchStates[i]&&!dragged[i]){dragged[i]=hit("#area .waste",h.p.x,h.p.y);dragged[i]?.classList.add("dragging")}if(dragged[i]){move(dragged[i],h.p.x,h.p.y);if(!h.pin){const e=dragged[i],bin=hit("#area .swipeBin",h.p.x,h.p.y),type=bin&&["green","blue","yellow","red"].find(c=>bin.classList.contains("bin-"+c));if(type===e.dataset.type){e.remove();add(10);toast("แยกถูกต้อง +10");if(!$("#area .waste")){
-          setTimeout(()=>finish("แยกขยะครบทุกประเภทแล้ว 🎉"),300);
-        }}else{reset(e);toast("ลองปัดไปถังที่ถูกประเภท 💡")}dragged[i]=null}}pinchStates[i]=h.pin}}
+function sortGesture(){for(let i=0;i<Math.min(2,hands.length);i++){const h=info(i);if(!h)continue;pointer(h.p.x,h.p.y,h.pin);if(h.pin&&!pinchStates[i]&&!dragged[i]){dragged[i]=hit("#area .waste",h.p.x,h.p.y);dragged[i]?.classList.add("dragging")}if(dragged[i]){move(dragged[i],h.p.x,h.p.y);if(!h.pin){const e=dragged[i],bin=hit("#area .swipeBin",h.p.x,h.p.y),type=bin&&["green","blue","yellow","red"].find(c=>bin.classList.contains("bin-"+c));if(type===e.dataset.type){e.remove();add(10);toast("แยกถูกต้อง +10");if(!$("#area .waste"))finish("แยกขยะครบทุกประเภทแล้ว 🎉")}else{reset(e);toast("ลองปัดไปถังที่ถูกประเภท 💡")}dragged[i]=null}}pinchStates[i]=h.pin}}
 
 const qs=[
  ["อริยสัจ ๔ ข้อใดหมายถึงสภาพปัญหาหรือความทุกข์?","ทุกข์","มรรค"],
@@ -250,7 +191,7 @@ function fillGesture(){
 const ms=[
  ["หลังทำกิจกรรม ห้องเรียนมีขยะเต็มพื้น ควรช่วยกันเก็บและทิ้งให้ถูกถังหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
  ["พบของที่ไม่ใช่ของตนเอง ควรนำส่งครูหรือหาเจ้าของหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
- ["เมื่อครูมอบหมายงานกลุ่ม ควรปล่อยให้เพื่อนทำทั้งหมดหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
+ ["เมื่อครูมอบหมายงานกลุ่ม ควรปล่อยให้เพื่อนทำทั้งหมดหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",0],
  ["เพื่อนทำผิดแล้วมาขอโทษ เราควรให้อภัยและแนะนำด้วยเมตตาหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
  ["เมื่อเข้าร่วมกิจกรรมทางพระพุทธศาสนา ควรสำรวมกาย วาจา และตั้งใจร่วมกิจกรรมหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1]
 ];
@@ -311,21 +252,8 @@ function completeTree(virtue){
    $("#area .treeDropText").textContent="🌸 ต้นไม้แห่งความดีผลิบาน! 🤍";setTimeout(()=>finish("ภารกิจสำเร็จ! ต้นไม้แห่งความดีออกดอกสีขาวและแดงเต็มต้น 🌸🤍🌹"),3800);
  }
 }
-// Bridge สำหรับปุ่มเริ่มภารกิจจากหน้า HTML
-window.startGameForUI = function () {
-  const k = window.pendingMission || gameKind;
-
-  if (!k) {
-    const status = document.querySelector("#status");
-    if (status) {
-      status.textContent = "กรุณาเลือกภารกิจก่อนเริ่มภารกิจ";
-    }
-    return;
-  }
-
-  setup(k);
-  startGame();
-};
+// v36: landing navigation is owned exclusively by index.html inline controller.
+window.startGameForUI=function(){const k=window.pendingMission||gameKind;if(!k)return;setup(k);startGame()};
 window.stopGameCamera=function(){stopCamera()};
 window.refreshGameUI=function(){ui()};
 // Landing navigation is owned exclusively by index.html.
@@ -365,4 +293,3 @@ function syncMissionBoard(){ const el=document.querySelector("#missionTotalScore
 const _uiV36=ui;
 ui=function(){_uiV36();syncMissionBoard();};
 syncMissionBoard();
-

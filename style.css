@@ -1056,6 +1056,9 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
 /* v43 — Prevent the previous mission scene from showing behind the preparation screen. */
 #permission{z-index:1000!important}
 #result{z-index:1100!important}
+/* v47 FIX — use the supplied score-summary artwork as the result backdrop. */
+#result{background:#09030f url("result-bg.png") center center / cover no-repeat !important;}
+#result .resultCard{position:relative;z-index:1;background:linear-gradient(145deg,rgba(52,21,80,.94),rgba(20,7,31,.92)) !important;}
 #game{z-index:100!important}
 #game.hidden{display:none!important}
 
@@ -1141,88 +1144,4 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
   text-align:center;
   text-shadow:0 2px 5px #000;
   pointer-events:none;
-}
-
-
-/* =========================================================
-   SORT MISSION — DRAGGABLE ICON OVERLAY
-   ไอคอนขยะลอยอยู่เหนือฉากและจับลากได้จริง
-   ========================================================= */
-#area .wasteLayer{
-  position:absolute;
-  inset:0;
-  z-index:20;
-  pointer-events:none;
-}
-#area .iconOverlay{
-  position:absolute;
-  width:12%;
-  min-width:110px;
-  max-width:170px;
-  height:auto;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  transform:translate(-50%,-50%);
-  cursor:grab;
-  pointer-events:auto;
-  user-select:none;
-  -webkit-user-select:none;
-  -webkit-touch-callout:none;
-  touch-action:none;
-  transition:transform .18s ease,filter .18s ease,opacity .18s ease;
-}
-#area .iconOverlay .wasteIcon{
-  width:100%;
-  aspect-ratio:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(255,255,255,.94);
-  border:3px solid rgba(255,255,255,.9);
-  border-radius:24px;
-  box-shadow:0 10px 25px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.9);
-  overflow:hidden;
-}
-#area .iconOverlay .wasteIcon svg{
-  width:82%;
-  height:82%;
-  display:block;
-  pointer-events:none;
-}
-#area .iconOverlay .wasteLabel{
-  margin-top:5px;
-  padding:4px 10px;
-  border-radius:999px;
-  background:rgba(25,10,40,.82);
-  color:#fff;
-  font-size:clamp(12px,1.1vw,18px);
-  font-weight:800;
-  white-space:nowrap;
-  text-shadow:0 2px 3px rgba(0,0,0,.5);
-}
-#area .iconOverlay:hover{
-  transform:translate(-50%,-50%) scale(1.08);
-  filter:brightness(1.08);
-}
-#area .iconOverlay.dragging{
-  transform:translate(-50%,-50%) scale(1.18);
-  filter:drop-shadow(0 12px 15px rgba(0,0,0,.35)) brightness(1.08);
-  cursor:grabbing;
-  z-index:200!important;
-}
-#area .iconOverlay.dragging .wasteIcon{
-  border-color:#ffe36e;
-  box-shadow:0 0 0 5px rgba(255,227,110,.28),0 15px 35px rgba(0,0,0,.35);
-}
-#area .swipeBin{position:relative;z-index:10;}
-#area .binGraphic{position:relative;z-index:1;}
-@media(max-aspect-ratio:3/2){
-  #area .iconOverlay{width:14%;min-width:90px;max-width:145px;}
-  #area .iconOverlay .wasteLabel{font-size:12px;padding:3px 7px;}
-}
-@media(min-width:1600px){
-  #area .iconOverlay{width:11%;max-width:180px;}
-  #area .iconOverlay .wasteLabel{font-size:17px;}
 }
