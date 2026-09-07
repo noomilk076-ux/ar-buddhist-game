@@ -1220,3 +1220,102 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
   }
   .altarIconPiece span{font-size:10px!important}
 }
+
+/* v49 — Mission 1: clean transparent draggable icons + visible placed pieces */
+.altarTray .altarIconPiece{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+  border-radius:0!important;
+  position:relative!important;
+}
+.altarTray .altarIconPiece img{
+  width:100%!important;
+  height:78%!important;
+  object-fit:contain!important;
+  filter:drop-shadow(0 7px 7px #0009)!important;
+}
+.altarTray .altarIconPiece span{
+  color:#fff8df!important;
+  font-size:clamp(15px,1.45vw,21px)!important;
+  line-height:1.05!important;
+  font-weight:1000!important;
+  text-shadow:0 2px 5px #000,0 0 8px #000!important;
+}
+.altarTray .altarIconPiece.altarTablePiece,
+.altarTray .altarIconPiece.ritual{
+  min-width:106px!important;
+  width:106px!important;
+  height:102px!important;
+  flex:0 0 106px!important;
+}
+.altarTray .altarIconPiece.ritual img{height:78%!important}
+.altarTray .altarIconPiece.dragging{
+  opacity:1!important;
+  visibility:visible!important;
+  display:flex!important;
+  filter:drop-shadow(0 12px 12px #0009)!important;
+}
+.altarSeven .tierSlot.filled{
+  display:grid!important;
+  place-items:center!important;
+  overflow:visible!important;
+  padding:2px!important;
+}
+.placedAltarIcon{
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:0;
+  pointer-events:none;
+  line-height:1;
+}
+.placedAltarIcon img{
+  width:88%!important;
+  height:72%!important;
+  object-fit:contain!important;
+  display:block!important;
+  filter:drop-shadow(0 5px 6px #0009)!important;
+}
+.placedAltarIcon span{
+  color:#fff8df!important;
+  font-size:clamp(12px,1.25vw,18px)!important;
+  font-weight:1000!important;
+  text-shadow:0 2px 5px #000,0 0 7px #000!important;
+  white-space:nowrap;
+}
+.ritualPlacedWrap{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  flex-wrap:wrap;
+  padding:2px 4px;
+  box-sizing:border-box;
+}
+.ritualPlacedWrap .ritualPlaced{
+  width:22%;
+  min-width:42px;
+  height:100%;
+}
+.ritualPlacedWrap .ritualPlaced img{height:68%!important;width:100%!important}
+.ritualPlacedWrap .ritualPlaced span{font-size:9px!important}
+@media(max-width:800px){
+  .altarTray .altarIconPiece.altarTablePiece,
+  .altarTray .altarIconPiece.ritual{
+    min-width:96px!important;
+    width:96px!important;
+    height:94px!important;
+    flex-basis:96px!important;
+  }
+  .altarTray .altarIconPiece span{font-size:14px!important}
+  .placedAltarIcon span{font-size:10px!important}
+  .ritualPlacedWrap .ritualPlaced{min-width:36px}
+  .ritualPlacedWrap .ritualPlaced span{font-size:7px!important}
+}

@@ -164,20 +164,37 @@ function altarGesture(){
     if(e.dataset.ritual){
       if(slot?.dataset.slot==="ritual"){
         const count=(Number(slot.dataset.ritualCount)||0)+1;
-        e.remove();
+        const img=e.querySelector("img");
+        const placed=document.createElement("div");
+        placed.className="placedAltarIcon ritualPlaced";
+        placed.innerHTML=`<img src="${img?.getAttribute("src")||""}" alt="${e.dataset.ritual}"><span>${e.dataset.ritual}</span>`;
+        slot.querySelector(".ritualPlacedWrap")?.appendChild(placed);
+        if(!slot.querySelector(".ritualPlacedWrap")){
+          const wrap=document.createElement("div");
+          wrap.className="ritualPlacedWrap";
+          wrap.appendChild(placed);
+          slot.textContent="";
+          slot.appendChild(wrap);
+        }
         slot.dataset.ritualCount=String(count);
-        slot.textContent=`✓ เครื่องบูชา ${count}/4`;
         slot.classList.add("filled");
         add(5);
+        e.remove();
         toast(`วาง${e.dataset.ritual}ถูกต้อง +5`);
       }else{
         reset(e);
       }
     }else if(slot?.dataset.slot===e.dataset.slot){
-      e.remove();
-      slot.textContent="✓ โต๊ะ "+slot.dataset.slot;
+      const img=e.querySelector("img");
+      const label=e.querySelector("span")?.textContent||("โต๊ะ "+slot.dataset.slot);
+      slot.textContent="";
+      const placed=document.createElement("div");
+      placed.className="placedAltarIcon tablePlaced";
+      placed.innerHTML=`<img src="${img?.getAttribute("src")||""}" alt="${label}"><span>✓ ${label}</span>`;
+      slot.appendChild(placed);
       slot.classList.add("filled");
       add(5);
+      e.remove();
       toast("วางโต๊ะถูกต้อง +5");
     }else{
       reset(e);
