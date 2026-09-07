@@ -1056,6 +1056,9 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
 /* v43 — Prevent the previous mission scene from showing behind the preparation screen. */
 #permission{z-index:1000!important}
 #result{z-index:1100!important}
+/* v47 FIX — use the supplied score-summary artwork as the result backdrop. */
+#result{background:#09030f url("result-bg.png") center center / cover no-repeat !important;}
+#result .resultCard{position:relative;z-index:1;background:linear-gradient(145deg,rgba(52,21,80,.94),rgba(20,7,31,.92)) !important;}
 #game{z-index:100!important}
 #game.hidden{display:none!important}
 
@@ -1143,60 +1146,77 @@ button,.howtoActions,.howtoActions button,.coverStartButton,.coverHowtoButton,.m
   pointer-events:none;
 }
 
-/* v47.2 — Mission 2: new 3D transparent trash icons */
-#area .swipeBin{
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-  border-radius:0!important;
-  padding:0!important;
-  min-height:0!important;
-  height:32%!important;
-  bottom:1%!important;
+/* v48 — Mission 1 real icon set: transparent PNGs, no Buddha duplicate */
+.altarIconPiece{
+  position:relative!important;
   display:flex!important;
-  align-items:flex-end!important;
-  justify-content:center!important;
-  z-index:30!important;
-}
-#area .swipeBin img{
-  display:block;
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  object-position:center bottom;
-  pointer-events:none;
-  user-select:none;
-  -webkit-user-drag:none;
-  filter:drop-shadow(0 12px 18px #0008);
-}
-#area .waste{
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-  border-radius:0!important;
-  width:12%!important;
-  height:24%!important;
-  padding:0!important;
-  display:flex!important;
+  flex-direction:column!important;
   align-items:center!important;
   justify-content:center!important;
-  z-index:50!important;
+  gap:2px!important;
+  overflow:hidden!important;
+  background:linear-gradient(145deg,#4c1d70ee,#1d0b30ee)!important;
+  border:1px solid #ffd66b77!important;
+  box-shadow:0 8px 18px #0006,inset 0 1px #fff2!important;
 }
-#area .waste img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  object-position:center;
-  display:block;
-  pointer-events:none;
-  user-select:none;
-  -webkit-user-drag:none;
-  filter:drop-shadow(0 10px 14px #0008);
+.altarIconPiece img{
+  display:block!important;
+  width:82%!important;
+  height:72%!important;
+  object-fit:contain!important;
+  pointer-events:none!important;
+  user-select:none!important;
+  -webkit-user-drag:none!important;
+  filter:drop-shadow(0 5px 7px #0008)!important;
 }
-#area .waste.dragging{transform:scale(1.08)!important;filter:drop-shadow(0 0 18px #ffd66b)!important}
+.altarIconPiece span{
+  display:block!important;
+  color:#fff4cf!important;
+  font-size:12px!important;
+  line-height:1.05!important;
+  font-weight:1000!important;
+  white-space:nowrap!important;
+  text-shadow:0 2px 5px #000!important;
+}
+.altarTray .altarIconPiece.altarTablePiece{
+  min-width:92px!important;
+  width:92px!important;
+  height:86px!important;
+  flex:0 0 92px!important;
+}
+.altarTray .altarIconPiece.ritual{
+  min-width:92px!important;
+  width:92px!important;
+  height:86px!important;
+  flex:0 0 92px!important;
+  font-size:inherit!important;
+}
+.altarTray .altarIconPiece.ritual img{height:68%!important}
+.altarSeven .tierSlot.filled{
+  background:rgba(255,214,107,.10)!important;
+  border-color:#ffd66b!important;
+  color:#fff1b8!important;
+  box-shadow:0 0 18px #ffd66b33,inset 0 0 20px #ffd66b12!important;
+}
+.altarSeven .tierSlot.filled::after{
+  content:"✓";
+  position:absolute;
+  top:4px;
+  right:7px;
+  color:#9fffc1;
+  font-size:18px;
+  text-shadow:0 2px 7px #000;
+}
+.altarSeven .ritualSlot{
+  line-height:1.1!important;
+}
 @media(max-width:800px){
-  #area .swipeBin{height:27%!important;bottom:1%!important}
-  #area .waste{width:16%!important;height:20%!important}
+  .altarTray .altarIconPiece.altarTablePiece,
+  .altarTray .altarIconPiece.ritual{
+    min-width:82px!important;
+    width:82px!important;
+    height:78px!important;
+    flex-basis:82px!important;
+  }
+  .altarIconPiece span{font-size:10px!important}
 }
-#result{background:#09030f url("result-bg.png") center center / cover no-repeat!important}
-#result .resultCard{position:relative;z-index:1;background:linear-gradient(145deg,rgba(52,21,80,.94),rgba(20,7,31,.92))!important}

@@ -66,7 +66,7 @@ function move(e,x,y){e.style.position="fixed";e.style.left=x-e.offsetWidth/2+"px
 function reset(e){if(!e)return;e.style.position="";e.style.left="";e.style.top="";e.style.zIndex="";e.classList.remove("dragging")}
 function gestureFrame(t){if(gameKind==="altar")altarGesture();else if(gameKind==="sort")sortGesture();else if(gameKind==="quiz")quizGesture(t);else if(gameKind==="fill")fillGesture(t);else if(gameKind==="moral")moralGesture(t);else if(gameKind==="tree")treeGesture()}
 
-function setup(kind){stopCamera();gameKind=kind;const game=document.querySelector("#game");game.classList.add("hidden");game.classList.remove("mission1Scene","mission2Scene","mission3Scene","mission4Scene","mission5Scene","mission6Scene");const sceneNo={altar:1,sort:2,quiz:3,fill:4,moral:5,tree:6}[kind];if(sceneNo)game.classList.add(`mission${sceneNo}Scene`);round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];if($("#permissionTitle")) $("#permissionTitle").textContent=names[kind];$("#menu").classList.add("hidden");$("#howto").classList.add("hidden");$("#missionSelect").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
+function setup(kind){stopCamera();gameKind=kind;const game=document.querySelector("#game");game.classList.add("hidden");game.classList.remove("mission1Scene","mission2Scene","mission3Scene","mission4Scene","mission5Scene","mission6Scene");const sceneNo={altar:1,sort:2,quiz:3,fill:4,moral:5,tree:6}[kind];if(sceneNo)game.classList.add(`mission${sceneNo}Scene`);round=0;finished=false;pinchStates=[false,false];dragged=[null,null];$("#score").textContent=0;$("#gameName").textContent=names[kind];const permissionTitle=$("#permissionTitle");if(permissionTitle)permissionTitle.textContent=names[kind];$("#menu").classList.add("hidden");$("#howto").classList.add("hidden");$("#missionSelect").classList.add("hidden");$("#result").classList.add("hidden");$("#permission").classList.remove("hidden")}
 function startGame(){$("#permission").classList.add("hidden");$("#game").classList.remove("hidden");({altar,sort,quiz,fill,moral,tree}[gameKind])();startCamera()}
 function showGrandFinale(done){
   const layer=$("#grandFinale");
@@ -95,22 +95,103 @@ function finish(msg){
 function stopCamera(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}cancelAnimationFrame(raf);$("#camera").srcObject=null;hands=[];poseLm=null;faceLm=null}
 
 function altar(){
-  $("#title").innerHTML="<h2>จัดโต๊ะหมู่บูชา</h2><p>ลากโต๊ะหมู่ ๗ และเครื่องบูชาไปจัดวางให้ถูกตำแหน่ง</p>";
-  $("#hint").textContent="🤏 ใช้นิ้วมือจับ • ลาก • ปล่อยโต๊ะและเครื่องบูชา";
-  $("#area").innerHTML=`<div class="altarBoard altarSeven"><div class="altarHeader">โต๊ะหมู่ ๗</div><div class="altarSlots"></div></div><div class="tray altarTray"><div class="trayLabel">เครื่องสำหรับจัดโต๊ะหมู่ ๗</div></div>`;
-  const b=$(".altarBoard .altarSlots"),tr=$(".altarTray");
+  // Mission 1: drag the seven real altar-table icons and four offering icons.
+  // Buddha is intentionally NOT included here because the Buddha is already part of the scene.
+  const ASSET="assets/altar1/";
+  const tableLabels=["โต๊ะ ๑","โต๊ะ ๒","โต๊ะ ๓","โต๊ะ ๔","โต๊ะ ๕","โต๊ะ ๖","โต๊ะ ๗"];
+  const ritualItems=[
+    ["incense.png","ธูป"],
+    ["candles.png","เทียน"],
+    ["pahn1.png","พานพุ่ม ๑"],
+    ["pahn2.png","พานพุ่ม ๒"]
+  ];
+
+  $("#title").innerHTML="<h2>จัดโต๊ะหมู่บูชา</h2><p>ลากโต๊ะหมู่ ๗ และเครื่องบูชาไปจัดวางให้ถูกต้อง</p>";
+  $("#hint").textContent="🤏 ใช้นิ้วมือจีบจับ • ลาก • ปล่อยโต๊ะและเครื่องบูชาให้ถูกตำแหน่ง";
+  $("#area").innerHTML=`<div class="altarBoard altarSeven"><div class="altarHeader">โต๊ะหมู่ ๗</div><div class="altarSlots"></div></div><div class="tray altarTray"><div class="trayLabel">อุปกรณ์จัดโต๊ะหมู่ ๗</div></div>`;
+
+  const board=$(".altarBoard .altarSlots"), tray=$(".altarTray");
   const positions=[[1,39,10,22,16],[2,12,29,28,16],[3,60,29,28,16],[4,4,49,28,16],[5,36,49,28,16],[6,68,49,28,16],[7,36,69,28,16]];
-  positions.forEach(([n,left,top,width,height])=>{const slot=document.createElement("div");slot.className="tierSlot";slot.dataset.slot=n;slot.textContent="โต๊ะ "+n;slot.style.left=left+"%";slot.style.top=top+"%";slot.style.width=width+"%";slot.style.height=height+"%";b.appendChild(slot);const piece=document.createElement("div");piece.className="piece altarTablePiece";piece.dataset.drag=1;piece.dataset.slot=n;piece.textContent="โต๊ะ "+n;tr.appendChild(piece)});
-  [["🪔","ธูป"],["🕯️","เทียน"],["🌸","พานพุ่ม ๑"],["🌸","พานพุ่ม ๒"]].forEach(([em,label])=>{const p=document.createElement("div");p.className="ritual";p.dataset.drag=1;p.dataset.ritual=label;p.textContent=em;p.title=label;tr.appendChild(p)});
-  const r=document.createElement("div");r.className="tierSlot ritualSlot";r.dataset.slot="ritual";r.textContent="🪷 วางเครื่องบูชา";b.appendChild(r)
+
+  positions.forEach(([n,left,top,width,height])=>{
+    const slot=document.createElement("div");
+    slot.className="tierSlot";
+    slot.dataset.slot=n;
+    slot.textContent="โต๊ะ "+n;
+    slot.style.left=left+"%";
+    slot.style.top=top+"%";
+    slot.style.width=width+"%";
+    slot.style.height=height+"%";
+    board.appendChild(slot);
+
+    const piece=document.createElement("div");
+    piece.className="piece altarTablePiece altarIconPiece";
+    piece.dataset.drag=1;
+    piece.dataset.slot=n;
+    piece.title=tableLabels[n-1];
+    piece.innerHTML=`<img src="${ASSET}table${n}.png" alt="${tableLabels[n-1]}"><span>${tableLabels[n-1]}</span>`;
+    tray.appendChild(piece);
+  });
+
+  ritualItems.forEach(([file,label])=>{
+    const piece=document.createElement("div");
+    piece.className="ritual altarIconPiece";
+    piece.dataset.drag=1;
+    piece.dataset.ritual=label;
+    piece.title=label;
+    piece.innerHTML=`<img src="${ASSET}${file}" alt="${label}"><span>${label}</span>`;
+    tray.appendChild(piece);
+  });
+
+  const r=document.createElement("div");
+  r.className="tierSlot ritualSlot";
+  r.dataset.slot="ritual";
+  r.dataset.ritualCount="0";
+  r.textContent="🪷 วางเครื่องบูชา ๐/๔";
+  board.appendChild(r);
 }
-function altarGesture(){const h=info(0);if(!h)return;pointer(h.p.x,h.p.y,h.pin);if(h.pin&&!pinchStates[0]){dragged[0]=hit("#area [data-drag]",h.p.x,h.p.y);dragged[0]?.classList.add("dragging")}if(h.pin&&dragged[0])move(dragged[0],h.p.x,h.p.y);if(!h.pin&&pinchStates[0]&&dragged[0]){const e=dragged[0],slot=hit("#area .tierSlot",h.p.x,h.p.y);if(e.dataset.ritual){if(slot?.dataset.slot==="ritual"){e.remove();slot.textContent="✓ เครื่องบูชา";add(5);toast("วางเครื่องบูชาถูกต้อง +5")}else reset(e)}else if(slot?.dataset.slot===e.dataset.slot){e.remove();slot.textContent="✓ โต๊ะ "+slot.dataset.slot;slot.classList.add("filled");add(5);toast("วางโต๊ะถูกต้อง +5")}else reset(e);dragged[0]=null;checkAltarComplete()}pinchStates[0]=h.pin}
+
+function altarGesture(){
+  const h=info(0); if(!h)return;
+  pointer(h.p.x,h.p.y,h.pin);
+  if(h.pin&&!pinchStates[0]){
+    dragged[0]=hit("#area [data-drag]",h.p.x,h.p.y);
+    dragged[0]?.classList.add("dragging");
+  }
+  if(h.pin&&dragged[0])move(dragged[0],h.p.x,h.p.y);
+  if(!h.pin&&pinchStates[0]&&dragged[0]){
+    const e=dragged[0],slot=hit("#area .tierSlot",h.p.x,h.p.y);
+    if(e.dataset.ritual){
+      if(slot?.dataset.slot==="ritual"){
+        const count=(Number(slot.dataset.ritualCount)||0)+1;
+        e.remove();
+        slot.dataset.ritualCount=String(count);
+        slot.textContent=`✓ เครื่องบูชา ${count}/4`;
+        slot.classList.add("filled");
+        add(5);
+        toast(`วาง${e.dataset.ritual}ถูกต้อง +5`);
+      }else{
+        reset(e);
+      }
+    }else if(slot?.dataset.slot===e.dataset.slot){
+      e.remove();
+      slot.textContent="✓ โต๊ะ "+slot.dataset.slot;
+      slot.classList.add("filled");
+      add(5);
+      toast("วางโต๊ะถูกต้อง +5");
+    }else{
+      reset(e);
+    }
+    dragged[0]=null;
+    checkAltarComplete();
+  }
+  pinchStates[0]=h.pin;
+}
 
 function sort(){
  $("#title").innerHTML="<h2>นักคัดแยกขยะ</h2><p>ใช้มือซ้ายและขวาปัดขยะลงถังให้ถูกประเภท</p>";$("#hint").textContent="🖐 ใช้มือซ้าย–ขวาหยิบหรือปัดขยะเข้าถังที่ถูกต้อง";
- $("#area").innerHTML='<div class="swipeBin bin-green"><img src="mission2_icons/bin-general.png" alt="ถังขยะทั่วไป"></div><div class="swipeBin bin-blue"><img src="mission2_icons/bin-recycle.png" alt="ถังรีไซเคิล"></div><div class="swipeBin bin-yellow"><img src="mission2_icons/bin-paper.png" alt="ถังกระดาษ"></div><div class="swipeBin bin-red"><img src="mission2_icons/bin-hazardous.png" alt="ถังขยะอันตราย"></div>';
- const ws=[["banana.png","green"],["apple.png","green"],["leaves.png","green"],["cup.png","blue"],["can.png","blue"],["cardboard.png","blue"],["newspaper.png","yellow"],["paper.png","yellow"],["battery.png","red"],["chemical.png","red"]];
- ws.forEach((w,i)=>{const d=document.createElement("div");d.className="waste";d.dataset.drag=1;d.dataset.type=w[1];d.style.left=7+(i%5)*18+"%";d.style.top=6+Math.floor(i/5)*27+"%";const img=document.createElement("img");img.src="mission2_icons/"+w[0];img.alt="ขยะ";d.appendChild(img);$("#area").appendChild(d)})
+ $("#area").innerHTML='<div class="swipeBin bin-green">🟢<br>ขยะทั่วไป</div><div class="swipeBin bin-blue">🔵<br>รีไซเคิล</div><div class="swipeBin bin-yellow">🟡<br>กระดาษ</div><div class="swipeBin bin-red">🔴<br>อันตราย</div>';
+ const ws=[["🍌","green"],["🍎","green"],["🍂","green"],["🥤","blue"],["🥫","blue"],["📦","blue"],["📰","yellow"],["📄","yellow"],["🔋","red"],["🧴","red"]];ws.forEach((w,i)=>{const d=document.createElement("div");d.className="waste";d.textContent=w[0];d.dataset.drag=1;d.dataset.type=w[1];d.style.left=8+(i%5)*18+"%";d.style.top=10+Math.floor(i/5)*26+"%";$("#area").appendChild(d)})
 }
 function sortGesture(){for(let i=0;i<Math.min(2,hands.length);i++){const h=info(i);if(!h)continue;pointer(h.p.x,h.p.y,h.pin);if(h.pin&&!pinchStates[i]&&!dragged[i]){dragged[i]=hit("#area .waste",h.p.x,h.p.y);dragged[i]?.classList.add("dragging")}if(dragged[i]){move(dragged[i],h.p.x,h.p.y);if(!h.pin){const e=dragged[i],bin=hit("#area .swipeBin",h.p.x,h.p.y),type=bin&&["green","blue","yellow","red"].find(c=>bin.classList.contains("bin-"+c));if(type===e.dataset.type){e.remove();add(10);toast("แยกถูกต้อง +10");if(!$("#area .waste"))finish("แยกขยะครบทุกประเภทแล้ว 🎉")}else{reset(e);toast("ลองปัดไปถังที่ถูกประเภท 💡")}dragged[i]=null}}pinchStates[i]=h.pin}}
 
@@ -192,7 +273,7 @@ function fillGesture(){
 const ms=[
  ["หลังทำกิจกรรม ห้องเรียนมีขยะเต็มพื้น ควรช่วยกันเก็บและทิ้งให้ถูกถังหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
  ["พบของที่ไม่ใช่ของตนเอง ควรนำส่งครูหรือหาเจ้าของหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
- ["เมื่อครูมอบหมายงานกลุ่ม ควรปล่อยให้เพื่อนทำทั้งหมดหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
+ ["เมื่อครูมอบหมายงานกลุ่ม ควรปล่อยให้เพื่อนทำทั้งหมดหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",0],
  ["เพื่อนทำผิดแล้วมาขอโทษ เราควรให้อภัยและแนะนำด้วยเมตตาหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1],
  ["เมื่อเข้าร่วมกิจกรรมทางพระพุทธศาสนา ควรสำรวมกาย วาจา และตั้งใจร่วมกิจกรรมหรือไม่?","👍 ควรทำ","👎 ไม่ควรทำ",1]
 ];
@@ -261,7 +342,26 @@ window.refreshGameUI=function(){ui()};
 // Mouse/touch fallback for desktop testing when camera is unavailable.
 let fallbackEl=null;document.addEventListener('pointerdown',e=>{if(!gameKind)return;const x=e.clientX,y=e.clientY;fallbackEl=hit("#area [data-drag],#area .seedling",x,y);if(fallbackEl)move(fallbackEl,x,y)});document.addEventListener('pointermove',e=>{if(fallbackEl)move(fallbackEl,e.clientX,e.clientY)});document.addEventListener('pointerup',e=>{if(!fallbackEl)return;const x=e.clientX,y=e.clientY;if(gameKind==='altar')altarGestureFallback(fallbackEl,x,y);else if(gameKind==='sort')sortFallback(fallbackEl,x,y);else if(gameKind==='tree'){const soil=hit('#area .soil',x,y);if(soil){fallbackEl.remove();completeTree()}}reset(fallbackEl);fallbackEl=null});
 function checkAltarComplete(){if(!finished && !$("#area [data-drag]"))setTimeout(()=>finish("จัดโต๊ะหมู่บูชาครบถ้วนแล้ว 🪷🎉"),450)}
-function altarGestureFallback(e,x,y){const slot=hit('#area .tierSlot',x,y);if(e.dataset.ritual&&slot?.dataset.slot==='ritual'){e.remove();add(5);toast('วางเครื่องบูชาถูกต้อง +5')}else if(slot?.dataset.slot===e.dataset.slot){e.remove();add(5);toast('วางโต๊ะถูกต้อง +5')}checkFallbackComplete()}
+function altarGestureFallback(e,x,y){
+  const slot=hit('#area .tierSlot',x,y);
+  if(e.dataset.ritual&&slot?.dataset.slot==='ritual'){
+    const count=(Number(slot.dataset.ritualCount)||0)+1;
+    e.remove();
+    slot.dataset.ritualCount=String(count);
+    slot.textContent=`✓ เครื่องบูชา ${count}/4`;
+    slot.classList.add('filled');
+    add(5);
+    toast(`วาง${e.dataset.ritual}ถูกต้อง +5`);
+  }else if(slot?.dataset.slot===e.dataset.slot){
+    e.remove();
+    slot.textContent='✓ โต๊ะ '+slot.dataset.slot;
+    slot.classList.add('filled');
+    add(5);
+    toast('วางโต๊ะถูกต้อง +5');
+  }
+  checkFallbackComplete();
+}
+
 function sortFallback(e,x,y){const bin=hit('#area .swipeBin',x,y);const type=bin&&['green','blue','yellow','red'].find(c=>bin.classList.contains('bin-'+c));if(type===e.dataset.type){e.remove();add(10);toast('แยกถูกต้อง +10');if(!$('#area .waste'))finish('แยกขยะครบทุกประเภทแล้ว 🎉')}}
 function checkFallbackComplete(){if(!$('#area [data-drag]'))finish('จัดโต๊ะหมู่บูชาครบถ้วนแล้ว 🪷')}
 ui();
